@@ -4,7 +4,8 @@ import com.example.aplikacja_dyzury.DataModelAndRepo.Hospital;
 import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartment;
 import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartmentRepo;
 import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalRepo;
-import com.vaadin.flow.component.UI;
+
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.notification.Notification;
@@ -49,7 +50,7 @@ public class AddDepartmentDialog extends Dialog {
                 if (existingDepartments.isEmpty()) {
                     try {
                         hospitalDepartment.setActive(true);
-                        System.out.println(hospitalDepartment.toString() +" wartość do dodania");
+
                         hospitalDepartmentRepo.save(hospitalDepartment);
                         chosenHospital.getHospitalDepartments().add(hospitalDepartment);
                         chosenHospital.setActive(true);
