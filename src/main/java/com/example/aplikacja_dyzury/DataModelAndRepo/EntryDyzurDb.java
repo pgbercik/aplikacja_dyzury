@@ -55,7 +55,7 @@ public class EntryDyzurDb {
         this.startTime = startTime;
         this.endTime = endTime;
         this.allDay = allDay;
-//        this.color = color;
+
         this.description = description;
         this.editable = editable;
         this.hospital = hospital;
@@ -84,9 +84,7 @@ public class EntryDyzurDb {
 
     public void setAllDay(boolean allDay) { this.allDay = allDay; }
 
-//    public String getColor() { return color; }
-//
-//    public void setColor(String color) { this.color = color; }
+
 
     public String getDescription() { return description; }
 

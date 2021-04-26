@@ -1,7 +1,6 @@
 package com.example.aplikacja_dyzury.app.security;
 
-//import com.example.aplikacja_dyzury.DataModelAndRepo.stare_nieuzywane_teraz.UserTableRepo;
-//import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -70,97 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL).permitAll();
 	}
 
-//	@Autowired
-//	private MyUserDetailsService myUserDetailsService;
 
-//	szyfrowane logowanie in memory przez bcrypt
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		String password = passwordEncoder().encode("pass1");
-//		auth.inMemoryAuthentication().withUser("admin1").password(password).roles("Admin");
-//
-////		auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
-//
-//
-//////		String password2 = passwordEncoder().encode("jones");
-//////		auth.inMemoryAuthentication().withUser("stachu").password(password2).roles("User");
-////
-////
-////
-//		List<UserTable> users = userTableRepo.findAll();
-////
-////
-////
-//		for (UserTable userTable : users) {
-//			String password1 = passwordEncoder().encode(userTable.getPassword());
-//			auth.inMemoryAuthentication().withUser(userTable.getUsername()).password(userTable.getPassword()).roles(userTable.getRole());
-//			String aaa = "jones";
-//			System.out.println(passwordEncoder().matches(aaa,userTable.getPassword()) +"WYNIK");
-//			System.out.println(userTable.toString()+"ABCDE");
-//		}
-//
-//
-//
-//	}
-//
-
-
-
-
-//	@Bean
-//	@Override
-//	public UserDetailsService userDetailsService() {
-////		UserDetails normalUser =
-////				User.withUsername("user")
-////						.password("{noop}password")
-////						.roles("User")
-////						.build();
-////
-////		UserDetails normalUser2 =
-////				User.withUsername("john")
-////						.password("{noop}doe")
-////						.roles("User")
-////						.build();
-////
-////		// admin user with all privileges
-////		UserDetails adminUser =
-////				User.withUsername("admin")
-////						.password("{noop}password")
-////						.roles("Admin")
-////						.build();
-//
-//		List<UserDetails> userList = new ArrayList<>();
-////
-//		List<UserTable> users = userTableRepo.findAll();
-//		List<GrantedAuthority> uprawnienia = Arrays.asList(
-//				new SimpleGrantedAuthority("ROLE_User"),
-//				new SimpleGrantedAuthority("ROLE_Admin"));
-//
-//
-//		InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-//		for (UserTable userTable : users) {
-////		userList.add(new User(userTable.getUsername(),userTable.getPassword(),uprawnienia));
-//			inMemoryUserDetailsManager.createUser(User.withUsername(userTable.getUsername())
-//					.password(userTable.getPassword())
-//					.roles("Admin")
-//					.build());
-//		}
-//
-//
-//
-//
-//
-//
-////		userList.add(normalUser);
-////		userList.add(normalUser2);
-////		userList.add(adminUser);
-//
-////		System.out.println(userList.toString() +"DDDD"+"\n");
-//
-//		System.out.println(inMemoryUserDetailsManager.toString());
-////		return new InMemoryUserDetailsManager(userList);
-//		return inMemoryUserDetailsManager;
-//	}
 
 	/**
 	 * Allows access to static resources, bypassing Spring security.

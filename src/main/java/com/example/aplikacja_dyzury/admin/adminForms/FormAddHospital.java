@@ -45,8 +45,7 @@ public class FormAddHospital extends VerticalLayout {
 
         btnSave = new Button("Dodaj szpital");
         btnSave.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-//        btnClearForm = new Button("Wyczyść formularz");
-//        btnClearForm.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        btnClearForm = new Button("Wyczyść formularz");
         HorizontalLayout buttons = new HorizontalLayout(btnSave);
         layout.add(buttons);
         add(layout);
@@ -85,31 +84,6 @@ public class FormAddHospital extends VerticalLayout {
             }
 
         });
-
-//        btnClearForm.addClickListener(buttonClickEvent -> {
-//            name.clear();
-//            address.clear();
-//            city.clear();
-//        });
-
-
-
-//        save.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
-//            @Override
-//            public void onComponentEvent(ClickEvent<Button> event) {
-//                try {
-//
-//                    Hospital hospital = new Hospital(name.getValue().trim(),address.getValue().trim(),city.getValue().trim());
-//                    hospitalRepo.save(hospital);
-//
-//                    save.getUI().ifPresent(ui -> ui.navigate("hospitalTable")); // przejście do tabelki
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Notification.show("Podaj wszystkie wartości!!!", 2000, Notification.Position.MIDDLE);
-//                }
-//            }
-//        });
     }
 
     private void defineFormValidation(Hospital hospital) {

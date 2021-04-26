@@ -35,21 +35,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 	}
 
-	//	private LoginOverlay login = new LoginOverlay();
 
-//	public LoginView(){
-//		login.setAction("login");
-//		login.setOpened(true);
-//		login.setForgotPasswordButtonVisible(false);
-//
-//
-//////		polskie napisy
-////		login.setI18n(createPolishI18n());
-//
-//		//dodajemu panel logowania
-//		getElement().appendChild(login.getElement());
-//
-//	}
+
 
 //	ta metoda się uruchamia przed wpuszczeniem usera na stronę
 	@Override

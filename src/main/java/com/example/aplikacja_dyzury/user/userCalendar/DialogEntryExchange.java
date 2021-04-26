@@ -28,22 +28,17 @@ public class DialogEntryExchange extends Dialog {
 
     public DialogEntryExchange(EntryDyzurDb entryDyzurDbClickedFromCalendar, User userInit, EntryDyzurDbRepo entryDyzurDbRepo, RequestsRepo requestsRepo) {
 
-//        add(new H2("Tu ma być zamiana dyżurów"));
-//        add(new H4("ID obecnie przypisanego do dyżuru "+userInit.getId()));
-//        add(new H4("ID obecnie przypisanego dyżuru dla tego usera  "+entryDyzurDbClickedFromCalendar.getId()));
+
 
         VerticalLayout verticalLayout = new VerticalLayout();
 
 
         DatePicker datePicker = new DatePicker("Drugi dyżur");
         verticalLayout.add(datePicker);
-//        datePicker.addValueChangeListener(event -> {
-//            Notification.show(datePicker.getValue().toString(),1000, Notification.Position.MIDDLE);
-//        });
+
         ComboBox<EntryDyzurDb> entryToExchageFromDialog = new ComboBox<>("Nazwa dyżuru do wymiany");
         ComboBox<User> existingUsersList = new ComboBox<>("Użytkownik do zamiany");
-//        TextArea textArea = new TextArea("wybrane dane drugiego dyżuru");
-//        textArea.setWidth("600px");
+
         Button btnSendExchangeRequest = new Button("Wyślij prośbę o zamianę");
         btnSendExchangeRequest.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         Button btnCancel = new Button("Anuluj");
@@ -55,7 +50,7 @@ public class DialogEntryExchange extends Dialog {
 
         verticalLayout.add(entryToExchageFromDialog);
         verticalLayout.add(existingUsersList);
-//        verticalLayout.add(textArea);
+
         entryToExchageFromDialog.setEnabled(false);
         existingUsersList.setEnabled(false);
 
@@ -71,19 +66,18 @@ public class DialogEntryExchange extends Dialog {
             List<EntryDyzurDb> entryDyzurDbs = entryDyzurDbRepo.findAllWithStartDateGiven(datePicker.getValue());
             System.out.println("entryDyzurDbs: "+entryDyzurDbs);
 
-//            Duration dur1 = Duration.between(LocalDate.now(),datePicker.getValue());
-//            Long diffInDays = dur1.toDays();
+
 
             Long diffInDays = DAYS.between(LocalDate.now(),datePicker.getValue());
             System.out.println("różnica w dniach między datą dzisiejszą, a starttime z formularza " + diffInDays);
-//            Notification.show(datePicker.getValue().toString(),1000, Notification.Position.MIDDLE);
+
             if (diffInDays>=0) {
                 if (!entryDyzurDbs.isEmpty()) {
 
                     entryToExchageFromDialog.setItems(entryDyzurDbs);
                     entryToExchageFromDialog.setItemLabelGenerator(EntryDyzurDb::getTitle);
                     entryToExchageFromDialog.setEnabled(true);
-//                    entryToExchageFromDialog.clear();
+
 
 
                     entryToExchageFromDialog.addValueChangeListener(event1 -> {
@@ -96,8 +90,7 @@ public class DialogEntryExchange extends Dialog {
                         existingUsersList.setEnabled(true);
                         existingUsersList.clear();
                         existingUsersList.addValueChangeListener(event2 -> {
-    //                        textArea.setValue(entryToExchageFromDialog.getValue().getTitle()+" | "+existingUsersList.getValue().getId());
-    //                        btnSendExchangeRequest.addClickListener(event3 -> {
+
                             entryToExchageFromDialog.setEnabled(false);
 
                             requests=null;
@@ -107,7 +100,7 @@ public class DialogEntryExchange extends Dialog {
 
 
 
-    //                        });
+
 
                             add(btnSendExchangeRequest,btnCancel);
 
@@ -136,16 +129,7 @@ public class DialogEntryExchange extends Dialog {
         makeDatePickerPolish(datePicker);
     }
 
-//    private List<User> createDummyUserList() {
-//        List<User> emptyList = new ArrayList<>();
-//        User dummy = new User();
-//        dummy.setFirstName("aaa");
-//        dummy.setLastName("bbb");
-//        dummy.setEmail("ww@ww.ww");
-//        dummy.setPassword("aaaaaadssdfdsf");
-//        emptyList.add(dummy);
-//        return emptyList;
-//    }
+
 
     private void makeDatePickerPolish(DatePicker datePicker) {
         datePicker.setI18n(

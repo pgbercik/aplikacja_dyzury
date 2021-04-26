@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Push
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
 @Theme(value = Lumo.class,variant = Lumo.LIGHT)
-@Component @UIScope // optional but useful; allows access to this instance from views, see View1.
+@Component @UIScope
 public class NonRegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftResponsive> {
     private DefaultNotificationHolder notifications = new DefaultNotificationHolder();
     private DefaultBadgeHolder badge = new DefaultBadgeHolder(5);

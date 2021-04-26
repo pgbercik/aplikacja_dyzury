@@ -75,8 +75,7 @@ public class MainPage extends VerticalLayout {
             btnNextPage = new Button("Następna strona");
             btnPreviousPage = new Button("Poprzednia strona");
             btnNextPage.addClickListener(event -> {
-//            System.out.println("----------------");
-//            System.out.println("strona"+page);
+
                 if (page < totalPages - 1) {
                     if (currentOrHistory.getValue().equals("do rozpatrzenia")) {
                         addTableWithPaginationWithButtons(page += 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
@@ -85,7 +84,7 @@ public class MainPage extends VerticalLayout {
                         addTableWithPagination(page += 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
                     }
                 }
-//            System.out.println("strona"+page);
+
                 currentPage.setText(page + 1 + " z " + totalPages);
             });
             btnPreviousPage.addClickListener(event -> {
@@ -98,7 +97,7 @@ public class MainPage extends VerticalLayout {
                         addTableWithPagination(page -= 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
                     }
                 }
-//            System.out.println("strona"+page);
+
                 currentPage.setText(page + 1 + " z " + totalPages);
             });
             horizontalLayout = new HorizontalLayout();
@@ -110,7 +109,7 @@ public class MainPage extends VerticalLayout {
             //wstępnie wyświetlamy te do rozpatrzenia
             addTableWithPaginationWithButtons(page,size,requestsRepo,requestStatusRepo,entryDyzurDbRepo,userRepository);
 
-//            currentPage.setText(page+1+" z "+totalPages);
+
 
 
             currentOrHistory.addValueChangeListener(event -> {
@@ -133,8 +132,7 @@ public class MainPage extends VerticalLayout {
     }
     public void addTableWithPaginationWithButtons(int page,int size,RequestsRepo requestsRepo,RequestStatusRepo requestStatusRepo,
                                                   EntryDyzurDbRepo entryDyzurDbRepo, UserRepository userRepository) {
-//        page=0;
-//        currentPage.setText(page + 1 + " z " + 1);
+
         removeAll();
         add(new H2("Przychodzące propozycje zamiany dyżurów"));
         add(currentOrHistory);
@@ -145,7 +143,7 @@ public class MainPage extends VerticalLayout {
                 System.out.println("znalezione requesty " + totalPages);
         currentPage.setText(page + 1 + " z " + totalPages);
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
-//                System.out.println(requestStatuses.get(0).getStateName() + " - nazwa");
+
 
         customRequestViews = new ArrayList<>();
         customRequestViews.clear();
@@ -157,11 +155,11 @@ public class MainPage extends VerticalLayout {
             ));
         }
         if (!customRequestViews.isEmpty()) {
-// Create a grid bound to the list
+
             grid = new Grid<>();
             grid.setItems(customRequestViews);
             grid.setColumnReorderingAllowed(true);
-//                grid.addColumn(CustomRequestView::getDescription).setHeader("Opis").setAutoWidth(true);
+
             grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getInitUserName).setHeader("Zgłoszenie wysłał").setAutoWidth(true);
@@ -173,7 +171,7 @@ public class MainPage extends VerticalLayout {
                 Button button = new Button("Akceptuj");
                 button.addClickListener(event1 -> {
                     EntryDyzurDb initEntry = entryDyzurDbRepo.findByID(customRequestView.getInitEntry().getId());
-//                                Set<User> initEntryUsers = initEntry.getUsers();
+
                     EntryDyzurDb targetEntry = entryDyzurDbRepo.findByID(customRequestView.getTargetEntry().getId());
                                 Set<User> targetEntryUsers = targetEntry.getUsers();
                     User initUser = userRepository.findByEmail(customRequestView.getInitUser().getEmail());
@@ -193,14 +191,13 @@ public class MainPage extends VerticalLayout {
                     targetEntry.getUsers().add(initUser);
                     entryDyzurDbRepo.save(targetEntry);
 
-//                                System.out.println(initEntry);
-//                                System.out.println(targetEntry);
+
 
                     Requests requestsToUpdate = requestsRepo.findWithId(customRequestView.getRequestId());
                     requestsToUpdate.setActive(false);
                     requestsToUpdate.setStatus(2);
                     requestsRepo.save(requestsToUpdate);
-//                                UI.getCurrent().getPage().reload();
+
                     currentOrHistory.setValue("rozpatrzone");
 
 
@@ -216,10 +213,9 @@ public class MainPage extends VerticalLayout {
                     requestsToUpdate.setActive(false);
                     requestsToUpdate.setStatus(3);
                     requestsRepo.save(requestsToUpdate);
-//                                UI.getCurrent().getPage().reload();
+
                     currentOrHistory.setValue("rozpatrzone");
-//                        System.out.println("znaleziony request "+requestsToUpdate.getRequestTime());
-//                        System.out.println("znaleziony request "+requestsToUpdate.toString());
+
                 });
 
                 return button;
@@ -245,8 +241,7 @@ public class MainPage extends VerticalLayout {
 
     public void addTableWithPagination(int page,int size,RequestsRepo requestsRepo,RequestStatusRepo requestStatusRepo,
                                        EntryDyzurDbRepo entryDyzurDbRepo, UserRepository userRepository) {
-//        page=0;
-//        currentPage.setText(page + 1 + " z " + 1);
+
         removeAll();
         add(new H2("Przychodzące propozycje zamiany dyżurów"));
         add(currentOrHistory);
@@ -257,7 +252,7 @@ public class MainPage extends VerticalLayout {
                 System.out.println("znalezione requesty " + totalPages);
         currentPage.setText(page + 1 + " z " + totalPages);
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
-//                System.out.println(requestStatuses.get(0).getStateName() + " - nazwa");
+
 
         customRequestViews = new ArrayList<>();
         customRequestViews.clear();
@@ -269,11 +264,11 @@ public class MainPage extends VerticalLayout {
             ));
         }
         if (!customRequestViews.isEmpty()) {
-// Create a grid bound to the list
+
             grid = new Grid<>();
             grid.setItems(customRequestViews);
             grid.setColumnReorderingAllowed(true);
-//                grid.addColumn(CustomRequestView::getDescription).setHeader("Opis").setAutoWidth(true);
+
             grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getInitUserName).setHeader("Zgłoszenie wysłał(a)").setAutoWidth(true);

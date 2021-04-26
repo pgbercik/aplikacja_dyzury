@@ -111,15 +111,7 @@ public class DialogAddEditEvent extends Dialog {
             fieldHospitalDepartment.setEnabled(true);
         });
 
-//        fieldHospitalName.setItems("szpital1","szpital2");
 
-//        boolean allDay = entry.isAllDay();
-
-//        fieldAllDay.addValueChangeListener(event -> {
-//            fieldStart.setDateOnly(event.getValue());
-//            fieldEnd.setDateOnly(event.getValue());
-//
-//        });
 
         HorizontalLayout horizontalLayout1 = new HorizontalLayout();
         horizontalLayout1.add(fieldStart,fieldEnd);
@@ -130,9 +122,6 @@ public class DialogAddEditEvent extends Dialog {
         binder.forField(fieldTitle)
                 .asRequired("Pole wymagane")
                 .bind(Entry::getTitle, Entry::setTitle);
-//        binder.forField(fieldColor)
-//                .asRequired("Pole wymagane")
-//                .bind( Entry::getColor, Entry::setColor);
         binder.forField(fieldDescription)
                 .asRequired("Pole wymagane")
                 .bind(Entry::getDescription, Entry::setDescription);
@@ -192,9 +181,7 @@ public class DialogAddEditEvent extends Dialog {
             buttonSave = new Button("Zapisz zmiany", e -> {
                 binder.validate();
                 if (binder.isValid()) {
-//                    System.out.println(entry.getId() +"id z bazy pobrane właśnie AAA ");
-//                    calendar.updateEntry(entry);
-//                    System.out.println(entry.toString());
+
 
 
                     EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
@@ -206,10 +193,10 @@ public class DialogAddEditEvent extends Dialog {
                     entryDyzurDb.setStartTime(entry.getStart());
                     entryDyzurDb.setEndTime(entry.getEnd());
                     entryDyzurDb.setAllDay(entry.isAllDay());
-//                    entryDyzurDb.setColor(entry.getColor());
+
                     entryDyzurDb.setDescription(entry.getDescription());
                     entryDyzurDb.setEditable(entry.isEditable());
-//                    entryDyzurDb.setColor(entry.getColor());
+
                     entryDyzurDb.setHospitalDepartment(entry.getHospitalDepartment());
                     entryDyzurDb.setUsers(entry.getUsers());
 
@@ -306,10 +293,7 @@ public class DialogAddEditEvent extends Dialog {
                             entry.getEnd(),entry.isAllDay(),entry.getDescription(),entry.isEditable(),
                             entry.getHospital(),entry.getHospitalDepartment(),entry.getUsers());
 
-//                    System.out.println("entryDyzurDbTemporaryForEditONly.getStartTime() "+entryDyzurDbTemporaryForEditONly.getStartTime() );
-//                    System.out.println("entryDyzurDb.getStartTime() "+entryDyzurDb.getStartTime());
-//                    System.out.println("entryDyzurDb.getEndTime() "+entryDyzurDb.getEndTime());
-//                    System.out.println("entryDyzurDbTemporaryForEditONly.getEndTime() "+entryDyzurDbTemporaryForEditONly.getEndTime() );
+
                     if (!entryDyzurDbTemporaryForEditONly.getStartTime().equals(entryDyzurDb.getStartTime())
                     && !entryDyzurDbTemporaryForEditONly.getEndTime().equals(entryDyzurDb.getEndTime())) {
                         if (!verifyDateTimesOverlapping(entryDyzurDb.getStartTime(), entryDyzurDb.getEndTime(), entry)) {
@@ -333,21 +317,21 @@ public class DialogAddEditEvent extends Dialog {
                         } else {
                             Notification.show("Okres trwania dyżuru pokrywa się z innym dyżurem z tego samego dnia", 3000, Notification.Position.MIDDLE);
                         }
-//                        Notification.show("git",200, Notification.Position.MIDDLE);
+
                     } else {
                         Notification.show("Zmień dane dyżuru przed powielaniem. Przynajmniej  godzinę rozpoczęcia oraz zakończenia.",3000, Notification.Position.MIDDLE);
                     }
 
 
                 }
-//                entryDyzurDb=null;
+
 
             });
 
-//            if (findUserData11.findFirstUserRoleString().equals("ROLE_USER")) {
+
                 btnReplicate.getElement().getThemeList().add("tertiary");
                 buttons.add(btnReplicate);
-//            }
+
 
             Button buttonSignInToEntry = new Button("Zapisz się na dyżur",e -> {
                 boolean isUSerAlreadyAdded = false;
@@ -427,13 +411,12 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
-//                LocalDateTime currentDateTime = LocalDateTime.now();
-//                int aaa = entryDyzurDb.getStartTime().compareTo(currentDateTime);
+
 
                 Duration dur1 = Duration.between(LocalDateTime.now(),entryDyzurDb.getStartTime());
                 Long diffInDays = dur1.toDays();
                 System.out.println("różnica w dniach między datą dzisiejszą, a starttime" + diffInDays);
-//
+
 
                 if (diffInDays>=0) {
                     FindUserData findUserData = new FindUserData();
@@ -455,7 +438,7 @@ public class DialogAddEditEvent extends Dialog {
             Long userIdToCheck =  userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser()).getId();
             System.out.println("userIdToCheck "+userIdToCheck);
             EntryDyzurDb entryDyzurDbForBtnExchange = entryDyzurDbRepo.findByID(id);
-//
+
             boolean isUserOnTheList=false;
             Set<User> addedUsers = entryDyzurDbForBtnExchange.getUsers();
             System.out.println("addedUsers "+addedUsers);
@@ -467,7 +450,7 @@ public class DialogAddEditEvent extends Dialog {
                 }
             }
 
-//            if (isUserOnTheList)
+
             System.out.println("czy jest na liście "+isUserOnTheList);
 
         }
@@ -480,7 +463,6 @@ public class DialogAddEditEvent extends Dialog {
     public boolean verifyDateTimesOverlapping(LocalDateTime entryStartDateTime, LocalDateTime entryEndDateTime, Entry entry) {
 
 
-        //        System.out.println(entry.getStart()+" | "+entry.getEnd()+" | "+entry);
         List<EntryDyzurDb> overLappingEntriesList = entryDyzurDbRepo.findEntriesForOverlappingCheck(entryStartDateTime.toLocalDate(),entry.getHospital(),entry.getHospitalDepartment(),
                 entryDyzurDbTemporaryForEditONly.getStartTime(),entryDyzurDbTemporaryForEditONly.getEndTime());
         System.out.println("Kandydaci do overlapping");
@@ -502,10 +484,9 @@ public class DialogAddEditEvent extends Dialog {
                 boolean condition2 = entryStartDateTime.compareTo(entryDyzurDb.getStartTime()) <0 && entryEndDateTime.compareTo(entryDyzurDb.getStartTime()) ==0;
                 boolean condition3 =  entryStartDateTime.compareTo(entryDyzurDb.getEndTime()) >0 && entryEndDateTime.compareTo(entryDyzurDb.getEndTime()) >0;
                 boolean condition4 = entryStartDateTime.compareTo(entryDyzurDb.getEndTime()) ==0 && entryEndDateTime.compareTo(entryDyzurDb.getEndTime()) >0;
-//            boolean condition5 =  entryStartDateTime.compareTo(entryDyzurDb.getStartTime()) >0 && entryEndDateTime.compareTo(entryDyzurDb.getEndTime()) <0;
 
                 //te 2 warunki są tylko po to, żeby przepuścić przez tę metodę i pozwolić wyświetlić się warunkom z metody verify
-                // (exception 1 - start i stop są róne startowi i stopowi innego dyżuru, a exception2 - start dyżuru = stop dyżuru)
+                // (exception 1 - start i stop są równe startowi i stopowi innego dyżuru, a exception2 - start dyżuru = stop dyżuru)
                 boolean exception = entryStartDateTime.compareTo(entryDyzurDb.getStartTime()) ==0 && entryEndDateTime.compareTo(entryDyzurDb.getEndTime()) ==0;
                 boolean exception2 = entryStartDateTime.compareTo(entryEndDateTime) ==0;
 
@@ -514,7 +495,7 @@ public class DialogAddEditEvent extends Dialog {
                 System.out.println("condition 2: "+condition2);
                 System.out.println("condition 3: "+condition3);
                 System.out.println("condition 4: "+condition4);
-//            System.out.println("condition 5: "+condition5);
+
                 System.out.println("start i end równe tym w bazie: "+exception);
                 System.out.println("entry from list"+entryDyzurDb.getStartTime() +" | "+entryDyzurDb.getEndTime());
                 System.out.println("");
@@ -542,7 +523,7 @@ public class DialogAddEditEvent extends Dialog {
 
 
 
-    /**Ta metoda sprawdza czynie ma wydarzenia o tych samych godzinach i szpitalu i oddziale i czy np. czs dyżuru ni jest ujemny i czy nie jest krótszy od 5 minut.*/
+    /**Ta metoda sprawdza czy nie ma wydarzenia o tych samych godzinach, szpitalu i oddziale i czy np. czas dyżuru nie jest ujemny, a także czy nie jest krótszy od 5 minut.*/
     public boolean verifyDates(LocalDateTime startTime, LocalDateTime endTime, Entry entry, String id) {
         boolean isDurationCorrect=false; // sprawdza czy podany okres jest poprawny, np. czy start nie jest później od końca
         boolean matchingListHasId=false; //sprawdzamy czy w liście wydarzeń z identycznym start time , end time , szpitalem
@@ -556,7 +537,7 @@ public class DialogAddEditEvent extends Dialog {
         for( EntryDyzurDb entryDyzurDb : matchingList) {
             if (entryDyzurDb.getId().equals(id)) matchingListHasId=true;
         }
-//        System.out.println(matchingList.toString());
+
 
         //w tych trzech linach liczymy odstępy pomiędzy startem i stopem wydarzenia  wykorzystywane do sprawdzenia czy wydarzenie ma czas dodatni i większy lub równy 5 minut
         Duration dur = Duration.between(startTime, endTime);

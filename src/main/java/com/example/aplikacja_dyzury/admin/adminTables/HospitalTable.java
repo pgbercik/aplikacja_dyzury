@@ -54,14 +54,9 @@ public class HospitalTable extends VerticalLayout {
         btnNextPage = new Button("Następna strona");
         btnPreviousPage = new Button("Poprzednia strona");
 
-//        Pageable firstPageWithTwoElements = PageRequest.of(page, 5);
-//        System.out.println(firstPageWithTwoElements);
 
         btnNextPage.addClickListener(event -> {
-//            System.out.println("----------------");
-//            System.out.println("strona"+page);
             if (page<totalPages-1) addTableWithPagination(page+=1,size,hospitalDepartmentRepo);
-//            System.out.println("strona"+page);
             currentPage.setText(page+1+" z "+totalPages);
         });
         btnPreviousPage.addClickListener(event -> {
@@ -98,14 +93,12 @@ public class HospitalTable extends VerticalLayout {
             hospitals.add(hospital);
         }
 
-//        List<Hospital> hospitals = hospitalRepo.findAll();
 
         if (!hospitals.isEmpty()) {
-// Create a grid bound to the list
+
             Grid<Hospital> grid = new Grid<>();
             grid.setItems(hospitals);
             grid.setColumnReorderingAllowed(true);
-//        grid.addColumn(Hospital::getId).setHeader("ID").setAutoWidth(true);
             grid.addColumn(Hospital::getName).setHeader("Nazwa").setAutoWidth(true);
             grid.addColumn(Hospital::getAddress).setHeader("Adres").setAutoWidth(true);
             grid.addColumn(Hospital::getCity).setHeader("Miasto").setAutoWidth(true);

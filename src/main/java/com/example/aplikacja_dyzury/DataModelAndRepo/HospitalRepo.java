@@ -10,7 +10,7 @@ public interface HospitalRepo  extends PagingAndSortingRepository<Hospital,Long>
     List<Hospital> findAll();
 
     /**
-     * Ta metoda  sprawdza czy istnieje szpital o podanej nazwie, mieście i adresie - to jest używane przy dodawnaiu szpitali w celu uniknięcia duplikatów.
+     * Ta metoda  sprawdza czy istnieje szpital o podanej nazwie, mieście i adresie - to jest używane przy dodawaniu szpitali w celu uniknięcia duplikatów.
      * */
     @Query(value = "SELECT * FROM hospital \n" +
             "where address=:address \n" +

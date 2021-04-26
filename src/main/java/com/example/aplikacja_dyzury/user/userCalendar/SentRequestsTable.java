@@ -56,16 +56,15 @@ public class SentRequestsTable extends VerticalLayout {
         btnPreviousPage = new Button("Poprzednia strona");
 
         btnNextPage.addClickListener(event -> {
-//            System.out.println("----------------");
-//            System.out.println("strona"+page);
+
             if (page<totalPages-1) addTableWithPagination(page+=1,size,requestsRepo,requestStatusRepo);
-//            System.out.println("strona"+page);
+
             currentPage.setText(page+1+" z "+totalPages);
         });
         btnPreviousPage.addClickListener(event -> {
 
             if (page>0) addTableWithPagination(page-=1,size,requestsRepo,requestStatusRepo);
-//            System.out.println("strona"+page);
+
             currentPage.setText(page+1+" z "+totalPages);
         });
         horizontalLayout = new HorizontalLayout();
@@ -88,14 +87,14 @@ public class SentRequestsTable extends VerticalLayout {
         add(new H2("Wysłane propozycje zamiany dyżurów"));
         add(horizontalLayout);
 
-//        Page<Requests> allProducts = requestsRepo.findAllSent(loggedInUserDetails.getId(),PageRequest.of(page, size));
+
 
         Page<Requests> requestsFound = requestsRepo.findAllSent(loggedInUserDetails.getId(),PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
 
-//                System.out.println("znalezionre requesty" + requests);
+
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
-//                System.out.println(requestStatuses.get(0).getStateName() + " - nazwa");
+
 
         customRequestViews = new ArrayList<>();
         customRequestViews.clear();
@@ -107,11 +106,11 @@ public class SentRequestsTable extends VerticalLayout {
             ));
         }
         if (!customRequestViews.isEmpty()) {
-// Create a grid bound to the list
+
             grid = new Grid<>();
             grid.setItems(customRequestViews);
             grid.setColumnReorderingAllowed(true);
-//                grid.addColumn(CustomRequestView::getDescription).setHeader("Opis").setAutoWidth(true);
+
             grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
             grid.addColumn(CustomRequestView::getTargetUserName).setHeader("Wysłano do").setAutoWidth(true);

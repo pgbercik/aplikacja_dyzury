@@ -19,7 +19,6 @@ import java.util.List;
 @Secured("ROLE_ADMIN")
 
 public class AddDepartmentDialog extends Dialog {
-//    private ComboBox<Hospital> chooseHospitalComboBox;
     private Hospital chosenHospital;
     private Binder<HospitalDepartment> binder;
     private TextField departmentName;
@@ -72,7 +71,7 @@ public class AddDepartmentDialog extends Dialog {
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
         layout.setSizeFull();
-        layout.add(/*chooseHospitalComboBox,*/departmentName,btnAddDepartment);
+        layout.add(departmentName,btnAddDepartment);
         add(layout);
 
     }

@@ -13,7 +13,6 @@ import com.vaadin.flow.router.Route;
 public class AccessDeniedPage extends VerticalLayout {
 
     public AccessDeniedPage() {
-//        VerticalLayout v = new VerticalLayout();
 
         Icon logo = new Icon(VaadinIcon.EXCLAMATION_CIRCLE);
         logo.setSize("300px");
@@ -22,13 +21,10 @@ public class AccessDeniedPage extends VerticalLayout {
         add(logo);
 
         H1 h1 = new H1("ACCESS DENIED!");
-//        Button redirectBtn = new Button("Powrót do strony głównej");
-//        redirectBtn.addClickListener(buttonClickEvent -> {
-//            UI.getCurrent().navigate("");
-//        });
+
 
         add(h1);
-//        add(redirectBtn);
+
         setAlignItems(Alignment.CENTER);
 
     }

@@ -40,7 +40,7 @@ public class FormAddUser extends VerticalLayout {
 
         firstName = new TextField("Imię");
         firstName.setWidth(width);
-//        firstName.setRequired(true);
+
         lastName = new TextField("Nazwisko");
         lastName.setPreventInvalidInput(true);
         lastName.setWidth(width);
@@ -51,9 +51,7 @@ public class FormAddUser extends VerticalLayout {
             profTitle.setItemLabelGenerator(DoctorTitle::getType);
         }
         profTitle.setWidth(width);
-//        profTitle.addValueChangeListener(comboBoxStringComponentValueChangeEvent -> {
-//            Notification.show(String.valueOf(profTitle.getValue()), 1000, Notification.Position.BOTTOM_START);
-//        });
+
 
 
         email = new EmailField("Email");
@@ -68,32 +66,12 @@ public class FormAddUser extends VerticalLayout {
 
         Button save = new Button("Dodaj");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-//        Button cancel = new Button("Anuluj");
-//        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        HorizontalLayout buttons = new HorizontalLayout(save/*, cancel*/);
+
+        HorizontalLayout buttons = new HorizontalLayout(save);
         add(buttons);
 
 
-//        save.addClickListener(event -> {
-//            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || profTitle.isEmpty()) {
-//                Notification.show("Uzupełnij dane",1000, Notification.Position.MIDDLE);
-//            } else {
-//                try {
-//                    User user = new User();
-//                    user.setFirstName(firstName.getValue());
-//                    user.setLastName(lastName.getValue());
-//                    user.setEmail(email.getValue());
-//                    user.setPassword(password.getValue());
-//                    user.setUserTitle(profTitle.getValue());
-//
-//                    userService.addWithDefaultRole(user);
-//                    Notification.show("Użytkownik dodany!",1000, Notification.Position.MIDDLE);
-//
-//                } catch (Exception e) {
-//                    Notification.show("Użytkownik o podanych danych już istnieje!",1000, Notification.Position.MIDDLE);
-//                }
-//            }
-//        });
+
 
         binder = new Binder<>(User.class);
         User user = new User();
@@ -116,7 +94,7 @@ public class FormAddUser extends VerticalLayout {
                         Notification.show("Użytkownik dodany!", 1000, Notification.Position.MIDDLE);
 
                     } catch (Exception e) {
-    //                    e.printStackTrace();
+
                         Notification.show("Błąd rejestracji. Skontaktuj się z administratorem.", 1000, Notification.Position.MIDDLE);
                     }
                 } else {
@@ -130,7 +108,6 @@ public class FormAddUser extends VerticalLayout {
         });
 
 
-//        cancel.addClickListener(event -> UI.getCurrent().navigate("/loggedOutMainPage"));
 
 
     }
@@ -170,7 +147,6 @@ public class FormAddUser extends VerticalLayout {
                 .bind(User::getEmail, User::setEmail);
         binder.forField(password)
                 .asRequired("Pole wymagane.")
-//                .withValidator(new StringLengthValidator("Hasło musi zawierać się w przedziale od 8 do 16 znaków.", 8,16))
                 .withValidator((value, context) -> {
                     if (!value.matches(patternPassword)) return ValidationResult.error(
                             "Hasło musi mieć długość minimum 8 znaków bez spacji, a także zawierać minimum: jedną dużą literę, " +

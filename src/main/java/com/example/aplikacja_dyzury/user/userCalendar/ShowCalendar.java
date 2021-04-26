@@ -34,7 +34,7 @@ public class ShowCalendar extends VerticalLayout {
     private Long hospitalId=null;
     private Long hospitalIdDept=null;
 
-    //tu zapisujemy czy wybrno miesiąc czy tydzień w widoku
+    //tu zapisujemy czy wybrano miesiąc czy tydzień w widoku
     private String chosenView="month";
 
 
@@ -49,7 +49,7 @@ public class ShowCalendar extends VerticalLayout {
         FullCalendar calendar = FullCalendarBuilder.create().build();
 
 
-//        calendar.changeView(CalendarViewImpl.DAY_GRID_WEEK);
+
 
         //pokazywanie dni tygodnia
         calendar.setWeekNumbersVisible(true);
@@ -65,7 +65,7 @@ public class ShowCalendar extends VerticalLayout {
         Button buttonPrevious = new Button("Wcześniej ", VaadinIcon.ANGLE_LEFT.create(), e -> {
 
             if (chosenView.equals("month")) {
-//                chosenDateTime=LocalDate.now();
+
                 monthDiff =1L;
                 chosenDateTime=chosenDateTime.minusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
@@ -74,7 +74,7 @@ public class ShowCalendar extends VerticalLayout {
                 calendar.previous();
             }
             if (chosenView.equals("week")) {
-//                chosenDateTime=LocalDate.now();
+
                 chosenDateTime=chosenDateTime.minusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
                         userRepository,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
@@ -85,7 +85,7 @@ public class ShowCalendar extends VerticalLayout {
         Button buttonNext = new Button("Później", VaadinIcon.ANGLE_RIGHT.create(), e -> {
 
             if (chosenView.equals("month")) {
-//                chosenDateTime=LocalDate.now();
+
                 monthDiff =1L;
                 chosenDateTime=chosenDateTime.plusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
@@ -94,7 +94,7 @@ public class ShowCalendar extends VerticalLayout {
                 calendar.next();
             }
             if (chosenView.equals("week")) {
-//                chosenDateTime=LocalDate.now();
+
                 chosenDateTime=chosenDateTime.plusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
                         userRepository, chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
@@ -183,7 +183,7 @@ public class ShowCalendar extends VerticalLayout {
         }
         else buttons1.add(buttonPrevious,currentlyChosenTimeSpan,buttonNext,btnMonth,btnWeek);
 
-//        buttons1.add(fileDownloader.createDownloadButton());
+
         buttons1.add(btnHelp);
         buttons2.add(btnSort,fieldHospitalName,fieldHospitalDepartment);
 
@@ -215,8 +215,7 @@ public class ShowCalendar extends VerticalLayout {
 
         });
 
-        //zmiana widoku kalendarza
-//        calendar.changeView(CalendarViewImpl.DAY_GRID_WEEK);
+
         add(buttons1,buttons2,calendar);
 
 

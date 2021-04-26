@@ -165,10 +165,7 @@ public class DialogExportToCSV extends Dialog {
                         googleCalendarPoJos.add(new GoogleCalendarPoJo(title,startDate,startTime,endDate,endTime,description,location));
                     }
                 }
-//                googleCalendarPoJos.forEach(googleCalendarPoJo -> {
-//
-//                }
-//                );
+
 
                 for (GoogleCalendarPoJo googleCalendarPoJo :googleCalendarPoJos) {
                     System.out.println("GOOGLE POJO"+googleCalendarPoJo.getSubjectTitle()+" | " +googleCalendarPoJo.getStartDate()

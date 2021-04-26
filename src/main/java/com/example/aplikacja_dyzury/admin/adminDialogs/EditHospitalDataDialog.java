@@ -48,7 +48,6 @@ public class EditHospitalDataDialog extends Dialog {
                 hospitalRepo.save(hospital);
                 Notification.show("Wprowadzono zmiany",1000, Notification.Position.MIDDLE);
                 close();
-//                UI.getCurrent().getPage().reload();
             }
 
         });
