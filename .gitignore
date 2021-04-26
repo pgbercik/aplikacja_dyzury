@@ -1,0 +1,11 @@
+# Project exclude paths
+/target/
+/node_modules/
+/.idea/
+/aplikacja_dyzury.iml
+/calendar.csv
+/LICENSE
+/package.json
+/package-lock.json
+/webpack.config.js
+/webpack.generated.js
