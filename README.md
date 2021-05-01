@@ -7,6 +7,9 @@ Spring Boot,
 Spring Security,
 MySQL database.
 
+## Live demo
+Link to live demo will soon be available in here.
+
 ## Purpose of this app:
 This is a rostering app. It enables doctors to plan new duties as well as join duties planned by other doctors (max. 8 doctors per duty). 
 Users can define where (name of the hospital and name of the department) and when the duty takes place. 
