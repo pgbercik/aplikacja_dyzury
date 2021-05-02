@@ -46,11 +46,6 @@ public class DialogAddEditEvent extends Dialog {
     private String id;
 
 
-
-//    private static final String[] COLORS = {"red", "orange", "blue", "green", "gray"};
-//    private static final String[] COLORSPL = {"czerwony", "pomarańczowy", "niebieski", "zielony", "szary"};
-
-
     //draggedDroppedEvent = true jeśli przeciągamy myszką wydarzenie, w przeciwnym wypadku draggedDroppedEvent=false
     public DialogAddEditEvent(FullCalendar calendar, Entry entry, boolean newInstance, EntryDyzurDbRepo entryDyzurDbRepo, String id,
                               HospitalRepo hospitalRepo, HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository,
@@ -69,8 +64,8 @@ public class DialogAddEditEvent extends Dialog {
 
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
-        setWidth("1100px");
-//        setHeight("750px");
+        setWidth("1150px");
+        setHeight("650px");
 
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
@@ -230,8 +225,8 @@ public class DialogAddEditEvent extends Dialog {
         buttons.add(buttonSave);
 
         Button buttonCancel = new Button("Zamknij okno", e -> {
-            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
-                    userRepository,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
+            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime
+                    ,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
             close();
 //            refreshCalendarPage();
         }
@@ -309,7 +304,7 @@ public class DialogAddEditEvent extends Dialog {
                                 entryDyzurDbRepo.save(entryDyzurDb);
                                 close();
                                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
-                                        userRepository,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
+                                        chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
                                 Notification.show("Powielono dyżur bez zapisanych lekarzy",2000, Notification.Position.MIDDLE);
 
                             }
@@ -360,7 +355,7 @@ public class DialogAddEditEvent extends Dialog {
                         close();
 
                         calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
-                                userRepository,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
+                                chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
                     }
                 } else {
                     Notification.show("Na dyżur można zapisać maksymalnie "+amountOfAddedUsers+" użytkowników.",2000, Notification.Position.MIDDLE);
@@ -392,7 +387,7 @@ public class DialogAddEditEvent extends Dialog {
 
                 close();
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
-                        userRepository,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept);
+                        chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
 
             });
             if (findUserData11.findFirstUserRoleString().equals("ROLE_USER")) {
@@ -400,10 +395,7 @@ public class DialogAddEditEvent extends Dialog {
                 buttons.add(buttonRemoveFromEntry);
             }
 
-            Button buttonShowAddedUsers = new Button("Zapisani lekarze",e->{
-
-                new DialogShowUsersForEntry(entry.getId(),entryDyzurDbRepo,id).open();
-            });
+            Button buttonShowAddedUsers = new Button("Zapisani lekarze",e-> new DialogShowUsersForEntry(entry.getId(),entryDyzurDbRepo,id).open());
             buttonShowAddedUsers.getElement().getThemeList().add("tertiary");
             buttons.add(buttonShowAddedUsers);
 
@@ -498,9 +490,9 @@ public class DialogAddEditEvent extends Dialog {
 
                 System.out.println("start i end równe tym w bazie: "+exception);
                 System.out.println("entry from list"+entryDyzurDb.getStartTime() +" | "+entryDyzurDb.getEndTime());
-                System.out.println("");
+                System.out.println();
                 System.out.println("---------------------------------------------------");
-                System.out.println("");
+                System.out.println();
 
 
                 if (!condition1 && !condition2 && !condition3 && !condition4 && !exception && !exception2 ) {
