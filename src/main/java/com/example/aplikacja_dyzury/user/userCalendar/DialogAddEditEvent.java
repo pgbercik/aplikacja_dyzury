@@ -2,7 +2,6 @@ package com.example.aplikacja_dyzury.user.userCalendar;
 
 import com.example.aplikacja_dyzury.DataModelAndRepo.*;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.customfield.CustomField;
@@ -18,7 +17,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.dom.ThemeList;
-
 import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 import org.vaadin.stefan.fullcalendar.Timezone;
@@ -33,8 +31,8 @@ import java.util.List;
 import java.util.Set;
 
 public class DialogAddEditEvent extends Dialog {
-    private Binder<Entry> binder;
-    private EntryDyzurDbRepo entryDyzurDbRepo;
+    private final Binder<Entry> binder;
+    private final EntryDyzurDbRepo entryDyzurDbRepo;
 
 
 
@@ -43,7 +41,7 @@ public class DialogAddEditEvent extends Dialog {
     EntryDyzurDb entryDyzurDbTemporaryForEditONly;
 
     //uuid entry potrzebne przy aktualizacji
-    private String id;
+    private final String id;
 
 
     //draggedDroppedEvent = true jeśli przeciągamy myszką wydarzenie, w przeciwnym wypadku draggedDroppedEvent=false
@@ -81,8 +79,7 @@ public class DialogAddEditEvent extends Dialog {
 
         TextArea fieldDescription = new TextArea("Opis");
 
-//        HorizontalLayout horizontalLayout = new HorizontalLayout();
-//        horizontalLayout.add(fieldTitle/*,fieldColor*/);
+
 
         layout.add(fieldTitle, fieldDescription);
 
@@ -228,7 +225,7 @@ public class DialogAddEditEvent extends Dialog {
             calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime
                     ,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
             close();
-//            refreshCalendarPage();
+
         }
         );
         buttonCancel.getElement().getThemeList().add("tertiary");
@@ -257,9 +254,10 @@ public class DialogAddEditEvent extends Dialog {
                 } else {
                     boolean usersIsIn=false;
                     User currentlyLoggedIN = userRepository.findByEmail(currentlyLoggedInUsersEmail);
-                    for (User user : foundUsers ) {
-                        if (user.getId().equals(currentlyLoggedIN.getId())) usersIsIn=true;
-                    }
+//                    for (User user : foundUsers ) {
+//                        if (user.getId().equals(currentlyLoggedIN.getId())) usersIsIn=true;
+//                    }
+                    if (foundUsers.stream().anyMatch(user -> user.getId().equals(currentlyLoggedIN.getId()))) usersIsIn=true;
                     if (foundUsers.size()==0 || (foundUsers.size()<2 && usersIsIn) ) {
                         List<Requests> requestsToRemove=requestsRepo.findRequestsForEntry(entryDyzurDb.getId());
                         requestsRepo.deleteAll(requestsToRemove);
@@ -406,7 +404,7 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 Duration dur1 = Duration.between(LocalDateTime.now(),entryDyzurDb.getStartTime());
-                Long diffInDays = dur1.toDays();
+                long diffInDays = dur1.toDays();
                 System.out.println("różnica w dniach między datą dzisiejszą, a starttime" + diffInDays);
 
 
@@ -526,19 +524,20 @@ public class DialogAddEditEvent extends Dialog {
         List<EntryDyzurDb> matchingList = entryDyzurDbRepo.findAllMatchingStartEndHospitalHospitalDepartment(
                 startTime,endTime,entry.getHospital(),entry.getHospitalDepartment());
 
-        for( EntryDyzurDb entryDyzurDb : matchingList) {
-            if (entryDyzurDb.getId().equals(id)) matchingListHasId=true;
-        }
+//        for( EntryDyzurDb entryDyzurDb : matchingList) {
+//            if (entryDyzurDb.getId().equals(id)) matchingListHasId=true;
+//        }
+        if (matchingList.stream().anyMatch(entryDyzurDb -> entryDyzurDb.getId().equals(id))) matchingListHasId=true;
 
 
         //w tych trzech linach liczymy odstępy pomiędzy startem i stopem wydarzenia  wykorzystywane do sprawdzenia czy wydarzenie ma czas dodatni i większy lub równy 5 minut
         Duration dur = Duration.between(startTime, endTime);
-        Long diff = dur.toMinutes();
+        long diff = dur.toMinutes();
 
         System.out.println("diff in minutes: "+diff);
 
         Duration dur1 = Duration.between(startTime,LocalDateTime.now());
-        Long diffInDays = dur1.toDays();
+        long diffInDays = dur1.toDays();
         System.out.println("różnica w dniach między datą dzisiejszą, a starttime"+diffInDays);
 
 
@@ -575,9 +574,7 @@ public class DialogAddEditEvent extends Dialog {
         return isDurationCorrect;
     }
 
-    private void refreshCalendarPage() {
-        UI.getCurrent().getPage().reload();
-    }
+
 
 
     public static class CustomDateTimePicker extends CustomField<LocalDateTime> {
