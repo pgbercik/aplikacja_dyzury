@@ -13,7 +13,7 @@ The app was a university project and was submitted in February 2020.
 * Vaadin 14,
 * Spring Boot,
 * Spring Security,
-* MySQL database.
+* PostgreSQL database.
 
 ## Live demo
 Link to live demo will soon be available in here.
