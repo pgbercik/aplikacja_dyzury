@@ -26,7 +26,7 @@ public class FindUserData {
 
     public Collection<? extends GrantedAuthority> findUserRoles() {
         Collection<? extends GrantedAuthority> grantedAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        grantedAuthorities.forEach(o -> System.out.println(o));
+        grantedAuthorities.forEach(System.out::println);
         return grantedAuthorities;
 
     }

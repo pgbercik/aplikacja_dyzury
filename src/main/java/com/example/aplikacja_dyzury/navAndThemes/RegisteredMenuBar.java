@@ -32,7 +32,7 @@ import static com.github.appreciated.app.layout.entity.Section.FOOTER;
 
 @Push
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
-@Theme(value = Lumo.class,variant = Lumo.LIGHT)
+@Theme(value = Lumo.class,variant = Lumo.DARK)
 @Component @UIScope // optional but useful; allows access to this instance from views, see View1.
 public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftResponsive> {
     private DefaultNotificationHolder notifications = new DefaultNotificationHolder();

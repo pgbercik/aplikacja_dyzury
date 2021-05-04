@@ -1,5 +1,8 @@
 package com.example.aplikacja_dyzury.DataModelAndRepo;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,7 +23,8 @@ public class Hospital {
     private String city;
     private boolean isActive;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany()
+    @LazyCollection(LazyCollectionOption.FALSE) //obchodzimy MultipleBagFetchException
     @JoinColumn(name = "referenced_hospital_id", referencedColumnName = "hospital_id")
     private List<HospitalDepartment> hospitalDepartments;
 

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 
 
-@Entity
+@Entity(name = "user_table")
 @Table(  uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "password"),

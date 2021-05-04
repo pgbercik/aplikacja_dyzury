@@ -22,7 +22,7 @@ INSERT INTO `user` VALUES
 (8,'szymon@gmail.com','Szymon','Nowakowski','{bcrypt}$2a$10$dNiO8N82H/G.6/Etanw7JOKP.VF9IcXNitfmu7qRJBgw1kJ.N9Guy',4);
 
 
-INSERT INTO `user_roles` VALUES (1,1),(2,2),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1);
+INSERT INTO user_roles VALUES (1,1),(2,2),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1);
 
 
 

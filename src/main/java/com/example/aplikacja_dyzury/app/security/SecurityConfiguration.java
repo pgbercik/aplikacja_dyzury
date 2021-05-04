@@ -55,6 +55,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 //				.antMatchers("/").permitAll()
 				.antMatchers("/formUser").permitAll()
+//				.antMatchers("/h2Console/**").permitAll()  //ta linia pozwala wejść do konsoli H2
+
 				// Allow all flow internal requests.
 				.requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
@@ -67,6 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 				// Configure logout
 				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL).permitAll();
+		//rozwiązuje problemy z wyświetlaniem konsoli h2 database
+//		http.headers().frameOptions().disable();
 	}
 
 
