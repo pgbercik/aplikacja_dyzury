@@ -16,7 +16,11 @@ The app was a university project and was submitted in February 2020.
 * PostgreSQL database.
 
 ## Live demo
-Link to live demo will soon be available in here.
+Link to live demo is available below:
+
+[https://aplikacja-dyzury-postgres.herokuapp.com/](https://aplikacja-dyzury-postgres.herokuapp.com/)
+
+Please be aware that the  page may take up to 30 seconds to initially load. This is due to free account limitations on Heroku - unused apps are hibernated and only resumed when someone is trying to use them. After that initial waiting period, the app will work normally.
 
 ## Implementation
 The app was implemented using terchnologies mentioned in **Used technologies** section. Login form was secured with Spring Security. 
