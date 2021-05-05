@@ -74,7 +74,6 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         findUserData = new FindUserData();
 
         email = findUserData.findCurrentlyLoggedInUser();
-        System.out.println("Zalogowany użytkownik: " + email);
 
         System.out.println(findUserData.findFirstUserRoleString());
         findUserData.findUserRoles();
@@ -330,7 +329,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             if (thread.isAlive()) {
                 thread.interrupt();
                 thread = null;
-                System.out.println("Wątek w tle się zakończył");
+                System.out.println("Background thread has now ended");
             }
         }
     }
