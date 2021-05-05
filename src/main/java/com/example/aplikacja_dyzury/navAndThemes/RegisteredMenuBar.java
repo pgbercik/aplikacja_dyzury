@@ -58,7 +58,7 @@ public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftRes
 //                                new LeftNavigationItem("Kalendarz", VaadinIcon.CALENDAR_USER.create(), ShowCalendar.class)
 
                             )
-//                            .addToSection(FOOTER, new LeftClickableItem("Zmień motyw", VaadinIcon.ADJUST.create(),
+//                            .addTozSection(FOOTER, new LeftClickableItem("Zmień motyw", VaadinIcon.ADJUST.create(),
 //                                    clickEvent -> {
 //                                        ThemeChanger themeChanger = new ThemeChanger();
 //                                        themeChanger.changeTheme();

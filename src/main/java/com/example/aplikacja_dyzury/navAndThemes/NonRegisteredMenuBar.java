@@ -18,6 +18,8 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.stereotype.Component;
 
+import static com.github.appreciated.app.layout.entity.Section.FOOTER;
+
 @Push
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
 @Theme(value = Lumo.class,variant = Lumo.DARK)
