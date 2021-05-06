@@ -33,20 +33,30 @@ All the tables were paginated using Pageable interface from Spring Data JPA.
 The app has an admin panel (access with email: admin@gmail.com and password: AdminPass1). Admin can add new hospitals and departments as well as edit duties added by others users.
 ![Admin panel](SCREENSHOTS/admin.JPG)
 
+
+
 Ordinary users can create an account. In the screen below it is visible how the form ws secured against corrupt or incomplete data. The form forces users to fill all fields. In case of email address, the validation is based on regular expressions. In case of password, certain rules have to be met i.e. password length, at least one number, etc.
-![User registration](SCREENSHOTS/create_new_user.jpg?raw=true "Title")
+![User registration](SCREENSHOTS/create_new_user.JPG)
+
+
 
 Logged in users can view all registered duties. If they sign up for a duty, then it's marked by blue color. Otherwise, it's marked gray.
-![Duty table](SCREENSHOTS/duty_table.jpg?raw=true "Title")
+![Duty table](SCREENSHOTS/duty_table.JPG)
+
+
 
 The app also enables users to switch duties between one another. In order to do it, the user has to click on a duty, go to section Zamiana dyżury and send a request. If the other user agrees, then the duties will be automatically switched.
-![Duty swap picture](SCREENSHOTS/duty_swap.JPG "Title")
+![Duty swap picture](SCREENSHOTS/duty_swap.JPG)
+
+
 
 Sent requests can be seen in a **Zgłoszenia wysłane** tab.
-![Sent requests](SCREENSHOTS/sent_requests.JPG "Title")
+![Sent requests](SCREENSHOTS/sent_requests.JPG)
+
+
 
 The other users can see switch requests from other doctors in a separate panel and decide whether or not to agree.
-![Received requests](SCREENSHOTS/received_requests.JPG "Title")
+![Received requests](SCREENSHOTS/received_requests.JPG)
 
 
 
