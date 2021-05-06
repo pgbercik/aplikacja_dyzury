@@ -31,7 +31,7 @@ All the tables were paginated using Pageable interface from Spring Data JPA.
 ## Short overview of implemented functionalities
 
 The app has an admin panel (access with email: admin@gmail.com and password: AdminPass1). Admin can add new hospitals and departments as well as edit duties added by others users.
-![Admin panel](SCREENSHOTS/admin.jpg?raw=true "Title")
+![Admin panel](SCREENSHOTS/admin.JPG)
 
 Ordinary users can create an account. In the screen below it is visible how the form ws secured against corrupt or incomplete data. The form forces users to fill all fields. In case of email address, the validation is based on regular expressions. In case of password, certain rules have to be met i.e. password length, at least one number, etc.
 ![User registration](SCREENSHOTS/create_new_user.jpg?raw=true "Title")
