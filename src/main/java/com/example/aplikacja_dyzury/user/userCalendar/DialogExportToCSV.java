@@ -95,7 +95,7 @@ public class DialogExportToCSV extends Dialog {
 
 
         Button button = new Button("Pobierz plik CSV");
-        FileDownloadWrapper buttonWrapper = new FileDownloadWrapper("calendar.csv",new File("src/outputFiles/calendar.csv"));
+        FileDownloadWrapper buttonWrapper = new FileDownloadWrapper("calendar.csv",new File("calendar.csv"));
         buttonWrapper.wrapComponent(button);
 
 
@@ -172,7 +172,7 @@ public class DialogExportToCSV extends Dialog {
                             +googleCalendarPoJo.getStartTime()+" | "+googleCalendarPoJo.getEndDate()+googleCalendarPoJo.getEndTime());
                     exportedEntriesCounter+=1;
                 }
-                CsvUtils.writeDataLineByLine("src/outputFiles/calendar.csv",googleCalendarPoJos);
+                CsvUtils.writeDataLineByLine("calendar.csv",googleCalendarPoJos);
 
             }
         }
