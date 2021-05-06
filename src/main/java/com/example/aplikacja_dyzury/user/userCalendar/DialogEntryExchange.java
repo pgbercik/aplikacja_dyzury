@@ -3,6 +3,7 @@ package com.example.aplikacja_dyzury.user.userCalendar;
 import com.example.aplikacja_dyzury.DataModelAndRepo.*;
 import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
 
+import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.TimeDateTranslation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -12,11 +13,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -126,24 +124,8 @@ public class DialogEntryExchange extends Dialog {
             else Notification.show("Uzupełnij dane",2000, Notification.Position.MIDDLE);
         });
         add(verticalLayout);
-        makeDatePickerPolish(datePicker);
-    }
+        TimeDateTranslation.makeDatePickerPolish(datePicker);
 
 
-
-    private void makeDatePickerPolish(DatePicker datePicker) {
-        datePicker.setI18n(
-                new DatePicker.DatePickerI18n().setWeek("tydzień").setCalendar("kalendarz")
-                        .setClear("Wyczyść").setToday("dzisiaj")
-                        .setCancel("Anuluj").setFirstDayOfWeek(1)
-                        .setMonthNames(Arrays.asList("styczeń", "luty",
-                                "marzec", "kwiecień", "maj", "czerwiec",
-                                "lipiec", "sierpień", "wrzesień", "październik",
-                                "listopad", "grudzień")).setWeekdays(
-                        Arrays.asList("niedziela", "poniedziałek", "wtorek",
-                                "środa", "czwartek", "piątek",
-                                "sobota")).setWeekdaysShort(
-                        Arrays.asList("nd.", "pon.", "wt.", "śr.", "czw.", "pt.",
-                                "sob.")));
     }
 }

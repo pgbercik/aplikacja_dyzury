@@ -2,6 +2,8 @@ package com.example.aplikacja_dyzury.user.userCalendar;
 
 import com.example.aplikacja_dyzury.DataModelAndRepo.*;
 import com.example.aplikacja_dyzury.FindUserData;
+import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.CustomDateTimePicker;
+import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.TimeDateTranslation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.customfield.CustomField;
@@ -25,10 +27,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DialogAddEditEvent extends Dialog {
     private final Binder<Entry> binder;
@@ -577,61 +576,6 @@ public class DialogAddEditEvent extends Dialog {
 
 
 
-    public static class CustomDateTimePicker extends CustomField<LocalDateTime> {
 
-        private final DatePicker datePicker = new DatePicker();
-        private final TimePicker timePicker = new TimePicker();
-        private boolean dateOnly;
-
-        CustomDateTimePicker(String label) {
-            setLabel(label);
-            add(datePicker, timePicker);
-            datePicker.setI18n(
-                    new DatePicker.DatePickerI18n().setWeek("tydzień").setCalendar("kalendarz")
-                            .setClear("Wyczyść").setToday("dzisiaj")
-                            .setCancel("Anuluj").setFirstDayOfWeek(1)
-                            .setMonthNames(Arrays.asList("styczeń", "luty",
-                                    "marzec", "kwiecień", "maj", "czerwiec",
-                                    "lipiec", "sierpień", "wrzesień", "październik",
-                                    "listopad", "grudzień")).setWeekdays(
-                            Arrays.asList("niedziela", "poniedziałek", "wtorek",
-                                    "środa", "czwartek", "piątek",
-                                    "sobota")).setWeekdaysShort(
-                            Arrays.asList("nd.", "pon.", "wt.", "śr.", "czw.", "pt.",
-                                    "sob.")));
-        }
-
-        @Override
-        protected LocalDateTime generateModelValue() {
-            final LocalDate date = datePicker.getValue();
-            final LocalTime time = timePicker.getValue();
-
-            if (date != null) {
-                if (dateOnly || time == null) {
-                    return date.atStartOfDay();
-                }
-
-                return LocalDateTime.of(date, time);
-            }
-
-            return null;
-
-        }
-
-        @Override
-        protected void setPresentationValue(
-                LocalDateTime newPresentationValue) {
-            datePicker.setValue(newPresentationValue != null ? newPresentationValue.toLocalDate() : null);
-
-            timePicker.setValue(newPresentationValue != null ? newPresentationValue.toLocalTime() : null);
-
-        }
-
-        public void setDateOnly(boolean dateOnly) {
-            this.dateOnly = dateOnly;
-            timePicker.setVisible(!dateOnly);
-        }
-
-    }
 
 }
