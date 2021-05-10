@@ -41,7 +41,7 @@ public class AddDepartmentDialog extends Dialog {
 
         btnAddDepartment = new Button("Dodaj oddział");
         btnAddDepartment.addClickListener(buttonClickEvent -> {
-            //walidacja po kliknięciu przycisku
+            //validation after clicking the button
             binder.validate();
             if (binder.isValid()) {
                 List<HospitalDepartment> existingDepartments =

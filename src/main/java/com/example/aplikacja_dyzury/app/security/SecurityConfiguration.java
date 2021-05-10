@@ -29,8 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return passwordEncoder;
 	}
 
-//	@Autowired
-//	private UserTableRepo userTableRepo;
+
 
 	private static final String LOGIN_PROCESSING_URL = "/login";
 	private static final String LOGIN_FAILURE_URL = "/login?error";
@@ -55,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests()
 //				.antMatchers("/").permitAll()
 				.antMatchers("/formUser").permitAll()
-//				.antMatchers("/h2Console/**").permitAll()  //ta linia pozwala wejść do konsoli H2
+//				.antMatchers("/h2Console/**").permitAll()  //ta linia pozwala wejść do konsoli H2 - this line permits us to acccess H2 console
 
 				// Allow all flow internal requests.
 				.requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
@@ -70,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// Configure logout
 				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL).permitAll();
 		//rozwiązuje problemy z wyświetlaniem konsoli h2 database
+		//this line solves problems with displaying H2 database console
 //		http.headers().frameOptions().disable();
 	}
 

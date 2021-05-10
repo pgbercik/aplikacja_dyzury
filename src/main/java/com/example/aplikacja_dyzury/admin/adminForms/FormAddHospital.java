@@ -37,7 +37,7 @@ public class FormAddHospital extends VerticalLayout {
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
         layout.setSizeFull();
 
-        //okienka do wpisywania
+
         name = new TextField("Nazwa");
         address = new TextField("Adres");
         city = new TextField("Miasto");
@@ -56,7 +56,6 @@ public class FormAddHospital extends VerticalLayout {
 
 
         btnSave.addClickListener(buttonClickEvent -> {
-            //walidacja po kliknięciu przycisku
             binder.validate();
             List<Hospital> alreadyExistingHospitals = hospitalRepo.findExistingHospitals(address.getValue(),city
             .getValue(),name.getValue());
@@ -87,10 +86,7 @@ public class FormAddHospital extends VerticalLayout {
     }
 
     private void defineFormValidation(Hospital hospital) {
-        //minimum 1 cyfra, minimum 1 małą litera, minimum 1 duża, minimum 1 znak specjalny,bez pustych znaków, minimum 8 znaków
-//        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        //wersja bez znaków specjalnych
-        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        // imię nie może zawierać cyfr, name cannot contain numbers
         String patternNames = "^[^\\d]+$";
 
 

@@ -29,7 +29,7 @@ public class EditHospitalDataDialog extends Dialog {
        verticalLayout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
         verticalLayout.setSizeFull();
 
-        //okienka do wpisywania
+        //textfields for name,address and city
         name = new TextField("Nazwa");
         address = new TextField("Adres");
         city = new TextField("Miasto");
@@ -39,7 +39,7 @@ public class EditHospitalDataDialog extends Dialog {
 
         btnSaveChanges = new Button("Zapisz zmiany");
         btnSaveChanges.addClickListener(event -> {
-            //walidacja po kliknięciu przycisku
+
             binder.validate();
             if (binder.isValid()) {
                 hospital.setName(name.getValue());
@@ -57,10 +57,7 @@ public class EditHospitalDataDialog extends Dialog {
     }
 
     private void defineFormValidation(Hospital hospital) {
-        //minimum 1 cyfra, minimum 1 małą litera, minimum 1 duża, minimum 1 znak specjalny,bez pustych znaków, minimum 8 znaków
-//        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        //wersja bez znaków specjalnych
-        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        // imię nie może zawierać cyfr, name cannot contain numbers
         String patternNames = "^[^\\d]+$";
 
 

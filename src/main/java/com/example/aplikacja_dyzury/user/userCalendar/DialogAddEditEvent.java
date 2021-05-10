@@ -37,13 +37,14 @@ public class DialogAddEditEvent extends Dialog {
 
 
     //tymczasowo przechowuje wartości pól formularza z momentu odpalenia okna bo po edycji pól binder automatycznie aktualizuje entry
+    //we're temporarily storing values from a form while it is started, we're doin it beause Binder automatically updates this data and we need the initial version
     EntryDyzurDb entryDyzurDbTemporaryForEditONly;
 
     //uuid entry potrzebne przy aktualizacji
+    //uuid of a entry needed while updating event
     private final String id;
 
 
-    //draggedDroppedEvent = true jeśli przeciągamy myszką wydarzenie, w przeciwnym wypadku draggedDroppedEvent=false
     public DialogAddEditEvent(FullCalendar calendar, Entry entry, boolean newInstance, EntryDyzurDbRepo entryDyzurDbRepo, String id,
                               HospitalRepo hospitalRepo, HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository,
                               String chosenView, H4 currentlyChosenTimeSpan,Long hospitalId,Long hospitalIdDept,
@@ -52,6 +53,7 @@ public class DialogAddEditEvent extends Dialog {
         this.id=id;
 
         //pobieramy wartości pól formularza przed modyfikacją
+        //we're getting values from a form from the momend before modification
 
         this.entryDyzurDbTemporaryForEditONly = new EntryDyzurDb(entry.getId(),entry.getTitle(),
                 entry.getStart(),entry.getEnd(),entry.isAllDay(),/*entry.getColor(),*/entry.getDescription(),
@@ -72,9 +74,6 @@ public class DialogAddEditEvent extends Dialog {
 //        fieldTitle.setWidth("650px");
         fieldTitle.focus();
 
-
-        //w klasie Entry w setColor (od lini 364.) jest kowersja z polskich nazw na angielskie
-//        ComboBox<String> fieldColor = new ComboBox<>("Kolor zaznaczenia",COLORSPL);
 
         TextArea fieldDescription = new TextArea("Opis");
 
@@ -149,7 +148,8 @@ public class DialogAddEditEvent extends Dialog {
 
                     if (!verifyDateTimesOverlapping(entryDyzurDb.getStartTime(), entryDyzurDb.getEndTime(), entry)) {
 
-                        //sprawdzamy czy data dyżur trwa przynamnjmniej 5 minut i czy nie zaczyna się później niż kończy itd.
+                        //sprawdzamy czy dyżur trwa przynamnjmniej 5 minut i czy nie zaczyna się później niż kończy itd.
+                        //checking whether the duty takes a tleast 5 minutes and if a diffrence between start and finish isn't negative
                         if (verifyDates(entryDyzurDb.getStartTime(),entryDyzurDb.getEndTime(),entry, id)) {
                             System.out.println("result true");
                             entry.setColor("Gray");
@@ -448,13 +448,14 @@ public class DialogAddEditEvent extends Dialog {
     }
 
     /**Ta metoda sprawdza czy się godziny dyżurów nakładają. Zakładamy, że pojedynczy dyżur może trwać max 24h.
+     * Here we check whether duties overlap. We assume that the the longest duty can take 24h.
      * */
     public boolean verifyDateTimesOverlapping(LocalDateTime entryStartDateTime, LocalDateTime entryEndDateTime, Entry entry) {
 
 
         List<EntryDyzurDb> overLappingEntriesList = entryDyzurDbRepo.findEntriesForOverlappingCheck(entryStartDateTime.toLocalDate(),entry.getHospital(),entry.getHospitalDepartment(),
                 entryDyzurDbTemporaryForEditONly.getStartTime(),entryDyzurDbTemporaryForEditONly.getEndTime());
-        System.out.println("Kandydaci do overlapping");
+        System.out.println("Overlapping candidates");
         for (EntryDyzurDb entryDyzurDb :overLappingEntriesList) {
             System.out.println(entryDyzurDb.getTitle() +" | "+entryDyzurDb.getStartTime()+" | "+entryDyzurDb.getEndTime()+" | "+ entryDyzurDb.getHospital().getId()+" | "+entryDyzurDb.getHospitalDepartment().getId());
         }
@@ -476,6 +477,8 @@ public class DialogAddEditEvent extends Dialog {
 
                 //te 2 warunki są tylko po to, żeby przepuścić przez tę metodę i pozwolić wyświetlić się warunkom z metody verify
                 // (exception 1 - start i stop są równe startowi i stopowi innego dyżuru, a exception2 - start dyżuru = stop dyżuru)
+                //these 2 exceptions allow a verify() methos to pass
+                //exception 1 - start and stop of one duty equal to start and stop of the other duty, ex exception 2 - start of duty =end of duty
                 boolean exception = entryStartDateTime.compareTo(entryDyzurDb.getStartTime()) ==0 && entryEndDateTime.compareTo(entryDyzurDb.getEndTime()) ==0;
                 boolean exception2 = entryStartDateTime.compareTo(entryEndDateTime) ==0;
 
@@ -512,12 +515,15 @@ public class DialogAddEditEvent extends Dialog {
 
 
 
-    /**Ta metoda sprawdza czy nie ma wydarzenia o tych samych godzinach, szpitalu i oddziale i czy np. czas dyżuru nie jest ujemny, a także czy nie jest krótszy od 5 minut.*/
+    /**Ta metoda sprawdza czy nie ma wydarzenia o tych samych godzinach, szpitalu i oddziale i czy np. czas dyżuru nie jest ujemny, a także czy nie jest krótszy od 5 minut.
+     * This method looks for a case when there is another duty with the same hours, hospital, department an so on.
+     * It oasl checks whether duty ends before it starts or if the duty takes less than 5 minutes.
+     * */
     public boolean verifyDates(LocalDateTime startTime, LocalDateTime endTime, Entry entry, String id) {
-        boolean isDurationCorrect=false; // sprawdza czy podany okres jest poprawny, np. czy start nie jest później od końca
+        boolean isDurationCorrect=false; // sprawdza czy podany okres jest poprawny, np. czy start nie jest później od końca - we're checking whether duty ends before it starts
         boolean matchingListHasId=false; //sprawdzamy czy w liście wydarzeń z identycznym start time , end time , szpitalem
-        // i oddziałem jest entry, które edytujemy - jeśli jest to pozwalamy je edytować
-        boolean overlappingOccurs=true; //jeśli dyżury się nie nakłądają to dajemy false, jeśli się chociaż jeden nakłada to true
+        // i oddziałem jest entry, które edytujemy - jeśli jest to pozwalamy je edytować - - we're checking whether a duty that we're trying to iedit exists
+//        boolean overlappingOccurs=true; //jeśli dyżury się nie nakłądają to dajemy false, jeśli się chociaż jeden nakłada to true - if duties overlap then true
 
 
         List<EntryDyzurDb> matchingList = entryDyzurDbRepo.findAllMatchingStartEndHospitalHospitalDepartment(
@@ -529,15 +535,16 @@ public class DialogAddEditEvent extends Dialog {
         if (matchingList.stream().anyMatch(entryDyzurDb -> entryDyzurDb.getId().equals(id))) matchingListHasId=true;
 
 
-        //w tych trzech linach liczymy odstępy pomiędzy startem i stopem wydarzenia  wykorzystywane do sprawdzenia czy wydarzenie ma czas dodatni i większy lub równy 5 minut
+        // liczymy odstępy pomiędzy startem i stopem wydarzenia  wykorzystywane do sprawdzenia czy wydarzenie ma czas dodatni i większy lub równy 5 minut
+        //we're calculating duration etween start and end of a duty
         Duration dur = Duration.between(startTime, endTime);
         long diff = dur.toMinutes();
 
-        System.out.println("diff in minutes: "+diff);
+//        System.out.println("diff in minutes: "+diff);
 
         Duration dur1 = Duration.between(startTime,LocalDateTime.now());
         long diffInDays = dur1.toDays();
-        System.out.println("różnica w dniach między datą dzisiejszą, a starttime"+diffInDays);
+//        System.out.println("różnica w dniach między datą dzisiejszą, a starttime"+diffInDays);
 
 
         if (matchingList.isEmpty() || matchingListHasId) {

@@ -62,7 +62,7 @@ public class HospitalTable extends VerticalLayout {
         btnPreviousPage.addClickListener(event -> {
 
             if (page>0) addTableWithPagination(page-=1,size,hospitalDepartmentRepo);
-//            System.out.println("strona"+page);
+
             currentPage.setText(page+1+" z "+totalPages);
         });
         horizontalLayout = new HorizontalLayout();
@@ -134,7 +134,7 @@ public class HospitalTable extends VerticalLayout {
                     });
                 });
 
-                horizontalLayout.add(btnAddDepartment,btnEditDepartments,btn/*,btnDeleteHospital*/);
+                horizontalLayout.add(btnAddDepartment,btnEditDepartments,btn);
                 return  horizontalLayout;
 
             }));

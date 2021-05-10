@@ -107,6 +107,7 @@ public class MainPage extends VerticalLayout {
             horizontalLayout.add(btnPreviousPage,currentPage,btnNextPage);
 
             //wstępnie wyświetlamy te do rozpatrzenia
+            //we're showing duty swap requests that have not been accepted or declined yet
             addTableWithPaginationWithButtons(page,size,requestsRepo,requestStatusRepo,entryDyzurDbRepo,userRepository);
 
 

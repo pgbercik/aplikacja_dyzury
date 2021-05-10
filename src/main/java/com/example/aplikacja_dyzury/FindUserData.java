@@ -13,7 +13,8 @@ import java.util.List;
 public class FindUserData {
 
     /**
-     * Wynikowo znajduje adres email danego użytkownika. Ten adres jest unikalny dla każdego usera.*/
+     * Wynikowo znajduje adres email danego użytkownika. Ten adres jest unikalny dla każdego usera.
+     * We're finding an email address of a declared user. Email is unique fore every user.*/
     public String findCurrentlyLoggedInUser() {
         String username="";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

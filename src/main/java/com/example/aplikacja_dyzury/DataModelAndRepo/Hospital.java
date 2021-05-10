@@ -24,7 +24,7 @@ public class Hospital {
     private boolean isActive;
 
     @OneToMany()
-    @LazyCollection(LazyCollectionOption.FALSE) //obchodzimy MultipleBagFetchException
+    @LazyCollection(LazyCollectionOption.FALSE) //obchodzimy MultipleBagFetchException - workaround for MultipleBagFetchException
     @JoinColumn(name = "referenced_hospital_id", referencedColumnName = "hospital_id")
     private List<HospitalDepartment> hospitalDepartments;
 

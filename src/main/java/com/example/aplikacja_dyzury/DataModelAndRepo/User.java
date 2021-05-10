@@ -22,9 +22,7 @@ public class User {
     private String firstName;
     private String lastName;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "referenced_user_id", referencedColumnName = "id")
-//    private Set<Requests> requests;
+
 
 
     @Column(nullable = false,unique = true)

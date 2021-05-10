@@ -79,12 +79,11 @@ public class FormAddUser extends VerticalLayout {
 
 
         save.addClickListener(event -> {
-            //walidacja po kliknięciu przycisku
             binder.validate();
             if (binder.isValid()) {
                 System.out.println(user.toString());
 
-                List<User> alreadyExistingUsers = userRepository.findAlreadyExistingUSers(
+                List<User> alreadyExistingUsers = userRepository.findAlreadyExistingUsers(
                         email.getValue(),firstName.getValue(),lastName.getValue());
 
                 if (alreadyExistingUsers.isEmpty()) {
@@ -117,6 +116,7 @@ public class FormAddUser extends VerticalLayout {
 //        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
         //wersja bez znaków specjalnych
         String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        // imię nie może zawierać cyfr, name cannot contain numbers
         String patternNames = "^[^\\d\\s]+$";
 
 

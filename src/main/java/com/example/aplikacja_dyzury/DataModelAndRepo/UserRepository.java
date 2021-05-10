@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select * from user_table where email=:email AND first_name=:firstName AND last_name=:lastName ",
             nativeQuery = true)
-    List<User> findAlreadyExistingUSers(String email, String firstName, String lastName);
+    List<User> findAlreadyExistingUsers(String email, String firstName, String lastName);
 
 }

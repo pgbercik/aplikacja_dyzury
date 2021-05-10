@@ -26,10 +26,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		login.setAction("login");
 		login.setForgotPasswordButtonVisible(false);
 
-//		dodajemy panel logowania
+//		dodajemy panel logowania - we're adding a login panel
 		getElement().appendChild(login.getElement());
 
-//				polskie napisy
+//				polskie napisy - polish translation
 		login.setI18n(createPolishI18n());
 
 
@@ -38,17 +38,19 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 
 
-//	ta metoda się uruchamia przed wpuszczeniem usera na stronę
+//	ta metoda się uruchamia przed wpuszczeniem usera na stronę - this method runs before user is granted acccess to the page
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
 
 		// jeśli logowanie się nie powiedzie to login.setError(true); wywołuje  pokazanie tekstu o błędnym logowaniu
+		//if login does not succeed, then the login.setError(true); causes showing a text that informs about failed login
 		if(!event.getLocation().getQueryParameters().getParameters().getOrDefault("error", Collections.emptyList()).isEmpty()) {
 			login.setError(true); //
 		}
 	}
 
 	//metoda generujące polskie napisy ekranu logowania
+	//this method generates polish translation for login screen
 	private LoginI18n createPolishI18n() {
 		final LoginI18n i18n = LoginI18n.createDefault();
 

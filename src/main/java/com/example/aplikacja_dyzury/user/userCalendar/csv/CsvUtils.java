@@ -20,7 +20,7 @@ public class CsvUtils {
 
             CSVWriter writer = new CSVWriter(outputfile);
 
-            // nagłówek
+            // nagłówek - header
             String[] header = { "Subject", "Start Date", "Start Time","End Date","End Time","Description","Location" };
             writer.writeNext(header);
 

@@ -16,12 +16,14 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
     List<EntryDyzurDb> findAll();
 
     /** To wyciąga dyżury z wybranego zakresu. W ShowCalendar jest użyte przy pokazywaniu dyżurów z poszczególnych miesięcy i tygodni.
+     * This request finds dutoes from a chosen range. In ShowCalendar it is used in order to show duties from a chosen week or month.
      */
     @Query(value = "SELECT * FROM dyzur  where start_time >=:previousMonth \n" +
             "AND start_time <= :nextMonth ",nativeQuery = true)
     List<EntryDyzurDb> findAllByStartTimeAndUserIdLike(LocalDateTime previousMonth,LocalDateTime nextMonth);
 
     /** To wyciąga dyżury z wybranego zakresu dat i danym szpitalem i oddziałem. W ShowCalendar jest użyte przy pokazywaniu dyżurów z poszczególnych miesięcy i tygodni.
+     * This query gets duties from a chosen range of dates and with specific hospital and department. In ShowCalendar it is used in order to show duties from a chosen week or month.
      */
     @Query(value = "SELECT * FROM dyzur  where \n" +
             "start_time >=:previousMonth \n" +
@@ -32,6 +34,7 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
 
 
     /** To wyciąga dyżury z wybranym zakresem dat i danym szpitalem. W ShowCalendar jest użyte przy pokazywaniu dyżurów z poszczególnych miesięcy i tygodni.
+     * This query gets duties from a chosen range of dates and with specific hospital. In ShowCalendar it is used in order to show duties from a chosen week or month.
      */
     @Query(value = "SELECT * FROM dyzur  where \n" +
             "start_time >=:previousMonth \n" +
@@ -40,24 +43,6 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
     List<EntryDyzurDb> findAllByStartTimeAndUserIdLike(LocalDateTime previousMonth, LocalDateTime nextMonth,Long hospitalId);
 
 
-
-//    /**
-//     * to będzie użyte do eksportu wydarzeń do csv - to ma wyciągnąć wydarzenia od początku aktualnego dnia do końca następnego miesiąca.*/
-//
-//    @Query(value = "SELECT * FROM dyzury.dyzur  where \n" +
-//            "start_time >=:mindightOfPreviousDay \n" +
-//            "AND start_time <=:lastDayOfFollowingMonth \n" ,nativeQuery = true)
-//    List<EntryDyzurDb> findAllFutureEntriesForGoogleCalendar(LocalDateTime mindightOfPreviousDay, LocalDateTime lastDayOfFollowingMonth);
-
-
-//    /** To wyciąga dyżury importowane do kalendarza Google.
-//     */
-//    @Query(value = "SELECT * FROM dyzury.dyzur  where \n" +
-//            "start_time >=:previousMonth \n" +
-//            "AND start_time <=:nextMonth \n" +
-//            "AND hospital_hospital_id=:hospitalId \n" +
-//            "AND hospital_department_hospital_dept_id=:hospitalDeptId ",nativeQuery = true)
-//    List<EntryDyzurDb> findEntriesForGoogleCalendar(LocalDateTime previousMonth, LocalDateTime nextMonth,Long hospitalId,Long hospitalDeptId);
 
     @Query("SELECT e.id FROM EntryDyzurDb e WHERE e.description=?1 AND e.startTime=?2 AND e.endTime=?3 AND e.hospital=?4 AND title=?5")
     String findEntryToEdit(String description, LocalDateTime startTime, LocalDateTime endTime, Hospital hospital, String title);
@@ -75,7 +60,10 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
 
 
     /**
-     * Wybiera dyżury, w których data (YYYY-MM-DD) jest równa dacie dyżuru dodawanego i szpital wraz z wydziałem się zgadza. W tym zakresie wyszukujemy wydarzeń, któe się nakładają z podanym przez nas wydarzeniem*/
+     * Wybiera dyżury, w których data (yyyy-MM-DD) jest równa dacie dyżuru dodawanego i szpital wraz z wydziałem się zgadza. W tym zakresie wyszukujemy wydarzeń, któe się nakładają z podanym przez nas wydarzeniem
+     * Chooses a duties in which a date (yyyy-MM-DD) is equal to a date of an added duty, and hospitall and hospital dept id also match.
+     * I this range of duties we search for duties which overlap with the duty chosen by us.
+     * */
     @Query(value = "select * from dyzur where \n" +
             "(DATE(start_time) =:localDate " +
             "OR DATE(end_name) =:localDate ) \n" +
@@ -87,7 +75,9 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
                                                       LocalDateTime startDateTimeFromEntry, LocalDateTime endDateTimeFromEntry);
 
     /**
-     * znajduje dyżury zaczynające się danego dnia i mające chociaż jednego zapisanego usera*/
+     * Znajduje dyżury zaczynające się danego dnia i mające chociaż jednego zapisanego usera.
+     * It finds duties that start at the same date as the delared one and which have at least one user signed.
+     * */
     @Query(value = "SELECT distinct dyzur.* FROM dyzur,dyzur_users " +
             "where dyzur.id=dyzur_users.entry_dyzur_db_id\n" +
             "AND date (start_time)=:startDate",nativeQuery = true)

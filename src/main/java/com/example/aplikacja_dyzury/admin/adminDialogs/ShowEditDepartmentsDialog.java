@@ -31,7 +31,7 @@ public class ShowEditDepartmentsDialog extends Dialog {
         layout.setSizeFull();
 
 
-        System.out.println("id szpitala : "+hospitalId);
+
         List<HospitalDepartment> hospitalDepartments = hospitalDepartmentRepo.findDepartmentByHospitalId(hospitalId);
         if (!hospitalDepartments.isEmpty()) {
 

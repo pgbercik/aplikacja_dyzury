@@ -36,7 +36,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Route(value = "calendar", layout = RegisteredMenuBar.class)
 public class ShowCalendar extends VerticalLayout implements SessionDestroyListener {
 
-    //wskaźnik na klasę z wątkiem aktualizującym zawartość kalendarza w tle
+    //referencja na obiekt z wątkiem aktualizującym zawartość kalendarza w tle
+    //reference to an object with a thread that updates a calendar in the background
     private BackgroundCalendarUpdaterThread thread;
 
     private LocalDate chosenDateTime = LocalDate.now();
@@ -46,6 +47,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     private Long hospitalIdDept = null;
 
     //tu zapisujemy czy wybrano miesiąc czy tydzień w widoku
+    // here we define whether use chose month or week view
     private String chosenView = "month";
 
     private final EntryDyzurDbRepo entryDyzurDbRepo;
@@ -83,22 +85,26 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         calendar = FullCalendarBuilder.create().build();
 
 
-        //czas trwania sesji ustawiamy na 30 sekund, po trochę ponad ponad 300 sekundach braku aktywności
+        //czas trwania sesji ustawiamy na 300 sekund, po trochę ponad ponad 300 sekundach braku aktywności
         // ( i przy jednoczesnym zamknięciu okna przeglądarki) sesja się kończy i przy okazji też wątki działające w tle
+        //we set session interval to 300 seconds, and after a bit more than that of no activity
+        // (and closing browser tabs or window) the sessino ends together with background threads
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(300);
         System.out.println("max session time[s]: " + VaadinSession.getCurrent().getSession().getMaxInactiveInterval());
 
         //skrypt JS sprawdzający czy user nie zmienił zakładki
+        //a JS scriptr checking if the user changed tabs
         UI.getCurrent().getPage().executeJs("function closeListener() { $0.$server.windowClosed(); } " +
                 "window.addEventListener('beforeunload', closeListener); " +
                 "window.addEventListener('unload', closeListener);", getElement());
 
 
-        //pokazywanie dni tygodnia
+        //pokazywanie numerów dni tygodnia
+        //showing weekday numbers in calendar
         calendar.setWeekNumbersVisible(true);
-        //pierwszym dniem tygodnia jest poniedziałek
+        //pierwszym dniem tygodnia jest poniedziałek - first day of week is monday
         calendar.setFirstDay(DayOfWeek.MONDAY);
-        //polskie dni tygodnia
+        //polskie dni tygodnia - polish names for weekdays
         calendar.setLocale(Locale.forLanguageTag("pl-PL"));
         calendar.setHeight(490);
 
@@ -150,7 +156,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         btnExport.addClickListener(event -> new DialogExportToCSV(calendarDataProvider, entryDyzurDbRepo, findUserData, hospitalId, hospitalIdDept).open());
 
-//pobieranie
+
 
 
         Button btnMonth = new Button("Miesiąc", VaadinIcon.CALENDAR.create(), e -> {
@@ -258,6 +264,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
 
         // akcja po kliknięciu na istniejące wydarzenie
+        //what happens after clicking on an existing duty
         calendar.addEntryClickedListener(event -> {
             String entryToEditID = entryDyzurDbRepo.findEntryToEdit(/*event.getEntry().getColor(),*/
                     event.getEntry().getDescription(), event.getEntry().getStart(), event.getEntry().getEnd(),
@@ -273,6 +280,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         });
 
         //akcja po kliknięciu na pusty obszar - dodawanie wydarzenia
+        //what happens after clicking on a blank area - adding a new duty
         calendar.addTimeslotsSelectedListener((event) -> {
 
             Long diffInDays = DAYS.between(LocalDate.now(), event.getStartDateTime());
@@ -296,11 +304,13 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         });
 
         //pobiera z bazy i wyświetla dyżury z miesiąca poprzedniego, bieżącego i przyszłego
+        //fetches duties from a monrh before, current and following
         calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo,
                 LocalDate.now(), chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
     }
 
     //listener od skryputu sprawdzającego czy user nie zmienił zakładki
+    //listener for a script that checks wheter user changed the tab
     @ClientCallable
     public void windowClosed() {
         cleanUpAfterThread();
@@ -311,6 +321,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     protected void onAttach(AttachEvent attachEvent) {
 
         // uruchamiamy wątek
+        //we're creating and starting a thread
         thread = new BackgroundCalendarUpdaterThread(attachEvent.getUI(), this, calendarDataProvider,
                 calendar, entryDyzurDbRepo, userRepository, email);
         thread.start();
@@ -322,7 +333,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     }
 
     /**
-     * sprzątamy po wątku.
+     * sprzątamy po wątku - cleanup after the thread.
      */
     public void cleanUpAfterThread() {
         if (thread != null) {

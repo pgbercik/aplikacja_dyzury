@@ -22,6 +22,7 @@ public class CalendarDataProvider {
 
     /**
      * Generujemy dane do exportu do kalendarza Google - tutaj user wybiera z jakiego okresu importować.
+     * We are generating data that will be exported to Google Calendar - here user chooses a range of duties to import.
      * */
     public List<EntryDyzurDb> getDataForGoogleCalendar(EntryDyzurDbRepo entryDyzurDbRepo, LocalDate startDate,LocalDate endDate, String mode,
                                                        Long hospitalId, Long deptID) {
@@ -29,8 +30,8 @@ public class CalendarDataProvider {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate,LocalTime.MAX);
 
-        System.out.println("data początkowa: "+startDateTime);
-        System.out.println("data końcowa: "+endDateTime);
+        System.out.println("start date: "+startDateTime);
+        System.out.println("end date: "+endDateTime);
 
 
         List<EntryDyzurDb> entriesMatching= new ArrayList<>();
@@ -50,6 +51,8 @@ public class CalendarDataProvider {
 
     /**
      * Ta metoda pobiera z bazy i wyświetla dyżury z miesiąca poprzedniego, bieżącego i przyszłego zawierające dany szpital i oddział. Następnie wyświetla je w kalendarzu.
+     *
+     * This method gets duties from a previous, current, and following month with specified hospital and department. After that it displays them in the calendar.
      * */
     public void addEntriesFromDBWithHospitalNameAndDept(FullCalendar calendar, EntryDyzurDbRepo entryDyzurDbRepo, LocalDate localDate, String chosenView,
                                  H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept, String email) {
@@ -123,7 +126,7 @@ public class CalendarDataProvider {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("coś się popsuło...");
+
         }
     }
 }

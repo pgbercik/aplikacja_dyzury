@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Klasa z wątkiem, któy w tle aktualizuje dyżury w kalendarzu. Dzięki temu jeśli inny user doda dyżur to pozostali będą go widzieli bez konieczności odświeżania strony.
+ * Klasa z wątkiem, któy w tle aktualizuje dyżury w kalendarzu. Dzięki temu jeśli inny user doda dyżur to pozostali będą go widzieli bez konieczności odświeżania strony ręcznie.
+ * A class with a thred that updates duties shown in calendar window. If a different user  adds a new duty, the our current user will be able to see changes without reloading the whole page manually.
  */
 
 public class BackgroundCalendarUpdaterThread extends Thread {
@@ -37,13 +38,14 @@ public class BackgroundCalendarUpdaterThread extends Thread {
     public void run() {
         try {
             while (true) {
-                // co sekundę coś robimy
+                // usypiamy wątek na sekundę - we make the thread sleep for one second
                 Thread.sleep(1000);
 
                 ui.access(() -> {
                     String prettyTimeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-                    //wywołujemy metodę s
+                    //wywołujemy metodę aktualizującą dane wyświetlane w kalendarzu
+                    // we are running a method that updates data shown in calendar
                     calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, showCalendar.getChosenDateTime(),
                             showCalendar.getChosenView(), showCalendar.getCurrentlyChosenTimeSpan(),
                             showCalendar.getHospitalId(), showCalendar.getHospitalIdDept(), email);
