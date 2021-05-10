@@ -45,7 +45,7 @@ Logged in users can view all registered duties. If they sign up for a duty, then
 
 
 
-The app also enables users to switch duties between one another. In order to do it, the user has to click on a duty, go to section Zamiana dyżury and send a request. If the other user agrees, then the duties will be automatically switched.
+The app also enables users to switch duties between one another. In order to do it, the user has to click on a duty, go to section **Zamiana dyżuru** and send a request. If the other user agrees, then the duties will be automatically switched.
 ![Duty swap picture](SCREENSHOTS/duty_swap.JPG)
 
 
