@@ -172,7 +172,7 @@ public class DialogAddEditEvent extends Dialog {
             buttonSave = new Button("Zapisz zmiany", e -> {
                 binder.validate();
                 if (binder.isValid()) {
-
+                    FindUserData findUserData = new FindUserData();
 
 
                     EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
@@ -193,16 +193,24 @@ public class DialogAddEditEvent extends Dialog {
 
                     System.out.println("z entry"+entry.getStart()+" | "+entry.getEnd());
                     System.out.println("z entrydyzurdb"+entryDyzurDb.getStartTime()+" | "+entryDyzurDb.getEndTime());
-                    if (!verifyDateTimesOverlapping(entryDyzurDb.getStartTime(), entryDyzurDb.getEndTime(), entry)) {
 
-                        //sprawdzamy czy data dyżur trwa przynamnjmniej 5 imut i czy nie zaczyna się później niż kończy itd.
-                        if (verifyDates(entryDyzurDb.getStartTime(),entryDyzurDb.getEndTime(),entry,id)) {
-                            System.out.println("result true");
-//                        calendar.addEntry(entry);
-                            entryDyzurDbRepo.save(entryDyzurDb);
-//                        entryDyzurDb.
-                            calendar.updateEntry(entry);
-                            close();
+                    Set<User> foundUsers = entryDyzurDb.getUsers();
+                    if (!verifyDateTimesOverlapping(entryDyzurDb.getStartTime(), entryDyzurDb.getEndTime(), entry)) {
+                        boolean usersIsIn=false;
+                        User currentlyLoggedIN = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+                        if (foundUsers.stream().anyMatch(user -> user.getId().equals(currentlyLoggedIN.getId()))) usersIsIn=true;
+                        if (foundUsers.size()==0 || (foundUsers.size()<2 && usersIsIn) ) {
+                            //sprawdzamy czy data dyżur trwa przynamnjmniej 5 minut i czy nie zaczyna się później niż kończy itd.
+                            if (verifyDates(entryDyzurDb.getStartTime(),entryDyzurDb.getEndTime(),entry,id)) {
+                                System.out.println("result true");
+    //                        calendar.addEntry(entry);
+                                entryDyzurDbRepo.save(entryDyzurDb);
+    //                        entryDyzurDb.
+                                calendar.updateEntry(entry);
+                                close();
+                            }
+                        } else {
+                            Notification.show("Nie można zmienić szczegółów dyżuru, na który zapisali się już inni użytkownicy.",2000, Notification.Position.MIDDLE);
                         }
 
                     } else {
