@@ -44,20 +44,20 @@ public class MainPage extends VerticalLayout {
     private Button btnNextPage,btnPreviousPage;
     private H5 currentPage;
 
-    FindUserData findUserData = new FindUserData();
+
 
 
     @Autowired
     public MainPage(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo,EntryDyzurDbRepo entryDyzurDbRepo) {
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        loggedInUserDetails = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+        loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
         currentPage = new H5(page + 1 + " z " + 1);
 
-        if (findUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
+        if (FindUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
             add(new H1("Zalogowano jako " /*+loggedInUserDetails.getFirstName()+" "+loggedInUserDetails.getLastName()*/ + "administrator."));
             add(new H3("Witamy w panelu administratora."));
         }
-        if (findUserData.findFirstUserRoleString().equals("ROLE_USER")) {
+        if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
             add(new H2("Przychodzące propozycje zamiany dyżurów"));
             add(new H3("Wybierz jedną z opcji"));
 

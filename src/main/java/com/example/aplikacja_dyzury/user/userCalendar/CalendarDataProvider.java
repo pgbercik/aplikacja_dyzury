@@ -80,7 +80,7 @@ public class CalendarDataProvider {
             List<EntryDyzurDb> entriesMatching = new ArrayList<>();
 
 
-            FindUserData findUserData = new FindUserData();
+//            FindUserData findUserData = new FindUserData();
 //            Long userId = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser()).getId();
 
             if (hospitalId==null || hospitalIdDept==null) {
@@ -105,7 +105,7 @@ public class CalendarDataProvider {
                 boolean userIsRegistered=false;
                 Entry entry;
                 Set<User> foundUsers = entryDyzurDb.getUsers();
-                if (email.isEmpty()) email = findUserData.findCurrentlyLoggedInUser();
+                if (email.isEmpty()) email = FindUserData.findCurrentlyLoggedInUser();
                 String finalEmail = email;
                 if (foundUsers.stream().anyMatch(user -> user.getEmail().equals(finalEmail))) userIsRegistered=true;
 //                for (User user1 : foundUsers) { if (user1.getEmail().equals(email)) userIsRegistered=true; }

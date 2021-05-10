@@ -110,12 +110,12 @@ public class DialogExportToCSV extends Dialog {
                     System.out.println("szpital i oddział "+hospitalId+" | "+deptId);
 
                     if (deptModeButton.getValue().equals("wszystkie oddziały")) {
-                        exportToCSV(calendarDataProvider,entryDyzurDbRepo, findUserData);
+                        exportToCSV(calendarDataProvider,entryDyzurDbRepo);
                         add(verticalLayout);
                         numberOfFoundEntries.setText("Znalezione wydarzenia: "+exportedEntriesCounter);
                     }
                     if (deptModeButton.getValue().equals("wybrany oddział") && hospitalId!=null && deptId!=null) {
-                        exportToCSV(calendarDataProvider,entryDyzurDbRepo, findUserData);
+                        exportToCSV(calendarDataProvider,entryDyzurDbRepo);
                         add(verticalLayout);
                         numberOfFoundEntries.setText("Znalezione wydarzenia: "+exportedEntriesCounter);
                     }
@@ -135,8 +135,7 @@ public class DialogExportToCSV extends Dialog {
 
     }
 
-    private void exportToCSV(CalendarDataProvider calendarDataProvider, EntryDyzurDbRepo entryDyzurDbRepo,
-                             FindUserData findUserData) {
+    private void exportToCSV(CalendarDataProvider calendarDataProvider, EntryDyzurDbRepo entryDyzurDbRepo) {
         exportedEntriesCounter=0;
 
         if (dateStart.getValue()!=null && dateEnd.getValue()!=null) {
@@ -149,7 +148,7 @@ public class DialogExportToCSV extends Dialog {
                     boolean isAddedToEntry=false;
                     Set<User> foundUsers = entryDyzurDb1.getUsers();
                     for (User user1 : foundUsers) {
-                        if (user1.getEmail().equals(findUserData.findCurrentlyLoggedInUser())) isAddedToEntry=true;
+                        if (user1.getEmail().equals(FindUserData.findCurrentlyLoggedInUser())) isAddedToEntry=true;
                     }
                     if (isAddedToEntry) {
                         String title = entryDyzurDb1.getTitle();

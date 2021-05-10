@@ -53,7 +53,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     private final EntryDyzurDbRepo entryDyzurDbRepo;
     private final UserRepository userRepository;
     private final CalendarDataProvider calendarDataProvider;
-    private final FindUserData findUserData;
+//    private final FindUserData findUserData;
     private final FullCalendar calendar;
 
     private String email;
@@ -73,12 +73,12 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         this.entryDyzurDbRepo = entryDyzurDbRepo;
         this.userRepository = userRepository;
         calendarDataProvider = new CalendarDataProvider();
-        findUserData = new FindUserData();
+//        findUserData = new FindUserData();
 
-        email = findUserData.findCurrentlyLoggedInUser();
+        email = FindUserData.findCurrentlyLoggedInUser();
 
-        System.out.println(findUserData.findFirstUserRoleString());
-        findUserData.findUserRoles();
+        System.out.println(FindUserData.findFirstUserRoleString());
+        FindUserData.findUserRoles();
 
 
         // Create a new calendar instance and attach it to our layout
@@ -154,7 +154,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         });
         Button btnExport = new Button("Export do kalendarza Google", VaadinIcon.CALENDAR_O.create());
 
-        btnExport.addClickListener(event -> new DialogExportToCSV(calendarDataProvider, entryDyzurDbRepo, findUserData, hospitalId, hospitalIdDept).open());
+        btnExport.addClickListener(event -> new DialogExportToCSV(calendarDataProvider, entryDyzurDbRepo, null, hospitalId, hospitalIdDept).open());
 
 
 
@@ -223,7 +223,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         HorizontalLayout buttons1 = new HorizontalLayout();
         HorizontalLayout buttons2 = new HorizontalLayout();
-        if (findUserData.findFirstUserRoleString().equals("ROLE_USER")) {
+        if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
             buttons1.add(buttonPrevious, currentlyChosenTimeSpan, buttonNext, btnMonth, btnWeek, btnExport);
         } else buttons1.add(buttonPrevious, currentlyChosenTimeSpan, buttonNext, btnMonth, btnWeek);
 

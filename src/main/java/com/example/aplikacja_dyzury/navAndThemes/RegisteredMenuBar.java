@@ -40,11 +40,11 @@ public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftRes
 
     @Autowired
     public RegisteredMenuBar(UserRepository userRepository) {
-        FindUserData findUserData = new FindUserData();
-        System.out.println(findUserData.findFirstUserRoleString() +"rola w registered menu bar");
-        User loggedInUserDetails =  userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+//        FindUserData findUserData = new FindUserData();
+        System.out.println(FindUserData.findFirstUserRoleString() +"rola w registered menu bar");
+        User loggedInUserDetails =  userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
 
-        if (findUserData.findFirstUserRoleString().equals("ROLE_USER")) {
+        if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
             init(AppLayoutBuilder.get(LeftLayouts.LeftResponsive.class)
                     .withTitle("E-terminarz"+" - zalogowano jako "
                             + loggedInUserDetails.getDoctorTitle().getType() +" "
@@ -72,7 +72,7 @@ public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftRes
 
         }
 
-        if (findUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
+        if (FindUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
             init(AppLayoutBuilder.get(LeftLayouts.LeftResponsive.class)
                     .withTitle("E-terminarz"+" - zalogowano jako administrator")
                     .withAppMenu(LeftAppMenuBuilder.get()

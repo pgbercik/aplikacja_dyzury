@@ -41,13 +41,13 @@ public class SentRequestsTable extends VerticalLayout {
     private User loggedInUserDetails;
     private DateTimeFormatter formatter;
 
-    FindUserData findUserData = new FindUserData();
+//    FindUserData findUserData = new FindUserData();
 
 
     @Autowired
     public SentRequestsTable(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo, EntryDyzurDbRepo entryDyzurDbRepo) {
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        loggedInUserDetails = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+        loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
         H5 currentPage = new H5();
 
 

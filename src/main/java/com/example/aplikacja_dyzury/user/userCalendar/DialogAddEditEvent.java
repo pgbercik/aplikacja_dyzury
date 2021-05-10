@@ -59,7 +59,7 @@ public class DialogAddEditEvent extends Dialog {
                 entry.getStart(),entry.getEnd(),entry.isAllDay(),/*entry.getColor(),*/entry.getDescription(),
                 entry.isEditable(),entry.getHospital(),entry.getHospitalDepartment(),entry.getUsers());
 
-        FindUserData findUserData11 = new FindUserData();
+//        FindUserData findUserData11 = new FindUserData();
 
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
@@ -172,7 +172,7 @@ public class DialogAddEditEvent extends Dialog {
             buttonSave = new Button("Zapisz zmiany", e -> {
                 binder.validate();
                 if (binder.isValid()) {
-                    FindUserData findUserData = new FindUserData();
+//                    FindUserData findUserData = new FindUserData();
 
 
                     EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
@@ -197,7 +197,7 @@ public class DialogAddEditEvent extends Dialog {
                     Set<User> foundUsers = entryDyzurDb.getUsers();
                     if (!verifyDateTimesOverlapping(entryDyzurDb.getStartTime(), entryDyzurDb.getEndTime(), entry)) {
                         boolean usersIsIn=false;
-                        User currentlyLoggedIN = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+                        User currentlyLoggedIN = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
                         if (foundUsers.stream().anyMatch(user -> user.getId().equals(currentlyLoggedIN.getId()))) usersIsIn=true;
                         if (foundUsers.size()==0 || (foundUsers.size()<2 && usersIsIn) ) {
                             //sprawdzamy czy data dyżur trwa przynamnjmniej 5 minut i czy nie zaczyna się później niż kończy itd.
@@ -245,13 +245,13 @@ public class DialogAddEditEvent extends Dialog {
 
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
                 System.out.println(entryDyzurDb);
-                FindUserData findUserData = new FindUserData();
-                String currentlyLoggedInUsersEmail = findUserData.findCurrentlyLoggedInUser();
+//                FindUserData findUserData = new FindUserData();
+                String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
                 User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
                 Set<User> foundUsers = entryDyzurDb.getUsers();
                 System.out.println("rozmiar: " + foundUsers.size());
-                FindUserData findUserData1 = new FindUserData();
-                if (findUserData1.findFirstUserRoleString().equals("ROLE_ADMIN")) {
+//                FindUserData findUserData1 = new FindUserData();
+                if (FindUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
                     List<Requests> requestsToRemove=requestsRepo.findRequestsForEntry(entryDyzurDb.getId());
                     requestsRepo.deleteAll(requestsToRemove);
                     entryDyzurDb.getUsers().clear();
@@ -335,8 +335,8 @@ public class DialogAddEditEvent extends Dialog {
 
             Button buttonSignInToEntry = new Button("Zapisz się na dyżur",e -> {
                 boolean isUSerAlreadyAdded = false;
-                FindUserData findUserData = new FindUserData();
-                String currentlyLoggedInUsersEmail = findUserData.findCurrentlyLoggedInUser();
+//                FindUserData findUserData = new FindUserData();
+                String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
                 User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
 
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
@@ -369,15 +369,15 @@ public class DialogAddEditEvent extends Dialog {
 
             });
 
-            if (findUserData11.findFirstUserRoleString().equals("ROLE_USER")) {
+            if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 buttonSignInToEntry.getElement().getThemeList().add("tertiary");
                 buttons.add(buttonSignInToEntry);
             }
 
 
             Button buttonRemoveFromEntry = new Button("Wypisz się",e->{
-                FindUserData findUserData = new FindUserData();
-                String currentlyLoggedInUsersEmail = findUserData.findCurrentlyLoggedInUser();
+//                FindUserData findUserData = new FindUserData();
+                String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
                 User userToRemove = userRepository.findByEmail(currentlyLoggedInUsersEmail);
                 System.out.println("user do wycięcia: "+userToRemove);
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
@@ -395,7 +395,7 @@ public class DialogAddEditEvent extends Dialog {
                         chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
 
             });
-            if (findUserData11.findFirstUserRoleString().equals("ROLE_USER")) {
+            if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 buttonRemoveFromEntry.getElement().getThemeList().add("tertiary");
                 buttons.add(buttonRemoveFromEntry);
             }
@@ -416,8 +416,8 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 if (diffInDays>=0) {
-                    FindUserData findUserData = new FindUserData();
-                    User userInit = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser());
+//                    FindUserData findUserData = new FindUserData();
+                    User userInit = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
                     new DialogEntryExchange(entryDyzurDb, userInit, entryDyzurDbRepo, requestsRepo).open();
                 } else {
                     Notification.show("Nie można dokonywać zamiany dyżurów, które trwają lub już się zakończyły.",3000, Notification.Position.MIDDLE);
@@ -426,13 +426,13 @@ public class DialogAddEditEvent extends Dialog {
 
             });
 
-            if (findUserData11.findFirstUserRoleString().equals("ROLE_USER")) {
+            if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 btnExchangeEntries.getElement().getThemeList().add("tertiary");
                 buttons.add(btnExchangeEntries);
             }
 
-            FindUserData findUserData = new FindUserData();
-            Long userIdToCheck =  userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser()).getId();
+//            FindUserData findUserData = new FindUserData();
+            Long userIdToCheck =  userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser()).getId();
             System.out.println("userIdToCheck "+userIdToCheck);
             EntryDyzurDb entryDyzurDbForBtnExchange = entryDyzurDbRepo.findByID(id);
 
