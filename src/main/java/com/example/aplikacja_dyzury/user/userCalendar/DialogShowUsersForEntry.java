@@ -29,7 +29,7 @@ public class DialogShowUsersForEntry extends Dialog {
 
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
-        layout.setSizeFull();
+//        layout.setSizeFull();
         layout.add(new H3("Lekarze zapisani na dyżur"));
         add(layout);
 

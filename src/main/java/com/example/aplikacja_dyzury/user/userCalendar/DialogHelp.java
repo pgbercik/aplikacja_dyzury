@@ -18,7 +18,7 @@ public class DialogHelp extends Dialog {
 
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
-        layout.setSizeFull();
+//        layout.setSizeFull();
         layout.add(new H3("Pomoc"));
         add(layout);
         Span span = new Span("Dyżury, na które użytkownik jest zarejestrowany oznaczono kolorem niebieskim.\n" +

@@ -50,7 +50,7 @@ public class DialogExportToCSV extends Dialog {
 
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
-        layout.setSizeFull();
+//        layout.setSizeFull();
 
         dateStart = new DatePicker("Początek");
         dateEnd = new DatePicker("Koniec");

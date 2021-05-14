@@ -64,11 +64,11 @@ public class DialogAddEditEvent extends Dialog {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setWidth("1150px");
-        setHeight("650px");
+//        setHeight("650px");
 
         VerticalLayout layout = new VerticalLayout();
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
-        layout.setSizeFull();
+//        layout.setSizeFull();
 
         TextField fieldTitle = new TextField("Nazwa wydarzenia");
 //        fieldTitle.setWidth("650px");
