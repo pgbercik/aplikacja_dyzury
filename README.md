@@ -10,8 +10,8 @@ Users can also export duties to a CSV file that can be later imported by Google 
 
 
 ## Used technologies
-* Java 1.8,
-* Vaadin 14,
+* Java 8,
+* Vaadin Flow 14,
 * Spring Boot,
 * Spring Security,
 * PostgreSQL database.
