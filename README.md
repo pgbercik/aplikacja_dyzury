@@ -6,6 +6,8 @@ This is a rostering app. It enables doctors to plan new duties as well as join d
 Users can define where (name of the hospital and name of the department) and when the duty takes place. 
 This app also enables users to switch duties between one another.
 
+Users can also export duties to a CSV file that can be later imported by Google Calendar.
+
 
 ## Used technologies
 * Java 1.8,
