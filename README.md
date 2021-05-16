@@ -1,4 +1,4 @@
-# Medical duty rostering app
+# E-terminarz
 
 ## Purpose of this app
 This is a rostering app. It enables doctors to plan new duties as well as join duties planned by other doctors (max. 8 doctors per duty).
