@@ -5,7 +5,6 @@ import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.DataModelAndRepo.User;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.vaadin.flow.component.html.H4;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 
@@ -21,7 +20,7 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 public class CalendarDataProvider {
 
-    private EntryDyzurDbRepo entryDyzurDbRepo;
+    private final EntryDyzurDbRepo entryDyzurDbRepo;
 
     public CalendarDataProvider(EntryDyzurDbRepo entryDyzurDbRepo) {
         this.entryDyzurDbRepo = entryDyzurDbRepo;
