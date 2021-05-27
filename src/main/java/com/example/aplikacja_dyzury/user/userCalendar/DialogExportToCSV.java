@@ -140,11 +140,10 @@ public class DialogExportToCSV extends Dialog {
 
         if (dateStart.getValue()!=null && dateEnd.getValue()!=null) {
 
-            List<EntryDyzurDb> entriesdMatching = calendarDataProvider.getDataForGoogleCalendar(entryDyzurDbRepo,
-                    dateStart.getValue(),dateEnd.getValue(),deptModeButton.getValue(),hospitalId,deptId);
-            if (!entriesdMatching.isEmpty()) {
+            List<EntryDyzurDb> entriesMatching = calendarDataProvider.getDataForGoogleCalendar(dateStart.getValue(),dateEnd.getValue(),deptModeButton.getValue(),hospitalId,deptId);
+            if (!entriesMatching.isEmpty()) {
                 List<GoogleCalendarPoJo> googleCalendarPoJos = new ArrayList<>();
-                for (EntryDyzurDb entryDyzurDb1 : entriesdMatching) {
+                for (EntryDyzurDb entryDyzurDb1 : entriesMatching) {
                     boolean isAddedToEntry=false;
                     Set<User> foundUsers = entryDyzurDb1.getUsers();
                     for (User user1 : foundUsers) {

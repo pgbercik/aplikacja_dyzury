@@ -229,7 +229,7 @@ public class DialogAddEditEvent extends Dialog {
         buttons.add(buttonSave);
 
         Button buttonCancel = new Button("Zamknij okno", e -> {
-            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime
+            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime
                     ,chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
             close();
 
@@ -308,7 +308,7 @@ public class DialogAddEditEvent extends Dialog {
                                 entryDyzurDb.setUsers(emptyUsers);
                                 entryDyzurDbRepo.save(entryDyzurDb);
                                 close();
-                                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
+                                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
                                         chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
                                 Notification.show("Powielono dyżur bez zapisanych lekarzy",2000, Notification.Position.MIDDLE);
 
@@ -359,7 +359,7 @@ public class DialogAddEditEvent extends Dialog {
 
                         close();
 
-                        calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
+                        calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
                                 chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
                     }
                 } else {
@@ -391,7 +391,7 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 close();
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,entryDyzurDbRepo,chosenDateTime,
+                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
                         chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
 
             });

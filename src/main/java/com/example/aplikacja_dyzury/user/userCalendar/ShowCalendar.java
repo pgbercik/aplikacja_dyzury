@@ -72,7 +72,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         this.entryDyzurDbRepo = entryDyzurDbRepo;
         this.userRepository = userRepository;
-        calendarDataProvider = new CalendarDataProvider();
+        calendarDataProvider = new CalendarDataProvider(entryDyzurDbRepo);
 //        findUserData = new FindUserData();
 
         email = FindUserData.findCurrentlyLoggedInUser();
@@ -117,7 +117,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
                 monthDiff = 1L;
                 chosenDateTime = chosenDateTime.minusMonths(monthDiff);
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.previous();
@@ -125,7 +125,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             if (chosenView.equals("week")) {
 
                 chosenDateTime = chosenDateTime.minusDays(7L);
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.previous();
@@ -137,7 +137,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
                 monthDiff = 1L;
                 chosenDateTime = chosenDateTime.plusMonths(monthDiff);
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.next();
@@ -145,7 +145,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             if (chosenView.equals("week")) {
 
                 chosenDateTime = chosenDateTime.plusDays(7L);
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.next();
@@ -162,7 +162,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         Button btnMonth = new Button("Miesiąc", VaadinIcon.CALENDAR.create(), e -> {
             chosenView = "month";
             chosenDateTime = LocalDate.now();
-            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                      chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
             calendar.changeView(CalendarViewImpl.DAY_GRID_MONTH);
             calendar.today();
@@ -170,7 +170,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         Button btnWeek = new Button("Tydzień", VaadinIcon.CALENDAR.create(), e -> {
             chosenView = "week";
             chosenDateTime = LocalDate.now();
-            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                      chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
             calendar.changeView(CalendarViewImpl.DAY_GRID_WEEK);
             calendar.today();
@@ -216,7 +216,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             else hospitalId = fieldHospitalName.getValue().getId();
             if (fieldHospitalDepartment.getValue() == null) hospitalIdDept = null;
             else hospitalIdDept = fieldHospitalDepartment.getValue().getId();
-            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, chosenDateTime,
+            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                      chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
         });
 
@@ -305,7 +305,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         //pobiera z bazy i wyświetla dyżury z miesiąca poprzedniego, bieżącego i przyszłego
         //fetches duties from a monrh before, current and following
-        calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo,
+        calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,
                 LocalDate.now(), chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
     }
 

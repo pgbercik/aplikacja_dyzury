@@ -5,6 +5,7 @@ import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.DataModelAndRepo.User;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.vaadin.flow.component.html.H4;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 
@@ -20,28 +21,36 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 public class CalendarDataProvider {
 
+    private EntryDyzurDbRepo entryDyzurDbRepo;
+
+    public CalendarDataProvider(EntryDyzurDbRepo entryDyzurDbRepo) {
+        this.entryDyzurDbRepo = entryDyzurDbRepo;
+    }
+
     /**
      * Generujemy dane do exportu do kalendarza Google - tutaj user wybiera z jakiego okresu importować.
      * We are generating data that will be exported to Google Calendar - here user chooses a range of duties to import.
-     * */
-    public List<EntryDyzurDb> getDataForGoogleCalendar(EntryDyzurDbRepo entryDyzurDbRepo, LocalDate startDate,LocalDate endDate, String mode,
+     */
+    public List<EntryDyzurDb> getDataForGoogleCalendar(LocalDate startDate, LocalDate endDate, String mode,
                                                        Long hospitalId, Long deptID) {
 
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate,LocalTime.MAX);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
-        System.out.println("start date: "+startDateTime);
-        System.out.println("end date: "+endDateTime);
-
-
-        List<EntryDyzurDb> entriesMatching= new ArrayList<>();
+        System.out.println("start date: " + startDateTime);
+        System.out.println("end date: " + endDateTime);
 
 
-        if (mode.equals("wszystkie oddziały")) entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(startDateTime,endDateTime);
-        if (mode.equals("wybrany oddział")) entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(startDateTime,endDateTime,hospitalId,deptID);
+        List<EntryDyzurDb> entriesMatching = new ArrayList<>();
 
-        System.out.println("ZNALEZIONE WPISY Z CAŁEGO OKRESU");
-            entriesMatching.forEach(entryDyzurDb -> System.out.println(entryDyzurDb.getId()+" | "+entryDyzurDb.getStartTime()+" | "+entryDyzurDb.getEndTime()));
+
+        if (mode.equals("wszystkie oddziały"))
+            entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(startDateTime, endDateTime);
+        if (mode.equals("wybrany oddział"))
+            entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(startDateTime, endDateTime, hospitalId, deptID);
+
+//        System.out.println("ZNALEZIONE WPISY Z CAŁEGO OKRESU");
+//            entriesMatching.forEach(entryDyzurDb -> System.out.println(entryDyzurDb.getId()+" | "+entryDyzurDb.getStartTime()+" | "+entryDyzurDb.getEndTime()));
 
 
         return entriesMatching;
@@ -51,82 +60,132 @@ public class CalendarDataProvider {
 
     /**
      * Ta metoda pobiera z bazy i wyświetla dyżury z miesiąca poprzedniego, bieżącego i przyszłego zawierające dany szpital i oddział. Następnie wyświetla je w kalendarzu.
-     *
+     * <p>
      * This method gets duties from a previous, current, and following month with specified hospital and department. After that it displays them in the calendar.
-     * */
-    public void addEntriesFromDBWithHospitalNameAndDept(FullCalendar calendar, EntryDyzurDbRepo entryDyzurDbRepo, LocalDate localDate, String chosenView,
-                                 H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept, String email) {
-        LocalDateTime localDateTimeNextMonth = null;
-        LocalDateTime localDateTimePreviousMonth = null;
+     */
+    public void addEntriesFromDBWithHospitalNameAndDept(FullCalendar calendar, LocalDate localDate, String chosenView,
+                                                        H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept, String email) {
 
+//        LocalDateTime nextTimeSpan = null;
+        LocalDateTime previousTimeSpan = getPreviousTimeFrame(chosenView, localDate);
 
-        if (chosenView.equals("month")) {
-            localDateTimeNextMonth = LocalDateTime.of(localDate.plusMonths(1L).with(lastDayOfMonth()), LocalTime.MAX);
-            localDateTimePreviousMonth = LocalDateTime.of(localDate.minusMonths(1L).with(firstDayOfMonth()), LocalTime.MIN);
+        //getting next week or next month time frame to query the DB
+        LocalDateTime nextTimeSpan = getNextTimeFrame(chosenView, localDate);
 
-            currentlyChosenTimeSpan.setText(localDate.format(DateTimeFormatter.ofPattern("  MM/yyyy",new Locale("pl","PL"))));
+        //set currently chosen time span which is shown in calendar widget
+        currentlyChosenTimeSpan.setText(createCurrentTimeSpanText(localDate));
 
-        }
-
-        if (chosenView.equals("week")) {
-            localDateTimeNextMonth = LocalDateTime.of(localDate.plusDays(7L), LocalTime.MAX);
-            localDateTimePreviousMonth = LocalDateTime.of(localDate.minusDays(7L), LocalTime.MIN);
-//            System.out.println("-----------------------------------------------");
-            currentlyChosenTimeSpan.setText(localDate.format(DateTimeFormatter.ofPattern("  MM/yyyy",new Locale("pl","PL"))));
-        }
         try {
+            //clean remove all entries from calendar widget
             calendar.removeAllEntries();
 
-            List<EntryDyzurDb> entriesMatching = new ArrayList<>();
+            //entries from DB matching hospital, hospitalDept and timestamps
+            List<EntryDyzurDb> entriesMatching = getEntriesMatching(hospitalId, hospitalIdDept,
+                    nextTimeSpan, previousTimeSpan);
 
+            calendar.addEntries(prepareEntriesToAddToCalendar(entriesMatching, email));
 
-//            FindUserData findUserData = new FindUserData();
-//            Long userId = userRepository.findByEmail(findUserData.findCurrentlyLoggedInUser()).getId();
-
-            if (hospitalId==null || hospitalIdDept==null) {
-                entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(localDateTimePreviousMonth,localDateTimeNextMonth);
-//                System.out.println("hospitalId "+hospitalId+" | hospitalDept "+hospitalIdDept);
-            }
-            if (hospitalId!=null && hospitalIdDept==null) {
-                entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(localDateTimePreviousMonth,localDateTimeNextMonth,hospitalId);
-//                System.out.println("hospitalId "+hospitalId+" | hospitalDept "+hospitalIdDept);
-            }
-            if (hospitalId!=null && hospitalIdDept!=null) {
-                entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(localDateTimePreviousMonth,localDateTimeNextMonth,hospitalId,hospitalIdDept);
-//                System.out.println("hospitalId "+hospitalId+" | hospitalDept "+hospitalIdDept);
-            }
-
-
-            for (EntryDyzurDb entryDyzurDb : entriesMatching) {
-
-                Instant start = entryDyzurDb.getStartTime().toInstant(ZoneOffset.UTC);
-                Instant end = entryDyzurDb.getEndTime().toInstant(ZoneOffset.UTC);
-
-                boolean userIsRegistered=false;
-                Entry entry;
-                Set<User> foundUsers = entryDyzurDb.getUsers();
-                if (email.isEmpty()) email = FindUserData.findCurrentlyLoggedInUser();
-                String finalEmail = email;
-                if (foundUsers.stream().anyMatch(user -> user.getEmail().equals(finalEmail))) userIsRegistered=true;
-//                for (User user1 : foundUsers) { if (user1.getEmail().equals(email)) userIsRegistered=true; }
-
-                if (userIsRegistered) {
-                    entry = new Entry(true,entryDyzurDb.getTitle(),start,end,
-                            entryDyzurDb.isAllDay(), "MediumBlue",entryDyzurDb.getDescription(),
-                            entryDyzurDb.getHospital(),entryDyzurDb.getHospitalDepartment(),entryDyzurDb.getUsers());
-                } else {
-                    entry = new Entry(true,entryDyzurDb.getTitle(),start,end,
-                            entryDyzurDb.isAllDay(), "Gray",entryDyzurDb.getDescription(),
-                            entryDyzurDb.getHospital(),entryDyzurDb.getHospitalDepartment(),entryDyzurDb.getUsers());
-                }
-
-
-                calendar.addEntry(entry);
-
-            }
         } catch (Exception e) {
             e.printStackTrace();
 
         }
+    }
+
+    /**
+     * Konwertujemy dyżury do takiego formatu jakiego wymaga widget kalendarza. Ustawiamy kolory itd.
+     * We convert duties to a format required by calendar widget. We  set colors, etc.
+     */
+    private List<Entry> prepareEntriesToAddToCalendar(List<EntryDyzurDb> entriesMatching, String email) {
+        List<Entry> entryList = new ArrayList<>();
+        for (EntryDyzurDb entryDyzurDb : entriesMatching) {
+
+            Instant start = entryDyzurDb.getStartTime().toInstant(ZoneOffset.UTC);
+            Instant end = entryDyzurDb.getEndTime().toInstant(ZoneOffset.UTC);
+
+            boolean userIsRegistered = false;
+            Entry entry;
+            Set<User> foundUsers = entryDyzurDb.getUsers();
+            if (email.isEmpty()) email = FindUserData.findCurrentlyLoggedInUser();
+            String finalEmail = email;
+            if (foundUsers.stream().anyMatch(user -> user.getEmail().equals(finalEmail))) userIsRegistered = true;
+
+            if (userIsRegistered) {
+                entry = new Entry(true, entryDyzurDb.getTitle(), start, end,
+                        entryDyzurDb.isAllDay(), "MediumBlue", entryDyzurDb.getDescription(),
+                        entryDyzurDb.getHospital(), entryDyzurDb.getHospitalDepartment(), entryDyzurDb.getUsers());
+            } else {
+                entry = new Entry(true, entryDyzurDb.getTitle(), start, end,
+                        entryDyzurDb.isAllDay(), "Gray", entryDyzurDb.getDescription(),
+                        entryDyzurDb.getHospital(), entryDyzurDb.getHospitalDepartment(), entryDyzurDb.getUsers());
+            }
+
+            entryList.add(entry);
+
+        }
+        return entryList;
+    }
+
+    /**
+     * Znajdujemy dyżury w zależności czy podano szpital, oddział, któreś z nich czy żadne z nich.
+     * <p>
+     * We're fetching duties based on whether hospital and dept were provided.
+     */
+    private List<EntryDyzurDb> getEntriesMatching(Long hospitalId, Long hospitalIdDept, LocalDateTime nextTimeSpan,
+                                                  LocalDateTime previousTimeSpan) {
+        List<EntryDyzurDb> entriesMatching = new ArrayList<>();
+
+        if (hospitalId == null || hospitalIdDept == null) {
+            entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(previousTimeSpan, nextTimeSpan);
+        }
+        if (hospitalId != null && hospitalIdDept == null) {
+            entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(previousTimeSpan, nextTimeSpan, hospitalId);
+        }
+        if (hospitalId != null && hospitalIdDept != null) {
+            entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(previousTimeSpan, nextTimeSpan, hospitalId, hospitalIdDept);
+        }
+        return entriesMatching;
+    }
+
+    /**
+     * Finding following time frame. It is needed when querying DB for entries from current time frame,
+     * because the calendar view sometimes shows a few days from previous and following month.
+     */
+    private LocalDateTime getNextTimeFrame(String chosenView, LocalDate localDate) {
+        LocalDateTime nextTimeSpan = null;
+        switch (chosenView) {
+            case "month":
+                nextTimeSpan = LocalDateTime.of(localDate.plusMonths(1L).with(lastDayOfMonth()), LocalTime.MAX);
+                break;
+            case "week":
+                nextTimeSpan = LocalDateTime.of(localDate.plusDays(7L), LocalTime.MAX);
+                break;
+        }
+
+        return nextTimeSpan;
+    }
+
+    /**
+     * Finding previous time frame. It is needed when querying DB for entries from current time frame,
+     * because the calendar view sometimes shows a few days from previous and following month.
+     */
+    private LocalDateTime getPreviousTimeFrame(String chosenView, LocalDate localDate) {
+        LocalDateTime previousTimeSpan = null;
+        switch (chosenView) {
+            case "month":
+                previousTimeSpan = LocalDateTime.of(localDate.minusMonths(1L).with(firstDayOfMonth()), LocalTime.MIN);
+                break;
+            case "week":
+                previousTimeSpan = LocalDateTime.of(localDate.minusDays(7L), LocalTime.MIN);
+                break;
+        }
+        return previousTimeSpan;
+    }
+
+    /**
+     * Text that shows currently chosen month and year MM/yyyy.
+     */
+    private String createCurrentTimeSpanText(LocalDate localDate) {
+        return
+                localDate.format(DateTimeFormatter.ofPattern("  MM/yyyy", new Locale("pl", "PL")));
     }
 }

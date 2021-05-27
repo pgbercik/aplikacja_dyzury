@@ -46,7 +46,7 @@ public class BackgroundCalendarUpdaterThread extends Thread {
 
                     //wywołujemy metodę aktualizującą dane wyświetlane w kalendarzu
                     // we are running a method that updates data shown in calendar
-                    calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, entryDyzurDbRepo, showCalendar.getChosenDateTime(),
+                    calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, showCalendar.getChosenDateTime(),
                             showCalendar.getChosenView(), showCalendar.getCurrentlyChosenTimeSpan(),
                             showCalendar.getHospitalId(), showCalendar.getHospitalIdDept(), email);
                     System.out.println(prettyTimeStamp);
