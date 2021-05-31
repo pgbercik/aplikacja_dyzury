@@ -77,7 +77,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         email = FindUserData.findCurrentlyLoggedInUser();
 
-        System.out.println(FindUserData.findFirstUserRoleString());
+
         FindUserData.findUserRoles();
 
 
@@ -90,7 +90,6 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         //we set session interval to 300 seconds, and after a bit more than that of no activity
         // (and closing browser tabs or window) the sessino ends together with background threads
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(300);
-        System.out.println("max session time[s]: " + VaadinSession.getCurrent().getSession().getMaxInactiveInterval());
 
         //skrypt JS sprawdzający czy user nie zmienił zakładki
         //a JS scriptr checking if the user changed tabs
@@ -119,7 +118,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 chosenDateTime = chosenDateTime.minusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
-                System.out.println(chosenDateTime + " - chosenDAteTime");
+
                 calendar.previous();
             }
             if (chosenView.equals("week")) {
@@ -127,7 +126,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 chosenDateTime = chosenDateTime.minusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
-                System.out.println(chosenDateTime + " - chosenDAteTime");
+
                 calendar.previous();
             }
         });
@@ -139,7 +138,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 chosenDateTime = chosenDateTime.plusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
-                System.out.println(chosenDateTime + " - chosenDAteTime");
+
                 calendar.next();
             }
             if (chosenView.equals("week")) {
@@ -147,7 +146,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 chosenDateTime = chosenDateTime.plusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
                          chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
-                System.out.println(chosenDateTime + " - chosenDAteTime");
+
                 calendar.next();
             }
 
@@ -235,11 +234,11 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         calendar.addEntryDroppedListener(entryDroppedEvent -> {
 
 
-            System.out.println(entryDroppedEvent.getEntry() + " | po kliknięciu zmiany");
+
 
             Entry entry = entryDroppedEvent.getEntry();
 
-            System.out.println(entry.toString() + "ZMIANY");
+
 
             String entryToEditID = entryDyzurDbRepo.findEntryToEdit(/*entryDroppedEvent.getEntry().getColor(),*/
                     entryDroppedEvent.getEntry().getDescription(), entryDroppedEvent.getEntry().getStart(),
@@ -250,7 +249,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             entryDroppedEvent.applyChangesOnEntry();
 
 
-            System.out.println(entryToEditID + "entry do edycji");
+
 
 
             new DialogAddEditEvent(calendar, entry, false, entryDyzurDbRepo, entryToEditID,
@@ -269,7 +268,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             String entryToEditID = entryDyzurDbRepo.findEntryToEdit(/*event.getEntry().getColor(),*/
                     event.getEntry().getDescription(), event.getEntry().getStart(), event.getEntry().getEnd(),
                     event.getEntry().getHospital(), event.getEntry().getTitle());
-            System.out.println(entryToEditID + "z CalendarView");
+
 
             Entry entry = event.getEntry();
 
@@ -284,7 +283,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         calendar.addTimeslotsSelectedListener((event) -> {
 
             Long diffInDays = DAYS.between(LocalDate.now(), event.getStartDateTime());
-            System.out.println("diffInDays = " + diffInDays + " | startdate = " + event.getStartDateTime());
+
             if (diffInDays >= -14) {
                 Entry entry;
                 entry = new Entry();

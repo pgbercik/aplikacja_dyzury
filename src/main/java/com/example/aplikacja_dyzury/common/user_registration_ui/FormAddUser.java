@@ -81,7 +81,7 @@ public class FormAddUser extends VerticalLayout {
         save.addClickListener(event -> {
             binder.validate();
             if (binder.isValid()) {
-                System.out.println(user.toString());
+
 
                 List<User> alreadyExistingUsers = userRepository.findAlreadyExistingUsers(
                         email.getValue(),firstName.getValue(),lastName.getValue());

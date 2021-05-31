@@ -62,12 +62,12 @@ public class DialogEntryExchange extends Dialog {
 //
         datePicker.addValueChangeListener(event -> {
             List<EntryDyzurDb> entryDyzurDbs = entryDyzurDbRepo.findAllWithStartDateGiven(datePicker.getValue());
-            System.out.println("entryDyzurDbs: "+entryDyzurDbs);
+
 
 
 
             Long diffInDays = DAYS.between(LocalDate.now(),datePicker.getValue());
-            System.out.println("różnica w dniach między datą dzisiejszą, a starttime z formularza " + diffInDays);
+
 
             if (diffInDays>=0) {
                 if (!entryDyzurDbs.isEmpty()) {
@@ -117,7 +117,7 @@ public class DialogEntryExchange extends Dialog {
         btnSendExchangeRequest.addClickListener(event3 -> {
             if (requests!=null) {
                 requestsRepo.save(requests);
-                System.out.println("dodajemy wpis");
+
                 Notification.show("Wysłano prośbę o zamianę.",2000, Notification.Position.MIDDLE);
                 close();
             }

@@ -27,8 +27,7 @@ public class CsvExportDataProvider {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
-        System.out.println("start date: " + startDateTime);
-        System.out.println("end date: " + endDateTime);
+
 
 
         List<EntryDyzurDb> entriesMatching = new ArrayList<>();
@@ -39,8 +38,7 @@ public class CsvExportDataProvider {
         if (mode.equals("wybrany oddział"))
             entriesMatching = entryDyzurDbRepo.findAllByStartTimeAndUserIdLike(startDateTime, endDateTime, hospitalId, deptID);
 
-//        System.out.println("ZNALEZIONE WPISY Z CAŁEGO OKRESU");
-//            entriesMatching.forEach(entryDyzurDb -> System.out.println(entryDyzurDb.getId()+" | "+entryDyzurDb.getStartTime()+" | "+entryDyzurDb.getEndTime()));
+
 
 
         return entriesMatching;

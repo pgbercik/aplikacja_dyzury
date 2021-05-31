@@ -63,7 +63,7 @@ public class FormAddHospital extends VerticalLayout {
 
 
                 if (alreadyExistingHospitals.isEmpty()) {
-                    System.out.println(hospital.toString());
+
 
                     try {
                         hospital.setActive(false);

@@ -95,7 +95,7 @@ public class DialogExportToCSV extends Dialog {
                 long daysBetween = DAYS.between(dateStart.getValue(), dateEnd.getValue());
 
                 if (daysBetween>=0) {
-                    System.out.println("szpital i oddział "+hospitalId+" | "+deptId);
+
 
                     if (deptModeButton.getValue().equals("wszystkie oddziały")) {
                         exportToCSV(entryDyzurDbRepo);
@@ -147,15 +147,14 @@ public class DialogExportToCSV extends Dialog {
                         String location = "Dyżur w szpitalu: "+entryDyzurDb1.getHospital().getName()+
                                 " na oddziale: "+entryDyzurDb1.getHospitalDepartment().getDepartment();
 
-                        System.out.println(title+","+startDate+","+startTime+","+endDate+","+endTime+","+description+","+location);
+
                         googleCalendarPoJos.add(new GoogleCalendarPoJo(title,startDate,startTime,endDate,endTime,description,location));
                     }
                 }
 
 
                 for (GoogleCalendarPoJo googleCalendarPoJo :googleCalendarPoJos) {
-                    System.out.println("GOOGLE POJO"+googleCalendarPoJo.getSubjectTitle()+" | " +googleCalendarPoJo.getStartDate()
-                            +googleCalendarPoJo.getStartTime()+" | "+googleCalendarPoJo.getEndDate()+googleCalendarPoJo.getEndTime());
+
                     exportedEntriesCounter+=1;
                 }
                 CsvFileWriter.writeDataLineByLine("calendar.csv",googleCalendarPoJos);

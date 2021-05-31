@@ -49,7 +49,7 @@ public class BackgroundCalendarUpdaterThread extends Thread {
                     calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, showCalendar.getChosenDateTime(),
                             showCalendar.getChosenView(), showCalendar.getCurrentlyChosenTimeSpan(),
                             showCalendar.getHospitalId(), showCalendar.getHospitalIdDept(), email);
-                    System.out.println(prettyTimeStamp);
+
 
                 });
             }

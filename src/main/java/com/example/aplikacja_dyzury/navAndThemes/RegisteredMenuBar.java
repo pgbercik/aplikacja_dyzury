@@ -41,7 +41,7 @@ public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftRes
     @Autowired
     public RegisteredMenuBar(UserRepository userRepository) {
 //        FindUserData findUserData = new FindUserData();
-        System.out.println(FindUserData.findFirstUserRoleString() +"rola w registered menu bar");
+
         User loggedInUserDetails =  userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
 
         if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {

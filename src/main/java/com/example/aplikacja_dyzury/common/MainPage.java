@@ -141,7 +141,7 @@ public class MainPage extends VerticalLayout {
 
         Page<Requests> requestsFound = requestsRepo.findAllReceived(true, loggedInUserDetails.getId(), PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
-                System.out.println("znalezione requesty " + totalPages);
+
         currentPage.setText(page + 1 + " z " + totalPages);
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
 
@@ -177,8 +177,7 @@ public class MainPage extends VerticalLayout {
                                 Set<User> targetEntryUsers = targetEntry.getUsers();
                     User initUser = userRepository.findByEmail(customRequestView.getInitUser().getEmail());
                     User targetUser = userRepository.findByEmail(customRequestView.getTargetUser().getEmail());
-                    System.out.println(initUser);
-                    System.out.println(targetUser);
+
 
                     initEntry.getUsers().removeIf(user ->
                             user.getId().equals(initUser.getId())
@@ -250,7 +249,7 @@ public class MainPage extends VerticalLayout {
 
         Page<Requests> requestsFound = requestsRepo.findAllReceived(false, loggedInUserDetails.getId(),PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
-                System.out.println("znalezione requesty " + totalPages);
+
         currentPage.setText(page + 1 + " z " + totalPages);
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
 

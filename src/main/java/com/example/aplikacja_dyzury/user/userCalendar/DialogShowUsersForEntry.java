@@ -35,7 +35,7 @@ public class DialogShowUsersForEntry extends Dialog {
 
         EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
         Set<User> foundUsers = entryDyzurDb.getUsers();
-        System.out.println("found users: "+foundUsers);
+
 
         if (!foundUsers.isEmpty()) {
 
