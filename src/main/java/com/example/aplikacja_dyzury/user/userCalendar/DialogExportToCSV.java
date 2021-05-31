@@ -5,7 +5,9 @@ import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.DataModelAndRepo.User;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.example.aplikacja_dyzury.common.user_registration_ui.GoogleCalendarPoJo;
-import com.example.aplikacja_dyzury.user.userCalendar.csv.CsvUtils;
+import com.example.aplikacja_dyzury.user.userCalendar.csv.CsvExportDataProvider;
+import com.example.aplikacja_dyzury.user.userCalendar.csv.CsvFileWriter;
+import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.TimeDateTranslation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -19,7 +21,6 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import org.vaadin.olli.FileDownloadWrapper;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +38,7 @@ public class DialogExportToCSV extends Dialog {
     private RadioButtonGroup<String> deptModeButton;
     private Long hospitalId,deptId;
 
-    public DialogExportToCSV(CalendarDataProvider calendarDataProvider, EntryDyzurDbRepo entryDyzurDbRepo,
-                             FindUserData findUserData, Long hospitalId, Long deptId) {
+    public DialogExportToCSV(EntryDyzurDbRepo entryDyzurDbRepo, Long hospitalId, Long deptId) {
         this.hospitalId=hospitalId;
         this.deptId=deptId;
 
@@ -55,21 +55,9 @@ public class DialogExportToCSV extends Dialog {
         dateStart = new DatePicker("Początek");
         dateEnd = new DatePicker("Koniec");
 
-        dateStart.setI18n(
-                new DatePicker.DatePickerI18n().setWeek("tydzień").setCalendar("kalendarz")
-                        .setClear("Wyczyść").setToday("dzisiaj")
-                        .setCancel("Anuluj").setFirstDayOfWeek(1)
-                        .setMonthNames(Arrays.asList("styczeń", "luty",
-                                "marzec", "kwiecień", "maj", "czerwiec",
-                                "lipiec", "sierpień", "wrzesień", "październik",
-                                "listopad", "grudzień")).setWeekdays(
-                        Arrays.asList("niedziela", "poniedziałek", "wtorek",
-                                "środa", "czwartek", "piątek",
-                                "sobota")).setWeekdaysShort(
-                        Arrays.asList("nd.", "pon.", "wt.", "śr.", "czw.", "pt.",
-                                "sob.")));
+        TimeDateTranslation.makeDatePickerPolish(dateStart);
+        TimeDateTranslation.makeDatePickerPolish(dateEnd);
 
-        dateEnd.setI18n(dateStart.getI18n());
         layout.add(dateStart,dateEnd);
         deptModeButton = new RadioButtonGroup<>();
         deptModeButton.setItems("wszystkie oddziały", "wybrany oddział");
@@ -110,12 +98,12 @@ public class DialogExportToCSV extends Dialog {
                     System.out.println("szpital i oddział "+hospitalId+" | "+deptId);
 
                     if (deptModeButton.getValue().equals("wszystkie oddziały")) {
-                        exportToCSV(calendarDataProvider,entryDyzurDbRepo);
+                        exportToCSV(entryDyzurDbRepo);
                         add(verticalLayout);
                         numberOfFoundEntries.setText("Znalezione wydarzenia: "+exportedEntriesCounter);
                     }
                     if (deptModeButton.getValue().equals("wybrany oddział") && hospitalId!=null && deptId!=null) {
-                        exportToCSV(calendarDataProvider,entryDyzurDbRepo);
+                        exportToCSV(entryDyzurDbRepo);
                         add(verticalLayout);
                         numberOfFoundEntries.setText("Znalezione wydarzenia: "+exportedEntriesCounter);
                     }
@@ -135,12 +123,12 @@ public class DialogExportToCSV extends Dialog {
 
     }
 
-    private void exportToCSV(CalendarDataProvider calendarDataProvider, EntryDyzurDbRepo entryDyzurDbRepo) {
+    private void exportToCSV(EntryDyzurDbRepo entryDyzurDbRepo) {
         exportedEntriesCounter=0;
 
         if (dateStart.getValue()!=null && dateEnd.getValue()!=null) {
-
-            List<EntryDyzurDb> entriesMatching = calendarDataProvider.getDataForGoogleCalendar(dateStart.getValue(),dateEnd.getValue(),deptModeButton.getValue(),hospitalId,deptId);
+            CsvExportDataProvider csvExportDataProvider = new CsvExportDataProvider(entryDyzurDbRepo);
+            List<EntryDyzurDb> entriesMatching = csvExportDataProvider.getDataForGoogleCalendar(dateStart.getValue(),dateEnd.getValue(),deptModeButton.getValue(),hospitalId,deptId);
             if (!entriesMatching.isEmpty()) {
                 List<GoogleCalendarPoJo> googleCalendarPoJos = new ArrayList<>();
                 for (EntryDyzurDb entryDyzurDb1 : entriesMatching) {
@@ -170,7 +158,7 @@ public class DialogExportToCSV extends Dialog {
                             +googleCalendarPoJo.getStartTime()+" | "+googleCalendarPoJo.getEndDate()+googleCalendarPoJo.getEndTime());
                     exportedEntriesCounter+=1;
                 }
-                CsvUtils.writeDataLineByLine("calendar.csv",googleCalendarPoJos);
+                CsvFileWriter.writeDataLineByLine("calendar.csv",googleCalendarPoJos);
 
             }
         }

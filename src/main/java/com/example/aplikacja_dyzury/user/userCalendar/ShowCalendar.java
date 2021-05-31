@@ -154,7 +154,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         });
         Button btnExport = new Button("Export do kalendarza Google", VaadinIcon.CALENDAR_O.create());
 
-        btnExport.addClickListener(event -> new DialogExportToCSV(calendarDataProvider, entryDyzurDbRepo, null, hospitalId, hospitalIdDept).open());
+        btnExport.addClickListener(event -> new DialogExportToCSV(entryDyzurDbRepo, hospitalId, hospitalIdDept).open());
 
 
 
