@@ -25,7 +25,6 @@ import org.springframework.security.access.annotation.Secured;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
 @PageTitle("Strona główna")
@@ -36,19 +35,29 @@ public class MainPage extends VerticalLayout {
     private List<CustomRequestView> customRequestViews;
     private Grid<CustomRequestView> grid;
     private  int page=0;
-    private int size=5;
+    private final int size=5;
     private HorizontalLayout horizontalLayout;
     private int totalPages=0;
-    private User loggedInUserDetails;
-    private DateTimeFormatter formatter;
-    private Button btnNextPage,btnPreviousPage;
-    private H5 currentPage;
+    private final User loggedInUserDetails;
+    private final DateTimeFormatter formatter;
+    private final H5 currentPage;
+
+    private final UserRepository userRepository;
+    private final RequestsRepo requestsRepo;
+    private final RequestStatusRepo requestStatusRepo;
+    private final EntryDyzurDbRepo entryDyzurDbRepo;
 
 
 
 
     @Autowired
     public MainPage(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo,EntryDyzurDbRepo entryDyzurDbRepo) {
+
+        this.userRepository = userRepository;
+        this. requestsRepo = requestsRepo;
+        this.requestStatusRepo = requestStatusRepo;
+        this.entryDyzurDbRepo = entryDyzurDbRepo;
+
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
         currentPage = new H5(page + 1 + " z " + 1);
@@ -72,16 +81,16 @@ public class MainPage extends VerticalLayout {
 
             add(currentOrHistory);
 
-            btnNextPage = new Button("Następna strona");
-            btnPreviousPage = new Button("Poprzednia strona");
+            Button btnNextPage = new Button("Następna strona");
+            Button btnPreviousPage = new Button("Poprzednia strona");
             btnNextPage.addClickListener(event -> {
 
                 if (page < totalPages - 1) {
                     if (currentOrHistory.getValue().equals("do rozpatrzenia")) {
-                        addTableWithPaginationWithButtons(page += 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
+                        showRequestsToDecide(page += 1, size);
                     }
                     if (currentOrHistory.getValue().equals("rozpatrzone")) {
-                        addTableWithPagination(page += 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
+                        showRequestsDecided(page += 1, size);
                     }
                 }
 
@@ -91,10 +100,10 @@ public class MainPage extends VerticalLayout {
 
                 if (page > 0) {
                     if (currentOrHistory.getValue().equals("do rozpatrzenia")) {
-                        addTableWithPaginationWithButtons(page -= 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
+                        showRequestsToDecide(page -= 1, size);
                     }
                     if (currentOrHistory.getValue().equals("rozpatrzone")) {
-                        addTableWithPagination(page -= 1, size, requestsRepo, requestStatusRepo, entryDyzurDbRepo, userRepository);
+                        showRequestsDecided(page -= 1, size);
                     }
                 }
 
@@ -104,11 +113,11 @@ public class MainPage extends VerticalLayout {
 
 
 
-            horizontalLayout.add(btnPreviousPage,currentPage,btnNextPage);
+            horizontalLayout.add(btnPreviousPage,currentPage, btnNextPage);
 
             //wstępnie wyświetlamy te do rozpatrzenia
             //we're showing duty swap requests that have not been accepted or declined yet
-            addTableWithPaginationWithButtons(page,size,requestsRepo,requestStatusRepo,entryDyzurDbRepo,userRepository);
+            showRequestsToDecide(page,size);
 
 
 
@@ -116,10 +125,10 @@ public class MainPage extends VerticalLayout {
             currentOrHistory.addValueChangeListener(event -> {
 
                 if (event.getValue().equals("do rozpatrzenia")) {
-                    addTableWithPaginationWithButtons(page,size,requestsRepo,requestStatusRepo,entryDyzurDbRepo,userRepository);
+                    showRequestsToDecide(page,size);
                 }
                 if (event.getValue().equals("rozpatrzone")) {
-                    addTableWithPagination(page,size,requestsRepo,requestStatusRepo,entryDyzurDbRepo,userRepository);
+                    showRequestsDecided(page,size);
                 }
             });
 
@@ -131,13 +140,9 @@ public class MainPage extends VerticalLayout {
 
         }
     }
-    public void addTableWithPaginationWithButtons(int page,int size,RequestsRepo requestsRepo,RequestStatusRepo requestStatusRepo,
-                                                  EntryDyzurDbRepo entryDyzurDbRepo, UserRepository userRepository) {
+    public void showRequestsToDecide(int page, int size) {
 
-        removeAll();
-        add(new H2("Przychodzące propozycje zamiany dyżurów"));
-        add(currentOrHistory);
-        add(horizontalLayout);
+        clearUI();
 
         Page<Requests> requestsFound = requestsRepo.findAllReceived(true, loggedInUserDetails.getId(), PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
@@ -147,92 +152,13 @@ public class MainPage extends VerticalLayout {
 
 
         customRequestViews = new ArrayList<>();
-        customRequestViews.clear();
-        for (Requests requests1 : requestsFound) {
-            customRequestViews.add(new CustomRequestView(requests1.getRequestId(),requests1.getDescription(), requests1.getRequestTime(),
-                    requestStatuses.get(requests1.getStatus() - 1).getStateName(), requests1.getUserInit().getFirstName() + " " + requests1.getUserInit().getLastName(),
-                    requests1.getUserTarget().getFirstName() + " " + requests1.getUserTarget().getLastName(), requests1.getEntryTarget().getTitle(),
-                    requests1.getEntryTarget().getStartTime(), requests1.getEntryInitial(), requests1.getEntryTarget(),requests1.getUserInit(),requests1.getUserTarget()
-            ));
-        }
+        addEntriesToTable(requestsFound, requestStatuses);
         if (!customRequestViews.isEmpty()) {
 
-            grid = new Grid<>();
-            grid.setItems(customRequestViews);
-            grid.setColumnReorderingAllowed(true);
-
-            grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getInitUserName).setHeader("Zgłoszenie wysłał").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getTargetEntryName).setHeader("Dotyczy dyżuru").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getTargetEntryTime).setHeader("Odbywającego się").setAutoWidth(true);
-
-            grid.setHeight("490px");
-            grid.addComponentColumn(customRequestView -> {
-                Button button = new Button("Akceptuj");
-                button.addClickListener(event1 -> {
-                    EntryDyzurDb initEntry = entryDyzurDbRepo.findByID(customRequestView.getInitEntry().getId());
-
-                    EntryDyzurDb targetEntry = entryDyzurDbRepo.findByID(customRequestView.getTargetEntry().getId());
-                                Set<User> targetEntryUsers = targetEntry.getUsers();
-                    User initUser = userRepository.findByEmail(customRequestView.getInitUser().getEmail());
-                    User targetUser = userRepository.findByEmail(customRequestView.getTargetUser().getEmail());
-                    System.out.println(initUser);
-                    System.out.println(targetUser);
-
-                    initEntry.getUsers().removeIf(user ->
-                            user.getId().equals(initUser.getId())
-                    );
-                    initEntry.getUsers().add(targetUser);
-                    entryDyzurDbRepo.save(initEntry);
-
-                    targetEntry.getUsers().removeIf(user ->
-                            user.getId().equals(targetUser.getId())
-                    );
-                    targetEntry.getUsers().add(initUser);
-                    entryDyzurDbRepo.save(targetEntry);
-
-
-
-                    Requests requestsToUpdate = requestsRepo.findWithId(customRequestView.getRequestId());
-                    requestsToUpdate.setActive(false);
-                    requestsToUpdate.setStatus(2);
-                    requestsRepo.save(requestsToUpdate);
-
-                    currentOrHistory.setValue("rozpatrzone");
-
-
-                });
-
-                return button;
-            });
-            grid.addComponentColumn(customRequestView -> {
-                Button button = new Button("Odmów");
-                button.addClickListener(event2 -> {
-
-                    Requests requestsToUpdate = requestsRepo.findWithId(customRequestView.getRequestId());
-                    requestsToUpdate.setActive(false);
-                    requestsToUpdate.setStatus(3);
-                    requestsRepo.save(requestsToUpdate);
-
-                    currentOrHistory.setValue("rozpatrzone");
-
-                });
-
-                return button;
-            });
-            grid.setItemDetailsRenderer(new ComponentRenderer<>(customRequestView -> {
-                VerticalLayout verticalLayout = new VerticalLayout();
-                verticalLayout.add(new H5("Nazwa dyżuru nadawcy:    " + customRequestView.getInitEntry().getTitle()));
-                verticalLayout.add(new H5("Data rozpoczęcia:    " + customRequestView.getInitEntry().getStartTime().format(formatter)));
-                verticalLayout.add(new H5("Data zakończenia:    " + customRequestView.getInitEntry().getEndTime().format(formatter)));
-                verticalLayout.add(new H5("Miejsce dyżuru:    "+customRequestView.getInitEntry().getHospital().getName()));
-                verticalLayout.add(new H5("Oddział:    "+customRequestView.getInitEntry().getHospitalDepartment().getDepartment()));
-
-                return verticalLayout;
-
-            }));
-
+            addSharedGridConfig();
+            grid.addComponentColumn(this::requestAcceptAction);
+            grid.addComponentColumn(this::requestDeclineAction);
+            grid.setItemDetailsRenderer(new ComponentRenderer<>(this::generateDutyDetailsText));
 
             add(grid);
 
@@ -240,60 +166,131 @@ public class MainPage extends VerticalLayout {
         else add(new H3("Brak wpisów"));
     }
 
-    public void addTableWithPagination(int page,int size,RequestsRepo requestsRepo,RequestStatusRepo requestStatusRepo,
-                                       EntryDyzurDbRepo entryDyzurDbRepo, UserRepository userRepository) {
+    private void addEntriesToTable(Page<Requests> requestsFound, List<RequestStatus> requestStatuses) {
+        for (Requests r1 : requestsFound) {
+            customRequestViews.add(new CustomRequestView(r1.getRequestId(), r1.getDescription(), r1.getRequestTime(),
+                    requestStatuses.get(r1.getStatus() - 1).getStateName(), r1.getUserInit().getFirstName()
+                    + " " + r1.getUserInit().getLastName(), r1.getUserTarget().getFirstName()
+                    + " " + r1.getUserTarget().getLastName(), r1.getEntryTarget().getTitle(),
+                    r1.getEntryTarget().getStartTime(), r1.getEntryInitial(), r1.getEntryTarget(), r1.getUserInit(),
+                    r1.getUserTarget()
+            ));
+        }
+    }
 
-        removeAll();
-        add(new H2("Przychodzące propozycje zamiany dyżurów"));
-        add(currentOrHistory);
-        add(horizontalLayout);
+    public void showRequestsDecided(int page, int size) {
+
+        clearUI();
 
         Page<Requests> requestsFound = requestsRepo.findAllReceived(false, loggedInUserDetails.getId(),PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
-                System.out.println("znalezione requesty " + totalPages);
+        System.out.println("znalezione requesty " + totalPages);
         currentPage.setText(page + 1 + " z " + totalPages);
         List<RequestStatus> requestStatuses = requestStatusRepo.findAll();
 
 
         customRequestViews = new ArrayList<>();
-        customRequestViews.clear();
-        for (Requests requests1 : requestsFound) {
-            customRequestViews.add(new CustomRequestView(requests1.getRequestId(),requests1.getDescription(), requests1.getRequestTime(),
-                    requestStatuses.get(requests1.getStatus() - 1).getStateName(), requests1.getUserInit().getFirstName() + " " + requests1.getUserInit().getLastName(),
-                    requests1.getUserTarget().getFirstName() + " " + requests1.getUserTarget().getLastName(), requests1.getEntryTarget().getTitle(),
-                    requests1.getEntryTarget().getStartTime(), requests1.getEntryInitial(), requests1.getEntryTarget(),requests1.getUserInit(),requests1.getUserTarget()
-            ));
-        }
+        addEntriesToTable(requestsFound, requestStatuses);
         if (!customRequestViews.isEmpty()) {
 
-            grid = new Grid<>();
-            grid.setItems(customRequestViews);
-            grid.setColumnReorderingAllowed(true);
-
-            grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getInitUserName).setHeader("Zgłoszenie wysłał(a)").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getTargetEntryName).setHeader("Dotyczy dyżuru").setAutoWidth(true);
-            grid.addColumn(CustomRequestView::getTargetEntryTime).setHeader("Odbywającego się").setAutoWidth(true);
-
-            grid.setHeight("490px");
-
-            grid.setItemDetailsRenderer(new ComponentRenderer<>(customRequestView -> {
-                VerticalLayout verticalLayout = new VerticalLayout();
-                verticalLayout.add(new H5("Nazwa dyżuru nadawcy:    " + customRequestView.getInitEntry().getTitle()));
-                verticalLayout.add(new H5("Data rozpoczęcia:    " + customRequestView.getInitEntry().getStartTime().format(formatter)));
-                verticalLayout.add(new H5("Data zakończenia:    " + customRequestView.getInitEntry().getEndTime().format(formatter)));
-                verticalLayout.add(new H5("Miejsce dyżuru:    "+customRequestView.getInitEntry().getHospital().getName()));
-                verticalLayout.add(new H5("Oddział:    "+customRequestView.getInitEntry().getHospitalDepartment().getDepartment()));
-
-                return verticalLayout;
-
-            }));
-
-
+            addSharedGridConfig();
+            grid.setItemDetailsRenderer(new ComponentRenderer<>(this::generateDutyDetailsText));
             add(grid);
 
         }
         else add(new H3("Brak wpisów"));
+    }
+
+    private Button requestDeclineAction(CustomRequestView customRequestView) {
+        Button button = new Button("Odmów");
+        button.addClickListener(event2 -> {
+
+            Requests requestsToUpdate = requestsRepo.findWithId(customRequestView.getRequestId());
+            requestsToUpdate.setActive(false);
+            requestsToUpdate.setStatus(3);
+            requestsRepo.save(requestsToUpdate);
+
+            currentOrHistory.setValue("rozpatrzone");
+
+        });
+
+        return button;
+    }
+
+    private Button requestAcceptAction(CustomRequestView customRequestView) {
+        Button button = new Button("Akceptuj");
+        button.addClickListener(event1 -> {
+            EntryDyzurDb initEntry = entryDyzurDbRepo.findByID(customRequestView.getInitEntry().getId());
+
+            EntryDyzurDb targetEntry = entryDyzurDbRepo.findByID(customRequestView.getTargetEntry().getId());
+            User initUser = userRepository.findByEmail(customRequestView.getInitUser().getEmail());
+            User targetUser = userRepository.findByEmail(customRequestView.getTargetUser().getEmail());
+            System.out.println(initUser);
+            System.out.println(targetUser);
+
+            initEntry.getUsers().removeIf(user ->
+                    user.getId().equals(initUser.getId())
+            );
+            initEntry.getUsers().add(targetUser);
+            entryDyzurDbRepo.save(initEntry);
+
+            targetEntry.getUsers().removeIf(user ->
+                    user.getId().equals(targetUser.getId())
+            );
+            targetEntry.getUsers().add(initUser);
+            entryDyzurDbRepo.save(targetEntry);
+
+
+
+            Requests requestsToUpdate = requestsRepo.findWithId(customRequestView.getRequestId());
+            requestsToUpdate.setActive(false);
+            requestsToUpdate.setStatus(2);
+            requestsRepo.save(requestsToUpdate);
+
+            currentOrHistory.setValue("rozpatrzone");
+
+
+        });
+
+        return button;
+    }
+
+
+
+
+    private VerticalLayout generateDutyDetailsText(CustomRequestView view) {
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.add(new H5("Nazwa dyżuru nadawcy:    " + view.getInitEntry().getTitle()));
+        verticalLayout.add(new H5("Data rozpoczęcia:    " + view.getInitEntry().getStartTime().format(formatter)));
+        verticalLayout.add(new H5("Data zakończenia:    " + view.getInitEntry().getEndTime().format(formatter)));
+        verticalLayout.add(new H5("Miejsce dyżuru:    " + view.getInitEntry().getHospital().getName()));
+        verticalLayout.add(new H5("Oddział:    " + view.getInitEntry().getHospitalDepartment().getDepartment()));
+        return verticalLayout;
+    }
+
+    /**
+     * We delete old table and UI elements and add new ones.
+     * */
+    private void clearUI() {
+        removeAll();
+        add(new H2("Przychodzące propozycje zamiany dyżurów"));
+        add(currentOrHistory);
+        add(horizontalLayout);
+    }
+    /**
+     * A part of grid configuration shared between decided requests and not decided requests.
+     * */
+    private void addSharedGridConfig() {
+        grid = new Grid<>();
+        grid.setItems(customRequestViews);
+        grid.setColumnReorderingAllowed(true);
+
+        grid.addColumn(CustomRequestView::getRequestTime).setHeader("Czas zgłoszenia").setAutoWidth(true);
+        grid.addColumn(CustomRequestView::getStatus).setHeader("Status").setAutoWidth(true);
+        grid.addColumn(CustomRequestView::getInitUserName).setHeader("Zgłoszenie wysłał(a)").setAutoWidth(true);
+        grid.addColumn(CustomRequestView::getTargetEntryName).setHeader("Dotyczy dyżuru").setAutoWidth(true);
+        grid.addColumn(CustomRequestView::getTargetEntryTime).setHeader("Odbywającego się").setAutoWidth(true);
+
+        grid.setHeight("490px");
     }
 }
