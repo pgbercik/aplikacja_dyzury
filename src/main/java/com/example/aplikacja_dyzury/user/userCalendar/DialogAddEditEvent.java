@@ -334,36 +334,45 @@ public class DialogAddEditEvent extends Dialog {
 
 
             Button buttonSignInToEntry = new Button("Zapisz się na dyżur",e -> {
-                boolean isUSerAlreadyAdded = false;
-//                FindUserData findUserData = new FindUserData();
-                String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
-                User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
 
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
+                Duration dur1 = Duration.between(entryDyzurDb.getStartTime(),LocalDateTime.now());
+                long diffInDays = dur1.toDays();
+                System.out.println("diffInDays: "+diffInDays);
+                if (diffInDays<=14) {
+                    boolean isUSerAlreadyAdded = false;
+//                FindUserData findUserData = new FindUserData();
+                    String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
+                    User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
 
-                Set<User> foundUsers = entryDyzurDb.getUsers();
 
-                int amountOfAddedUsers=0;
-                for (User user1 : foundUsers) {
-                    if (user1.getEmail().equals(currentlyLoggedInUsersEmail)) isUSerAlreadyAdded=true;
-                    amountOfAddedUsers+=1;
-                }
 
-                if (amountOfAddedUsers<8) {
-                    if (isUSerAlreadyAdded ) {
-                        Notification.show("Użytkownik jest już zapisany.",2000, Notification.Position.MIDDLE);
+                    Set<User> foundUsers = entryDyzurDb.getUsers();
+
+                    int amountOfAddedUsers=0;
+                    for (User user1 : foundUsers) {
+                        if (user1.getEmail().equals(currentlyLoggedInUsersEmail)) isUSerAlreadyAdded=true;
+                        amountOfAddedUsers+=1;
                     }
-                    else {
-                        entryDyzurDb.getUsers().add(userToAdd);
-                        entryDyzurDbRepo.save(entryDyzurDb);
 
-                        close();
+                    if (amountOfAddedUsers<8) {
+                        if (isUSerAlreadyAdded ) {
+                            Notification.show("Użytkownik jest już zapisany.",2000, Notification.Position.MIDDLE);
+                        }
+                        else {
+                            entryDyzurDb.getUsers().add(userToAdd);
+                            entryDyzurDbRepo.save(entryDyzurDb);
 
-                        calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
-                                chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
+                            close();
+
+                            calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
+                                    chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
+                        }
+                    } else {
+                        Notification.show("Na dyżur można zapisać maksymalnie "+amountOfAddedUsers+" użytkowników.",2000, Notification.Position.MIDDLE);
                     }
                 } else {
-                    Notification.show("Na dyżur można zapisać maksymalnie "+amountOfAddedUsers+" użytkowników.",2000, Notification.Position.MIDDLE);
+                    Notification.show("Nie wolno dopisywać się do dyżurów z datą wcześniejszą o ponad 2 tygodnie od bieżącej.", 3000, Notification.Position.MIDDLE);
                 }
 
 
@@ -376,6 +385,8 @@ public class DialogAddEditEvent extends Dialog {
 
 
             Button buttonRemoveFromEntry = new Button("Wypisz się",e->{
+
+
 //                FindUserData findUserData = new FindUserData();
                 String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
                 User userToRemove = userRepository.findByEmail(currentlyLoggedInUsersEmail);
@@ -385,14 +396,21 @@ public class DialogAddEditEvent extends Dialog {
                 System.out.println("user do wywalenia: "+userToRemove);
 
 
-                entryDyzurDb.getUsers().removeIf(user -> user.getId().equals(userToRemove.getId()));
-                entryDyzurDbRepo.save(entryDyzurDb);
+                Duration dur1 = Duration.between(entryDyzurDb.getStartTime(),LocalDateTime.now());
+                long diffInDays = dur1.toDays();
+                System.out.println("diffInDays: "+diffInDays);
+
+                if (diffInDays<=14) {
+                    entryDyzurDb.getUsers().removeIf(user -> user.getId().equals(userToRemove.getId()));
+                    entryDyzurDbRepo.save(entryDyzurDb);
 
 
-
-                close();
-                calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
-                        chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
+                    close();
+                    calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime,
+                            chosenView,currentlyChosenTimeSpan,hospitalId,hospitalIdDept,"");
+                } else {
+                    Notification.show("Nie można edytować dyżurów starszych niż 14 dni od daty bieżącej.",3000, Notification.Position.MIDDLE);
+                }
 
             });
             if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
@@ -408,8 +426,6 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
-
-
                 Duration dur1 = Duration.between(LocalDateTime.now(),entryDyzurDb.getStartTime());
                 long diffInDays = dur1.toDays();
                 System.out.println("różnica w dniach między datą dzisiejszą, a starttime" + diffInDays);
