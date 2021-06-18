@@ -106,9 +106,10 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         calendar.setFirstDay(DayOfWeek.MONDAY);
         //polskie dni tygodnia - polish names for weekdays
         calendar.setLocale(Locale.forLanguageTag("pl-PL"));
-        calendar.setHeight(490);
+//        calendar.setHeight(490);
 
         calendar.setTimeslotsSelectable(true);
+        calendar.setWidthFull();
         calendar.setNumberClickable(false);
 
         Button buttonPrevious = new Button("Wcześniej ", VaadinIcon.ANGLE_LEFT.create(), e -> {
