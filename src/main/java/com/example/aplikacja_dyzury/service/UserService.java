@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.User;
-import com.example.aplikacja_dyzury.DataModelAndRepo.UserRole;
-import com.example.aplikacja_dyzury.DataModelAndRepo.UserRepository;
-import com.example.aplikacja_dyzury.DataModelAndRepo.UserRoleRepository;
+import com.example.aplikacja_dyzury.data_model.User;
+import com.example.aplikacja_dyzury.data_model.UserRole;
+import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.repository.UserRoleRepository;
 
 
 @Service

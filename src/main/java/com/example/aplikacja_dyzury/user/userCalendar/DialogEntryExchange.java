@@ -1,8 +1,10 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.*;
-import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.data_model.*;
+import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
 
+import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
+import com.example.aplikacja_dyzury.repository.RequestsRepo;
 import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.TimeDateTranslation;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

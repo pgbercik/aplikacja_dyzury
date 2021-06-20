@@ -1,8 +1,8 @@
 package com.example.aplikacja_dyzury.admin.adminForms;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.Hospital;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalRepo;
-import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.data_model.Hospital;
+import com.example.aplikacja_dyzury.repository.HospitalRepo;
+import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.notification.Notification;

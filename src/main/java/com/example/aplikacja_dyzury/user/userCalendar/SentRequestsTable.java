@@ -1,13 +1,16 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.*;
-import com.example.aplikacja_dyzury.DataModelAndRepo.custom_pojo.CustomRequestView;
+import com.example.aplikacja_dyzury.data_model.*;
+import com.example.aplikacja_dyzury.data_model.custom_pojo.CustomRequestView;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
+import com.example.aplikacja_dyzury.repository.RequestStatusRepo;
+import com.example.aplikacja_dyzury.repository.RequestsRepo;
+import com.example.aplikacja_dyzury.repository.UserRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H5;

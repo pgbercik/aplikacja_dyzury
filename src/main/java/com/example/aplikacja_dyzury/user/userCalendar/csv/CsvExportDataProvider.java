@@ -1,7 +1,7 @@
 package com.example.aplikacja_dyzury.user.userCalendar.csv;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDb;
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
+import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
+import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -1,17 +1,15 @@
 package com.example.aplikacja_dyzury.admin.adminTables;
 
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.Hospital;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartment;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartmentRepo;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalRepo;
+import com.example.aplikacja_dyzury.data_model.Hospital;
+import com.example.aplikacja_dyzury.repository.HospitalDepartmentRepo;
+import com.example.aplikacja_dyzury.repository.HospitalRepo;
 
-import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
-import com.example.aplikacja_dyzury.navAndThemes.ThemeChanger;
+import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.nav_and_themes.ThemeChanger;
 import com.example.aplikacja_dyzury.admin.adminDialogs.AddDepartmentDialog;
 import com.example.aplikacja_dyzury.admin.adminDialogs.EditHospitalDataDialog;
 import com.example.aplikacja_dyzury.admin.adminDialogs.ShowEditDepartmentsDialog;
-import com.helger.commons.state.ICloseable;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
@@ -22,7 +20,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 
 

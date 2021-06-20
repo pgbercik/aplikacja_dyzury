@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.User;
-import com.example.aplikacja_dyzury.DataModelAndRepo.UserRole;
-import com.example.aplikacja_dyzury.DataModelAndRepo.UserRepository;
+import com.example.aplikacja_dyzury.data_model.User;
+import com.example.aplikacja_dyzury.data_model.UserRole;
+import com.example.aplikacja_dyzury.repository.UserRepository;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {

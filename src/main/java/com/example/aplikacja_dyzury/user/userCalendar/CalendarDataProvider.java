@@ -1,8 +1,8 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDb;
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.DataModelAndRepo.User;
+import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
+import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
+import com.example.aplikacja_dyzury.data_model.User;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.vaadin.flow.component.html.H4;
 import org.vaadin.stefan.fullcalendar.Entry;

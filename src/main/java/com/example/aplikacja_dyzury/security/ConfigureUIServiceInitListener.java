@@ -1,6 +1,6 @@
 package com.example.aplikacja_dyzury.security;
 
-import com.example.aplikacja_dyzury.navAndThemes.NonRegisteredMenuBar;
+import com.example.aplikacja_dyzury.nav_and_themes.NonRegisteredMenuBar;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;

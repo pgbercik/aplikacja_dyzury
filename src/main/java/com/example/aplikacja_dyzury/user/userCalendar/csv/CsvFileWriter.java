@@ -1,6 +1,7 @@
 package com.example.aplikacja_dyzury.user.userCalendar.csv;
 
-import com.example.aplikacja_dyzury.common.user_registration_ui.GoogleCalendarPoJo;
+
+import com.example.aplikacja_dyzury.data_model.google_calendar_pojo.GoogleCalendarPoJo;
 import com.opencsv.CSVWriter;
 
 import java.io.File;

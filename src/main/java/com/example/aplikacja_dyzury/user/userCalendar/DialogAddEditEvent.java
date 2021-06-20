@@ -1,7 +1,8 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.*;
+import com.example.aplikacja_dyzury.data_model.*;
 import com.example.aplikacja_dyzury.FindUserData;
+import com.example.aplikacja_dyzury.repository.*;
 import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.CustomDateTimePicker;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -44,8 +45,8 @@ public class DialogAddEditEvent extends Dialog {
 
     public DialogAddEditEvent(FullCalendar calendar, Entry entry, boolean newInstance, EntryDyzurDbRepo entryDyzurDbRepo, String id,
                               HospitalRepo hospitalRepo, HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository,
-                              String chosenView, H4 currentlyChosenTimeSpan,Long hospitalId,Long hospitalIdDept,
-                              LocalDate chosenDateTime, CalendarDataProvider calendarDataProvider,RequestsRepo requestsRepo) {
+                              String chosenView, H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept,
+                              LocalDate chosenDateTime, CalendarDataProvider calendarDataProvider, RequestsRepo requestsRepo) {
         this.entryDyzurDbRepo = entryDyzurDbRepo;
         this.id=id;
 

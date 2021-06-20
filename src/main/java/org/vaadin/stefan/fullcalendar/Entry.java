@@ -16,9 +16,9 @@
  */
 package org.vaadin.stefan.fullcalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.Hospital;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartment;
-import com.example.aplikacja_dyzury.DataModelAndRepo.User;
+import com.example.aplikacja_dyzury.data_model.Hospital;
+import com.example.aplikacja_dyzury.data_model.HospitalDepartment;
+import com.example.aplikacja_dyzury.data_model.User;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 

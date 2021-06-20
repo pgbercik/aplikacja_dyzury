@@ -1,8 +1,9 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.*;
+import com.example.aplikacja_dyzury.data_model.*;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.example.aplikacja_dyzury.navAndThemes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
+import com.example.aplikacja_dyzury.repository.*;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.DetachEvent;

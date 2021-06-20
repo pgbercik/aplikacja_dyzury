@@ -1,10 +1,10 @@
 package com.example.aplikacja_dyzury.user.userCalendar;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDb;
-import com.example.aplikacja_dyzury.DataModelAndRepo.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.DataModelAndRepo.User;
+import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
+import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
+import com.example.aplikacja_dyzury.data_model.User;
+import com.example.aplikacja_dyzury.data_model.google_calendar_pojo.GoogleCalendarPoJo;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.example.aplikacja_dyzury.common.user_registration_ui.GoogleCalendarPoJo;
 import com.example.aplikacja_dyzury.user.userCalendar.csv.CsvExportDataProvider;
 import com.example.aplikacja_dyzury.user.userCalendar.csv.CsvFileWriter;
 import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.TimeDateTranslation;
@@ -23,7 +23,6 @@ import org.vaadin.olli.FileDownloadWrapper;
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 

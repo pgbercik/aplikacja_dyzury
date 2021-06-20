@@ -1,9 +1,9 @@
 package com.example.aplikacja_dyzury.admin.adminDialogs;
 
-import com.example.aplikacja_dyzury.DataModelAndRepo.Hospital;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartment;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalDepartmentRepo;
-import com.example.aplikacja_dyzury.DataModelAndRepo.HospitalRepo;
+import com.example.aplikacja_dyzury.data_model.Hospital;
+import com.example.aplikacja_dyzury.data_model.HospitalDepartment;
+import com.example.aplikacja_dyzury.repository.HospitalDepartmentRepo;
+import com.example.aplikacja_dyzury.repository.HospitalRepo;
 
 
 import com.vaadin.flow.component.button.Button;
