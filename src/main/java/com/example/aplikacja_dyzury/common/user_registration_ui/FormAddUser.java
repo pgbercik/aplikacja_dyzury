@@ -28,11 +28,12 @@ import java.util.List;
 @PageTitle("Rejestracja")
 @Route(value = "formUser", layout = NonRegisteredMenuBar.class)
 public class FormAddUser extends VerticalLayout {
-    private TextField firstName, lastName;
-    private ComboBox<DoctorTitle> profTitle;
-    private EmailField email;
-    private PasswordField password;
-    private Binder<User> binder;
+    private final TextField firstName;
+    private final TextField lastName;
+    private final ComboBox<DoctorTitle> profTitle;
+    private final EmailField email;
+    private final PasswordField password;
+    private final Binder<User> binder;
 
     @Autowired
     public FormAddUser(UserService userService, DoctorTitleRepo doctorTitleRepo, UserRepository userRepository) {
@@ -81,7 +82,7 @@ public class FormAddUser extends VerticalLayout {
         save.addClickListener(event -> {
             binder.validate();
             if (binder.isValid()) {
-                System.out.println(user.toString());
+                System.out.println(user);
 
                 List<User> alreadyExistingUsers = userRepository.findAlreadyExistingUsers(
                         email.getValue(),firstName.getValue(),lastName.getValue());
