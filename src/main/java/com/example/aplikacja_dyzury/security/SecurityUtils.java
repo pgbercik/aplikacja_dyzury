@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.app.security;
+package com.example.aplikacja_dyzury.security;
 
 import com.vaadin.flow.server.ServletHelper.RequestType;
 import com.vaadin.flow.shared.ApplicationConstants;

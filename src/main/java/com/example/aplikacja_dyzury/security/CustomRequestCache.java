@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.app.security;
+package com.example.aplikacja_dyzury.security;
 
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 

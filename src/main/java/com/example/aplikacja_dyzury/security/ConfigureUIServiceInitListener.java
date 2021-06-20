@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.app.security;
+package com.example.aplikacja_dyzury.security;
 
 import com.example.aplikacja_dyzury.navAndThemes.NonRegisteredMenuBar;
 import com.vaadin.flow.component.UI;
