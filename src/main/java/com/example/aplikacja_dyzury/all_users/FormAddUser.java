@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.user_registration;
+package com.example.aplikacja_dyzury.all_users;
 
 import com.example.aplikacja_dyzury.data_model.DoctorTitle;
 import com.example.aplikacja_dyzury.repository.DoctorTitleRepo;

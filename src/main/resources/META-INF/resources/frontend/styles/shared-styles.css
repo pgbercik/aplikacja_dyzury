@@ -1,0 +1,4 @@
+/* List view */
+.list-view .content {
+    display: flex;
+}

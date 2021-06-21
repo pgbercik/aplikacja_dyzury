@@ -1,8 +1,9 @@
 package com.example.aplikacja_dyzury.nav_and_themes;
 
+import com.example.aplikacja_dyzury.all_users.ExamplePage;
 import com.example.aplikacja_dyzury.all_users.LoginView;
 import com.example.aplikacja_dyzury.all_users.UnRegisteredMainPage;
-import com.example.aplikacja_dyzury.user.user_registration.FormAddUser;
+import com.example.aplikacja_dyzury.all_users.FormAddUser;
 import com.github.appreciated.app.layout.addons.notification.DefaultNotificationHolder;
 import com.github.appreciated.app.layout.component.applayout.LeftLayouts;
 import com.github.appreciated.app.layout.component.builder.AppLayoutBuilder;
@@ -20,8 +21,9 @@ import org.springframework.stereotype.Component;
 
 @Push
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
-@Theme(value = Lumo.class,variant = Lumo.LIGHT)
-@Component @UIScope
+@Theme(value = Lumo.class, variant = Lumo.DARK)
+@Component
+@UIScope
 public class NonRegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftResponsive> {
     private DefaultNotificationHolder notifications = new DefaultNotificationHolder();
     private DefaultBadgeHolder badge = new DefaultBadgeHolder(5);
@@ -33,7 +35,8 @@ public class NonRegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.Left
                         .add(
                                 new LeftNavigationItem("Strona główna", VaadinIcon.HOME.create(), UnRegisteredMainPage.class),
                                 new LeftNavigationItem("Logowanie", VaadinIcon.USER.create(), LoginView.class),
-                                new LeftNavigationItem("Rejestracja", VaadinIcon.PLUS.create(), FormAddUser.class)
+                                new LeftNavigationItem("Rejestracja", VaadinIcon.PLUS.create(), FormAddUser.class),
+                                new LeftNavigationItem("Example", VaadinIcon.NATIVE_BUTTON.create(), ExamplePage.class)
 //                                new LeftNavigationItem("PushyView",VaadinIcon.INBOX.create(), PushyView.class)
 //                                new LeftNavigationItem("Kalendarz", VaadinIcon.CALENDAR_USER.create(), ShowCalendar.class)
 //                                new LeftNavigationItem("Kalendarz", VaadinIcon.ANCHOR.create(), Demo.class)

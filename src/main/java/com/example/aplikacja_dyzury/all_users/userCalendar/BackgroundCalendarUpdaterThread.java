@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.userCalendar;
+package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;

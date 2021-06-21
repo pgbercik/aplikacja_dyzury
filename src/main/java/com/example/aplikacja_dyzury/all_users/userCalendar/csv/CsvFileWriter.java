@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.userCalendar.csv;
+package com.example.aplikacja_dyzury.all_users.userCalendar.csv;
 
 
 import com.example.aplikacja_dyzury.data_model.google_calendar_pojo.GoogleCalendarPoJo;

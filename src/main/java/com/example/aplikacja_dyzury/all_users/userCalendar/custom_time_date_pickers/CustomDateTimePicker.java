@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers;
+package com.example.aplikacja_dyzury.all_users.userCalendar.custom_time_date_pickers;
 
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;

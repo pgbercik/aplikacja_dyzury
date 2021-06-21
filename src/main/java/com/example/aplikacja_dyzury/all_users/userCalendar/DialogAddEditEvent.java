@@ -1,9 +1,9 @@
-package com.example.aplikacja_dyzury.user.userCalendar;
+package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 import com.example.aplikacja_dyzury.data_model.*;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.example.aplikacja_dyzury.repository.*;
-import com.example.aplikacja_dyzury.user.userCalendar.custom_vaadin_time_date_pickers.CustomDateTimePicker;
+import com.example.aplikacja_dyzury.all_users.userCalendar.custom_time_date_pickers.CustomDateTimePicker;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;

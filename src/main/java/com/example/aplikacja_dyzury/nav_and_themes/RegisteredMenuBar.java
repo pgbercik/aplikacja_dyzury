@@ -8,8 +8,8 @@ import com.example.aplikacja_dyzury.admin.adminForms.FormAddHospital;
 import com.example.aplikacja_dyzury.admin.adminTables.HospitalTable;
 import com.example.aplikacja_dyzury.all_users.MainPage;
 
-import com.example.aplikacja_dyzury.user.userCalendar.SentRequestsTable;
-import com.example.aplikacja_dyzury.user.userCalendar.ShowCalendar;
+import com.example.aplikacja_dyzury.all_users.userCalendar.SentRequestsTable;
+import com.example.aplikacja_dyzury.all_users.userCalendar.ShowCalendar;
 import com.github.appreciated.app.layout.addons.notification.DefaultNotificationHolder;
 import com.github.appreciated.app.layout.component.applayout.LeftLayouts;
 import com.github.appreciated.app.layout.component.builder.AppLayoutBuilder;
@@ -32,7 +32,7 @@ import static com.github.appreciated.app.layout.entity.Section.FOOTER;
 
 @Push
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
-@Theme(value = Lumo.class,variant = Lumo.LIGHT)
+@Theme(value = Lumo.class,variant = Lumo.DARK)
 @Component @UIScope // optional but useful; allows access to this instance from views, see View1.
 public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftResponsive> {
     private DefaultNotificationHolder notifications = new DefaultNotificationHolder();

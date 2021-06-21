@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.userCalendar;
+package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;

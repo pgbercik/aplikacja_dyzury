@@ -1,4 +1,4 @@
-package com.example.aplikacja_dyzury.user.userCalendar;
+package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 import com.example.aplikacja_dyzury.data_model.*;
 import com.example.aplikacja_dyzury.FindUserData;
