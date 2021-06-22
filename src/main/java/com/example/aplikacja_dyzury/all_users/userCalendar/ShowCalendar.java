@@ -195,14 +195,14 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         fieldHospitalName.setItems(hospitalRepo.findAll());
         fieldHospitalName.setItemLabelGenerator(Hospital::getName);
         fieldHospitalName.setRequired(true);
-        fieldHospitalName.setWidth("450px");
+        fieldHospitalName.setWidth("400px");
         fieldHospitalName.setClearButtonVisible(true);
 
         ComboBox<HospitalDepartment> fieldHospitalDepartment = new ComboBox<>();
         fieldHospitalDepartment.setItemLabelGenerator(HospitalDepartment::getDepartment);
         fieldHospitalDepartment.setRequired(true);
         fieldHospitalDepartment.setEnabled(false);
-        fieldHospitalDepartment.setWidth("450px");
+        fieldHospitalDepartment.setWidth("400px");
         fieldHospitalDepartment.setClearButtonVisible(true);
 
         fieldHospitalDepartment.addValueChangeListener(event -> {
