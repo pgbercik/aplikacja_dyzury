@@ -37,12 +37,13 @@ public class HospitalTable extends VerticalLayout {
     private Button btnNextPage, btnPreviousPage;
     private  int page=0;
     private int size=5;
-    private HorizontalLayout horizontalLayout;
+    private Div buttonsDiv;
     private int totalPages=0;
 
 
     public HospitalTable(HospitalRepo hospitalRepo, ThemeChanger themeChanger, HospitalDepartmentRepo hospitalDepartmentRepo) {
-        H5 currentPage = new H5();
+        Label currentPage = new Label();
+
 
         this.hospitalRepo = hospitalRepo;
         this.themeChanger = themeChanger;
@@ -62,11 +63,12 @@ public class HospitalTable extends VerticalLayout {
 
             currentPage.setText(page+1+" z "+totalPages);
         });
-        horizontalLayout = new HorizontalLayout();
+        buttonsDiv = new Div();
+        buttonsDiv.addClassName("buttonsDiv");
 
 
 
-        horizontalLayout.add(btnPreviousPage,currentPage,btnNextPage);
+        buttonsDiv.add(btnPreviousPage,currentPage,btnNextPage);
         addTableWithPagination(page,size,hospitalDepartmentRepo);
         currentPage.setText(page+1+" z "+totalPages);
 
@@ -79,7 +81,7 @@ public class HospitalTable extends VerticalLayout {
     private void addTableWithPagination(int page, int size, HospitalDepartmentRepo hospitalDepartmentRepo) {
         removeAll();
         add(new H1("Utworzone szpitale"),new H4("Kliknij wiersz tabeli, aby edytować."));
-        add(horizontalLayout);
+        add(buttonsDiv);
 
         List<Hospital> hospitals = new ArrayList<>();
 
@@ -105,7 +107,8 @@ public class HospitalTable extends VerticalLayout {
             add(grid);
 
             grid.setItemDetailsRenderer(new ComponentRenderer<>(hospital -> {
-                HorizontalLayout horizontalLayout = new HorizontalLayout();
+                Div buttonsInsideTableRow = new Div();
+                buttonsInsideTableRow.addClassName("buttonsDiv");
 
                 Button btnEditDepartments = new Button("Pokaż/edytuj nazwy oddziałów");
                 btnEditDepartments.addClickListener(event -> {
@@ -131,8 +134,8 @@ public class HospitalTable extends VerticalLayout {
                     });
                 });
 
-                horizontalLayout.add(btnAddDepartment,btnEditDepartments,btn);
-                return  horizontalLayout;
+                buttonsInsideTableRow.add(btnAddDepartment,btnEditDepartments,btn);
+                return  buttonsInsideTableRow;
 
             }));
 
