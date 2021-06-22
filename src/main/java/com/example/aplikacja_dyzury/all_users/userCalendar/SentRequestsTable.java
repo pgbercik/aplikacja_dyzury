@@ -11,9 +11,7 @@ import com.example.aplikacja_dyzury.repository.RequestsRepo;
 import com.example.aplikacja_dyzury.repository.UserRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -36,22 +34,25 @@ public class SentRequestsTable extends VerticalLayout {
 
     private List<CustomRequestView> customRequestViews;
     private Grid<CustomRequestView> grid;
-    private Button btnNextPage, btnPreviousPage;
+    private final Button btnNextPage;
+    private final Button btnPreviousPage;
     private  int page=0;
-    private int size=5;
-    private HorizontalLayout horizontalLayout;
+    private final int size=5;
+    private final Div buttonsDiv;
     private int totalPages=0;
-    private User loggedInUserDetails;
-    private DateTimeFormatter formatter;
+    private final User loggedInUserDetails;
+    private final DateTimeFormatter formatter;
 
 //    FindUserData findUserData = new FindUserData();
 
 
     @Autowired
     public SentRequestsTable(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo, EntryDyzurDbRepo entryDyzurDbRepo) {
+
+        addClassName("main-container");
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
-        H5 currentPage = new H5();
+        Label currentPage = new Label();
 
 
         add(new H2("Wysłane propozycje zamiany dyżurów"));
@@ -70,11 +71,12 @@ public class SentRequestsTable extends VerticalLayout {
 
             currentPage.setText(page+1+" z "+totalPages);
         });
-        horizontalLayout = new HorizontalLayout();
+        buttonsDiv = new Div();
+        buttonsDiv.addClassName("buttonsDiv");
 
 
 
-        horizontalLayout.add(btnPreviousPage,currentPage,btnNextPage);
+        buttonsDiv.add(btnPreviousPage,currentPage,btnNextPage);
         addTableWithPagination(page,size,requestsRepo,requestStatusRepo);
         currentPage.setText(page+1+" z "+totalPages);
 
@@ -88,7 +90,7 @@ public class SentRequestsTable extends VerticalLayout {
     public void addTableWithPagination(int page,int size,RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo) {
         removeAll();
         add(new H2("Wysłane propozycje zamiany dyżurów"));
-        add(horizontalLayout);
+        add(buttonsDiv);
 
 
 
@@ -111,6 +113,7 @@ public class SentRequestsTable extends VerticalLayout {
         if (!customRequestViews.isEmpty()) {
 
             grid = new Grid<>();
+            grid.addClassName("calendar");
             grid.setItems(customRequestViews);
             grid.setColumnReorderingAllowed(true);
 

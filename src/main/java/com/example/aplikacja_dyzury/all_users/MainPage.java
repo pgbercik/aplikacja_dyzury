@@ -11,10 +11,7 @@ import com.example.aplikacja_dyzury.repository.RequestsRepo;
 import com.example.aplikacja_dyzury.repository.UserRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -40,11 +37,12 @@ public class MainPage extends VerticalLayout {
     private Grid<CustomRequestView> grid;
     private  int page=0;
     private final int size=5;
-    private HorizontalLayout horizontalLayout;
+    private Div buttonsDiv;
+    private Div divRadioButton;
     private int totalPages=0;
     private final User loggedInUserDetails;
     private final DateTimeFormatter formatter;
-    private final H5 currentPage;
+    private final Label currentPage;
 
     private final UserRepository userRepository;
     private final RequestsRepo requestsRepo;
@@ -56,6 +54,7 @@ public class MainPage extends VerticalLayout {
 
     @Autowired
     public MainPage(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo,EntryDyzurDbRepo entryDyzurDbRepo) {
+        addClassName("main-container");
 
         this.userRepository = userRepository;
         this. requestsRepo = requestsRepo;
@@ -64,7 +63,7 @@ public class MainPage extends VerticalLayout {
 
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
-        currentPage = new H5(page + 1 + " z " + 1);
+        currentPage = new Label(page + 1 + " z " + 1);
 
         if (FindUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
             add(new H1("Zalogowano jako " /*+loggedInUserDetails.getFirstName()+" "+loggedInUserDetails.getLastName()*/ + "administrator."));
@@ -77,13 +76,14 @@ public class MainPage extends VerticalLayout {
 
 
 
-
+            divRadioButton = new Div();
+            divRadioButton.addClassName("radioButton");
             currentOrHistory = new RadioButtonGroup<>();
             currentOrHistory.setItems("do rozpatrzenia", "rozpatrzone");
             currentOrHistory.setValue("do rozpatrzenia");
 
 
-            add(currentOrHistory);
+            divRadioButton.add(currentOrHistory);
 
             Button btnNextPage = new Button("Następna strona");
             Button btnPreviousPage = new Button("Poprzednia strona");
@@ -113,11 +113,12 @@ public class MainPage extends VerticalLayout {
 
                 currentPage.setText(page + 1 + " z " + totalPages);
             });
-            horizontalLayout = new HorizontalLayout();
+            buttonsDiv = new Div();
+            buttonsDiv.addClassName("buttonsDiv");
 
 
 
-            horizontalLayout.add(btnPreviousPage,currentPage, btnNextPage);
+            buttonsDiv.add(btnPreviousPage,currentPage, btnNextPage);
 
             //wstępnie wyświetlamy te do rozpatrzenia
             //we're showing duty swap requests that have not been accepted or declined yet
@@ -278,8 +279,8 @@ public class MainPage extends VerticalLayout {
     private void clearUI() {
         removeAll();
         add(new H2("Przychodzące propozycje zamiany dyżurów"));
-        add(currentOrHistory);
-        add(horizontalLayout);
+        add(divRadioButton);
+        add(buttonsDiv);
     }
     /**
      * A part of grid configuration shared between decided requests and not decided requests.

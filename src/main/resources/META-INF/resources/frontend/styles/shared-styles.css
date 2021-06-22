@@ -1,9 +1,9 @@
 /* List view */
-.main-container .buttonsDiv .textArea .calendar .searchDiv {
+.main-container .buttonsDiv .searchDiv .calendar .textArea .radioButton {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
 }
 /* .textArea {
     flex: 1;
