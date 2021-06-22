@@ -37,7 +37,7 @@ public class FormAddUser extends VerticalLayout {
 
     @Autowired
     public FormAddUser(UserService userService, DoctorTitleRepo doctorTitleRepo, UserRepository userRepository) {
-        String width = "350px";
+        String width = "300px";
 
         firstName = new TextField("Imię");
         firstName.setWidth(width);
