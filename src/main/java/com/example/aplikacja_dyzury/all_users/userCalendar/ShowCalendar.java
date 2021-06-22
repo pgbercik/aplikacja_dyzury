@@ -10,6 +10,8 @@ import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -35,7 +37,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @PageTitle("Kalendarz")
 @Route(value = "calendar", layout = RegisteredMenuBar.class)
+@CssImport("./styles/shared-styles.css")
 public class ShowCalendar extends VerticalLayout implements SessionDestroyListener {
+
 
     //referencja na obiekt z wątkiem aktualizującym zawartość kalendarza w tle
     //reference to an object with a thread that updates a calendar in the background
@@ -54,7 +58,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     private final EntryDyzurDbRepo entryDyzurDbRepo;
     private final UserRepository userRepository;
     private final CalendarDataProvider calendarDataProvider;
-//    private final FindUserData findUserData;
+    //    private final FindUserData findUserData;
     private final FullCalendar calendar;
 
     private String email;
@@ -70,6 +74,8 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     @Autowired
     public ShowCalendar(EntryDyzurDbRepo entryDyzurDbRepo, HospitalRepo hospitalRepo,
                         HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository, RequestsRepo requestsRepo) {
+        //odpowiednik sekcji body
+        addClassName("main-container");
 
         this.entryDyzurDbRepo = entryDyzurDbRepo;
         this.userRepository = userRepository;
@@ -112,6 +118,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         calendar.setTimeslotsSelectable(true);
         calendar.setWidthFull();
         calendar.setNumberClickable(false);
+        calendar.addClassName("calendar");
 
         Button buttonPrevious = new Button("Wcześniej ", VaadinIcon.ANGLE_LEFT.create(), e -> {
 
@@ -120,7 +127,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 monthDiff = 1L;
                 chosenDateTime = chosenDateTime.minusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                         chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                        chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.previous();
             }
@@ -128,7 +135,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
                 chosenDateTime = chosenDateTime.minusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                         chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                        chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.previous();
             }
@@ -140,7 +147,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 monthDiff = 1L;
                 chosenDateTime = chosenDateTime.plusMonths(monthDiff);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                         chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                        chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.next();
             }
@@ -148,7 +155,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
                 chosenDateTime = chosenDateTime.plusDays(7L);
                 calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                         chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                        chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
                 System.out.println(chosenDateTime + " - chosenDAteTime");
                 calendar.next();
             }
@@ -159,13 +166,11 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         btnExport.addClickListener(event -> new DialogExportToCSV(entryDyzurDbRepo, hospitalId, hospitalIdDept).open());
 
 
-
-
         Button btnMonth = new Button("Miesiąc", VaadinIcon.CALENDAR.create(), e -> {
             chosenView = "month";
             chosenDateTime = LocalDate.now();
             calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                     chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                    chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
             calendar.changeView(CalendarViewImpl.DAY_GRID_MONTH);
             calendar.today();
         });
@@ -173,7 +178,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             chosenView = "week";
             chosenDateTime = LocalDate.now();
             calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                     chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                    chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
             calendar.changeView(CalendarViewImpl.DAY_GRID_WEEK);
             calendar.today();
         });
@@ -219,19 +224,25 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             if (fieldHospitalDepartment.getValue() == null) hospitalIdDept = null;
             else hospitalIdDept = fieldHospitalDepartment.getValue().getId();
             calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar, chosenDateTime,
-                     chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
+                    chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept, "");
         });
 
 
-        HorizontalLayout buttons1 = new HorizontalLayout();
-        HorizontalLayout buttons2 = new HorizontalLayout();
+//        HorizontalLayout buttons1 = new HorizontalLayout();
+//        HorizontalLayout buttons2 = new HorizontalLayout();
+        Div buttonsDiv = new Div();
+        buttonsDiv.addClassName("buttonsDiv");
+
+        Div searchDiv = new Div();
+        searchDiv.addClassName("searchDiv");
+
         if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
-            buttons1.add(buttonPrevious, currentlyChosenTimeSpan, buttonNext, btnMonth, btnWeek, btnExport);
-        } else buttons1.add(buttonPrevious, currentlyChosenTimeSpan, buttonNext, btnMonth, btnWeek);
+            buttonsDiv.add(buttonPrevious,/* currentlyChosenTimeSpan,*/ buttonNext, btnMonth, btnWeek, btnExport);
+        } else buttonsDiv.add(buttonPrevious,/* currentlyChosenTimeSpan, */buttonNext, btnMonth, btnWeek);
 
 
-        buttons1.add(btnHelp);
-        buttons2.add(btnSort, fieldHospitalName, fieldHospitalDepartment);
+        buttonsDiv.add(btnHelp);
+        searchDiv.add(btnSort, fieldHospitalName, fieldHospitalDepartment);
 
         //event od przeciągania entries na inne dni itd.
         calendar.addEntryDroppedListener(entryDroppedEvent -> {
@@ -261,8 +272,8 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
         });
 
-
-        add(buttons1, buttons2, calendar);
+        add(buttonsDiv, searchDiv, calendar);
+//        add(buttons1, buttons2, calendar);
 
 
         // akcja po kliknięciu na istniejące wydarzenie

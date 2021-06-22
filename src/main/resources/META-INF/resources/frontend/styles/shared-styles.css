@@ -1,4 +1,10 @@
 /* List view */
-.list-view .content {
-    display: flex;
+.main-container .buttonsDiv .textArea .calendar .searchDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+/* .textArea {
+    flex: 1;
+} */
