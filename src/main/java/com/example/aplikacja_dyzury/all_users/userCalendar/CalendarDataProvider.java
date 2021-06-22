@@ -5,6 +5,7 @@ import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.data_model.User;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Label;
 import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 
@@ -35,7 +36,7 @@ public class CalendarDataProvider {
      * This method gets duties from a previous, current, and following month with specified hospital and department. After that it displays them in the calendar.
      */
     public void addEntriesFromDBWithHospitalNameAndDept(FullCalendar calendar, LocalDate localDate, String chosenView,
-                                                        H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept, String email) {
+                                                        Label currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept, String email) {
 
 //        LocalDateTime nextTimeSpan = null;
         LocalDateTime previousTimeSpan = getPreviousTimeFrame(chosenView, localDate);

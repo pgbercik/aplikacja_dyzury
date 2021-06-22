@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -45,7 +46,7 @@ public class DialogAddEditEvent extends Dialog {
 
     public DialogAddEditEvent(FullCalendar calendar, Entry entry, boolean newInstance, EntryDyzurDbRepo entryDyzurDbRepo, String id,
                               HospitalRepo hospitalRepo, HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository,
-                              String chosenView, H4 currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept,
+                              String chosenView, Label currentlyChosenTimeSpan, Long hospitalId, Long hospitalIdDept,
                               LocalDate chosenDateTime, CalendarDataProvider calendarDataProvider, RequestsRepo requestsRepo) {
         this.entryDyzurDbRepo = entryDyzurDbRepo;
         this.id=id;
