@@ -1,18 +1,15 @@
 package com.example.aplikacja_dyzury.all_users.userCalendar;
 
-import com.example.aplikacja_dyzury.data_model.*;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.example.aplikacja_dyzury.repository.*;
 import com.example.aplikacja_dyzury.all_users.userCalendar.custom_time_date_pickers.CustomDateTimePicker;
+import com.example.aplikacja_dyzury.data_model.*;
+import com.example.aplikacja_dyzury.repository.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -58,24 +55,25 @@ public class DialogAddEditEvent extends Dialog {
                 entry.getStart(),entry.getEnd(),entry.isAllDay(),/*entry.getColor(),*/entry.getDescription(),
                 entry.isEditable(),entry.getHospital(),entry.getHospitalDepartment(),entry.getUsers());
 
-//        FindUserData findUserData11 = new FindUserData();
 
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
-        setWidth("1150px");
-//        setHeight("650px");
+        setResizable(true);
+        setMinWidth("300px");
+        setWidth("900px");
 
-        VerticalLayout layout = new VerticalLayout();
-        layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
-//        layout.setSizeFull();
+
+        Div layout = new Div();
+        layout.addClassName("buttonsDiv");
+
 
         TextField fieldTitle = new TextField("Nazwa wydarzenia");
 //        fieldTitle.setWidth("650px");
         fieldTitle.focus();
-
+        fieldTitle.setWidthFull();
 
         TextArea fieldDescription = new TextArea("Opis");
-
+        fieldDescription.setWidthFull();
 
 
         layout.add(fieldTitle, fieldDescription);
@@ -85,11 +83,13 @@ public class DialogAddEditEvent extends Dialog {
 
 
         ComboBox<Hospital> fieldHospitalName = new ComboBox<>("Nazwa szpitala");
+        fieldHospitalName.setWidthFull();
         fieldHospitalName.setItems(hospitalRepo.findAll());
         fieldHospitalName.setItemLabelGenerator(Hospital::getName);
 
 
         ComboBox<HospitalDepartment> fieldHospitalDepartment = new ComboBox<>("Oddział");
+        fieldHospitalDepartment.setWidthFull();
         fieldHospitalDepartment.setItemLabelGenerator(HospitalDepartment::getDepartment);
         fieldHospitalDepartment.setEnabled(false);
 
@@ -102,10 +102,9 @@ public class DialogAddEditEvent extends Dialog {
 
 
 
-        HorizontalLayout horizontalLayout1 = new HorizontalLayout();
-        horizontalLayout1.add(fieldStart,fieldEnd);
 
-        layout.add(horizontalLayout1,/*fieldAllDay, */fieldHospitalName, fieldHospitalDepartment);
+
+        layout.add(fieldStart,fieldEnd,fieldHospitalName, fieldHospitalDepartment);
 
         binder = new Binder<>(Entry.class);
         binder.forField(fieldTitle)
@@ -133,7 +132,7 @@ public class DialogAddEditEvent extends Dialog {
 
 
 
-        HorizontalLayout buttons = new HorizontalLayout();
+
         Button buttonSave;
         if (newInstance) {
             buttonSave = new Button("Utwórz dyżur", e -> {
@@ -225,7 +224,7 @@ public class DialogAddEditEvent extends Dialog {
             });
         }
 //        buttonSave.addClickListener(e -> close());
-        buttons.add(buttonSave);
+        layout.add(buttonSave);
 
         Button buttonCancel = new Button("Zamknij okno", e -> {
             calendarDataProvider.addEntriesFromDBWithHospitalNameAndDept(calendar,chosenDateTime
@@ -235,7 +234,7 @@ public class DialogAddEditEvent extends Dialog {
         }
         );
         buttonCancel.getElement().getThemeList().add("tertiary");
-        buttons.add(buttonCancel);
+        layout.add(buttonCancel);
 
         if (!newInstance) {
 
@@ -246,7 +245,7 @@ public class DialogAddEditEvent extends Dialog {
                 System.out.println(entryDyzurDb);
 //                FindUserData findUserData = new FindUserData();
                 String currentlyLoggedInUsersEmail = FindUserData.findCurrentlyLoggedInUser();
-                User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
+//                User userToAdd = userRepository.findByEmail(currentlyLoggedInUsersEmail);
                 Set<User> foundUsers = entryDyzurDb.getUsers();
                 System.out.println("rozmiar: " + foundUsers.size());
 //                FindUserData findUserData1 = new FindUserData();
@@ -260,9 +259,7 @@ public class DialogAddEditEvent extends Dialog {
                 } else {
                     boolean usersIsIn=false;
                     User currentlyLoggedIN = userRepository.findByEmail(currentlyLoggedInUsersEmail);
-//                    for (User user : foundUsers ) {
-//                        if (user.getId().equals(currentlyLoggedIN.getId())) usersIsIn=true;
-//                    }
+
                     if (foundUsers.stream().anyMatch(user -> user.getId().equals(currentlyLoggedIN.getId()))) usersIsIn=true;
                     if (foundUsers.size()==0 || (foundUsers.size()<2 && usersIsIn) ) {
                         List<Requests> requestsToRemove=requestsRepo.findRequestsForEntry(entryDyzurDb.getId());
@@ -282,7 +279,7 @@ public class DialogAddEditEvent extends Dialog {
             ThemeList themeList = buttonRemove.getElement().getThemeList();
             themeList.add("error");
             themeList.add("tertiary");
-            buttons.add(buttonRemove);
+            layout.add(buttonRemove);
 
             Button btnReplicate = new Button("Powiel dyżur",event -> {
 //                EntryDyzurDb entryDyzurDb=null;
@@ -329,7 +326,7 @@ public class DialogAddEditEvent extends Dialog {
 
 
                 btnReplicate.getElement().getThemeList().add("tertiary");
-                buttons.add(btnReplicate);
+                layout.add(btnReplicate);
 
 
             Button buttonSignInToEntry = new Button("Zapisz się na dyżur",e -> {
@@ -379,7 +376,7 @@ public class DialogAddEditEvent extends Dialog {
 
             if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 buttonSignInToEntry.getElement().getThemeList().add("tertiary");
-                buttons.add(buttonSignInToEntry);
+                layout.add(buttonSignInToEntry);
             }
 
 
@@ -414,12 +411,12 @@ public class DialogAddEditEvent extends Dialog {
             });
             if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 buttonRemoveFromEntry.getElement().getThemeList().add("tertiary");
-                buttons.add(buttonRemoveFromEntry);
+                layout.add(buttonRemoveFromEntry);
             }
 
             Button buttonShowAddedUsers = new Button("Zapisani lekarze",e-> new DialogShowUsersForEntry(entry.getId(),entryDyzurDbRepo,id).open());
             buttonShowAddedUsers.getElement().getThemeList().add("tertiary");
-            buttons.add(buttonShowAddedUsers);
+            layout.add(buttonShowAddedUsers);
 
             Button btnExchangeEntries = new Button("Zamiana dyżuru",e->{
 
@@ -443,7 +440,7 @@ public class DialogAddEditEvent extends Dialog {
 
             if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
                 btnExchangeEntries.getElement().getThemeList().add("tertiary");
-                buttons.add(btnExchangeEntries);
+                layout.add(btnExchangeEntries);
             }
 
 //            FindUserData findUserData = new FindUserData();
@@ -467,7 +464,7 @@ public class DialogAddEditEvent extends Dialog {
 
         }
 
-        add(layout, buttons);
+        add(layout);
     }
 
     /**Ta metoda sprawdza czy się godziny dyżurów nakładają. Zakładamy, że pojedynczy dyżur może trwać max 24h.
@@ -552,9 +549,7 @@ public class DialogAddEditEvent extends Dialog {
         List<EntryDyzurDb> matchingList = entryDyzurDbRepo.findAllMatchingStartEndHospitalHospitalDepartment(
                 startTime,endTime,entry.getHospital(),entry.getHospitalDepartment());
 
-//        for( EntryDyzurDb entryDyzurDb : matchingList) {
-//            if (entryDyzurDb.getId().equals(id)) matchingListHasId=true;
-//        }
+
         if (matchingList.stream().anyMatch(entryDyzurDb -> entryDyzurDb.getId().equals(id))) matchingListHasId=true;
 
 
