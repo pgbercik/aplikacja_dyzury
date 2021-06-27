@@ -35,8 +35,8 @@ public class NonRegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.Left
                         .add(
                                 new LeftNavigationItem("Strona główna", VaadinIcon.HOME.create(), UnRegisteredMainPage.class),
                                 new LeftNavigationItem("Logowanie", VaadinIcon.USER.create(), LoginView.class),
-                                new LeftNavigationItem("Rejestracja", VaadinIcon.PLUS.create(), FormAddUser.class),
-                                new LeftNavigationItem("Example", VaadinIcon.NATIVE_BUTTON.create(), ExamplePage.class)
+                                new LeftNavigationItem("Rejestracja", VaadinIcon.PLUS.create(), FormAddUser.class)
+//                                new LeftNavigationItem("Example", VaadinIcon.NATIVE_BUTTON.create(), ExamplePage.class)
 //                                new LeftNavigationItem("PushyView",VaadinIcon.INBOX.create(), PushyView.class)
 //                                new LeftNavigationItem("Kalendarz", VaadinIcon.CALENDAR_USER.create(), ShowCalendar.class)
 //                                new LeftNavigationItem("Kalendarz", VaadinIcon.ANCHOR.create(), Demo.class)
