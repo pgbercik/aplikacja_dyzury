@@ -1,13 +1,12 @@
 package com.example.aplikacja_dyzury.repository;
 
 import com.example.aplikacja_dyzury.data_model.HospitalDepartment;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface HospitalDepartmentRepo extends CrudRepository<HospitalDepartment,Long> {
-    List<HospitalDepartment> findAll();
+public interface HospitalDepartmentRepo extends JpaRepository<HospitalDepartment,Long> {
 
     @Query(value = "SELECT * FROM hospital_department\n" +
             "WHERE referenced_hospital_id=:hospitalId",nativeQuery = true)

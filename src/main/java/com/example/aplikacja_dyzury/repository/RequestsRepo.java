@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RequestsRepo extends JpaRepository<Requests,Long> {
-    List<Requests> findAll();
 
     @Query(value = "select * from requests where is_active=:isActive \n" +
             "AND user_target_id=:targetId ORDER BY request_time DESC",

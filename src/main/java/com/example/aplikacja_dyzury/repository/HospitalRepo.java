@@ -1,7 +1,6 @@
 package com.example.aplikacja_dyzury.repository;
 
 import com.example.aplikacja_dyzury.data_model.Hospital;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -12,7 +11,7 @@ public interface HospitalRepo  extends PagingAndSortingRepository<Hospital,Long>
 
     /**
      * Ta metoda  sprawdza czy istnieje szpital o podanej nazwie, mieście i adresie - to jest używane przy dodawaniu szpitali w celu uniknięcia duplikatów.
-     * This method check wheter a database already contains a hospital with declared address, city and name - it is used in order to prevent adding duplicate hospitals.
+     * This method check whether a database already contains a hospital with declared address, city and name - it is used in order to prevent adding duplicate hospitals.
      * */
     @Query(value = "SELECT * FROM hospital \n" +
             "where address=:address \n" +
@@ -20,5 +19,4 @@ public interface HospitalRepo  extends PagingAndSortingRepository<Hospital,Long>
             "AND name=:name ",nativeQuery = true)
     List<Hospital> findExistingHospitals(String address, String city, String name);
 
-    List<Hospital> findAllByCity(String city, Pageable pageable);
 }

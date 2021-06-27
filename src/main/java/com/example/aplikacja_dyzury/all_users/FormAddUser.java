@@ -79,7 +79,7 @@ public class FormAddUser extends VerticalLayout {
             if (binder.isValid()) {
                 System.out.println(user);
 
-                List<User> alreadyExistingUsers = userRepository.findAlreadyExistingUsers(
+                List<User> alreadyExistingUsers = userRepository.findByEmailAndFirstNameAndLastName(
                         email.getValue(),firstName.getValue(),lastName.getValue());
 
                 if (alreadyExistingUsers.isEmpty()) {

@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, JpaRepositoryImplementation<EntryDyzurDb, Long> {
-    List<EntryDyzurDb> findAll();
 
     /** To wyciąga dyżury z wybranego zakresu. W ShowCalendar jest użyte przy pokazywaniu dyżurów z poszczególnych miesięcy i tygodni.
      * This request finds dutoes from a chosen range. In ShowCalendar it is used in order to show duties from a chosen week or month.
