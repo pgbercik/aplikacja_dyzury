@@ -27,9 +27,8 @@ public class ExamplePage extends VerticalLayout {
         Button b6 = new Button("Button6" + aaa);
         Button b7 = new Button("Button7" + aaa);
         Button b8 = new Button("Button8" + aaa);
-        Button b9 = new Button("Button9" + aaa);
 
-        div.add(b1, b2, b3, b4, b5, b6, b7, b8, b9);
+        div.add(b1, b2, b3, b4, b5, b6, b7, b8);
         add(div);
         TextArea textArea = new TextArea("big text area");
         textArea.setWidthFull();
