@@ -47,12 +47,7 @@ public class FormAddUser extends VerticalLayout {
         lastName.setWidth(width);
 
         profTitle = new ComboBox<>("Tytuł naukowy");
-        if (!doctorTitleRepo.findDoctorIdForCombobox().isEmpty()) {
-            profTitle.setItems(doctorTitleRepo.findTitleROW());
-            profTitle.setItemLabelGenerator(DoctorTitle::getType);
-        }
-        profTitle.setWidth(width);
-
+        populateDoctorTitleList(doctorTitleRepo, width);
 
 
         email = new EmailField("Email");
@@ -110,6 +105,15 @@ public class FormAddUser extends VerticalLayout {
 
 
 
+    }
+
+    private void populateDoctorTitleList(DoctorTitleRepo doctorTitleRepo, String width) {
+        List<DoctorTitle> titleList = doctorTitleRepo.findAll();
+        if (!titleList.isEmpty()) {
+            profTitle.setItems(titleList);
+            profTitle.setItemLabelGenerator(DoctorTitle::getType);
+        }
+        profTitle.setWidth(width);
     }
 
     private void defineFormValidation(User user) {
