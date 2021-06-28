@@ -1,7 +1,7 @@
 package com.example.aplikacja_dyzury.data_model.custom_pojo;
 
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
-import com.example.aplikacja_dyzury.data_model.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,15 +18,15 @@ public class CustomRequestView {
     private String targetEntryTime;
     private EntryDyzurDb initEntry;
     private EntryDyzurDb targetEntry;
-    private User initUser;
-    private User targetUser;
+    private Users initUsers;
+    private Users targetUsers;
 
 
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public CustomRequestView(Long requestId, String description, LocalDateTime requestTime, String status, String initUserName, String targetUserName,
-                             String targetEntryName, LocalDateTime targetEntryTime, EntryDyzurDb initEntry, EntryDyzurDb targetEntry, User initUser, User targetUser) {
+                             String targetEntryName, LocalDateTime targetEntryTime, EntryDyzurDb initEntry, EntryDyzurDb targetEntry, Users initUsers, Users targetUsers) {
         this.requestId = requestId;
         this.description = description;
         this.requestTime = requestTime.format(formatter);
@@ -37,8 +37,8 @@ public class CustomRequestView {
         this.targetEntryTime = targetEntryTime.format(formatter);
         this.initEntry = initEntry;
         this.targetEntry = targetEntry;
-        this.initUser = initUser;
-        this.targetUser = targetUser;
+        this.initUsers = initUsers;
+        this.targetUsers = targetUsers;
     }
 
     public Long getRequestId() {
@@ -119,19 +119,19 @@ public class CustomRequestView {
         this.targetEntry = targetEntry;
     }
 
-    public User getInitUser() {
-        return initUser;
+    public Users getInitUser() {
+        return initUsers;
     }
 
-    public void setInitUser(User initUser) {
-        this.initUser = initUser;
+    public void setInitUser(Users initUsers) {
+        this.initUsers = initUsers;
     }
 
-    public User getTargetUser() {
-        return targetUser;
+    public Users getTargetUser() {
+        return targetUsers;
     }
 
-    public void setTargetUser(User targetUser) {
-        this.targetUser = targetUser;
+    public void setTargetUser(Users targetUsers) {
+        this.targetUsers = targetUsers;
     }
 }

@@ -26,7 +26,7 @@ public class DialogEntryExchange extends Dialog {
     private String width="400px";
     private Requests requests;
 
-    public DialogEntryExchange(EntryDyzurDb entryDyzurDbClickedFromCalendar, User userInit, EntryDyzurDbRepo entryDyzurDbRepo, RequestsRepo requestsRepo) {
+    public DialogEntryExchange(EntryDyzurDb entryDyzurDbClickedFromCalendar, Users usersInit, EntryDyzurDbRepo entryDyzurDbRepo, RequestsRepo requestsRepo) {
 
 
 
@@ -37,7 +37,7 @@ public class DialogEntryExchange extends Dialog {
         verticalLayout.add(datePicker);
 
         ComboBox<EntryDyzurDb> entryToExchageFromDialog = new ComboBox<>("Nazwa dyżuru do wymiany");
-        ComboBox<User> existingUsersList = new ComboBox<>("Użytkownik do zamiany");
+        ComboBox<Users> existingUsersList = new ComboBox<>("Użytkownik do zamiany");
 
         Button btnSendExchangeRequest = new Button("Wyślij prośbę o zamianę");
         btnSendExchangeRequest.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -86,7 +86,7 @@ public class DialogEntryExchange extends Dialog {
                         datePicker.setEnabled(false);
 
                         existingUsersList.setItems(chosenSecondEntry.getUsers());
-                        existingUsersList.setItemLabelGenerator(User::getCustomUserNameAndSurname);
+                        existingUsersList.setItemLabelGenerator(Users::getCustomUserNameAndSurname);
                         existingUsersList.setEnabled(true);
                         existingUsersList.clear();
                         existingUsersList.addValueChangeListener(event2 -> {
@@ -96,7 +96,7 @@ public class DialogEntryExchange extends Dialog {
                             requests=null;
                             requests = new Requests("prośba o zamianę dyżuru",LocalDateTime.now(),
                                     1,true,entryDyzurDbClickedFromCalendar,entryToExchageFromDialog.getValue(),
-                                    userInit,existingUsersList.getValue());
+                                    usersInit,existingUsersList.getValue());
 
 
 

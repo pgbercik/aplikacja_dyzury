@@ -8,11 +8,10 @@ import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.repository.RequestStatusRepo;
 import com.example.aplikacja_dyzury.repository.RequestsRepo;
-import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.repository.UsersRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -40,11 +39,11 @@ public class MainPage extends VerticalLayout {
     private Div buttonsDiv;
     private Div divRadioButton;
     private int totalPages=0;
-    private final User loggedInUserDetails;
+    private final Users loggedInUsersDetails;
     private final DateTimeFormatter formatter;
     private final Label currentPage;
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final RequestsRepo requestsRepo;
     private final RequestStatusRepo requestStatusRepo;
     private final EntryDyzurDbRepo entryDyzurDbRepo;
@@ -53,20 +52,20 @@ public class MainPage extends VerticalLayout {
 
 
     @Autowired
-    public MainPage(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo,EntryDyzurDbRepo entryDyzurDbRepo) {
+    public MainPage(UsersRepository usersRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo, EntryDyzurDbRepo entryDyzurDbRepo) {
         addClassName("main-container");
 
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         this. requestsRepo = requestsRepo;
         this.requestStatusRepo = requestStatusRepo;
         this.entryDyzurDbRepo = entryDyzurDbRepo;
 
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
+        loggedInUsersDetails = usersRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
         currentPage = new Label(page + 1 + " z " + 1);
 
         if (FindUserData.findFirstUserRoleString().equals("ROLE_ADMIN")) {
-            add(new H1("Zalogowano jako " /*+loggedInUserDetails.getFirstName()+" "+loggedInUserDetails.getLastName()*/ + "administrator."));
+            add(new H1("Zalogowano jako " /*+loggedInUsersDetails.getFirstName()+" "+loggedInUsersDetails.getLastName()*/ + "administrator."));
             add(new H3("Witamy w panelu administratora."));
         }
         if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
@@ -149,7 +148,7 @@ public class MainPage extends VerticalLayout {
 
         clearUI();
 
-        Page<Requests> requestsFound = requestsRepo.findAllReceived(true, loggedInUserDetails.getId(), PageRequest.of(page, size));
+        Page<Requests> requestsFound = requestsRepo.findAllReceived(true, loggedInUsersDetails.getUsersId(), PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
                 System.out.println("znalezione requesty " + totalPages);
         currentPage.setText(page + 1 + " z " + totalPages);
@@ -187,7 +186,7 @@ public class MainPage extends VerticalLayout {
 
         clearUI();
 
-        Page<Requests> requestsFound = requestsRepo.findAllReceived(false, loggedInUserDetails.getId(),PageRequest.of(page, size));
+        Page<Requests> requestsFound = requestsRepo.findAllReceived(false, loggedInUsersDetails.getUsersId(),PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
         System.out.println("znalezione requesty " + totalPages);
         currentPage.setText(page + 1 + " z " + totalPages);
@@ -228,21 +227,21 @@ public class MainPage extends VerticalLayout {
             EntryDyzurDb initEntry = entryDyzurDbRepo.findByID(customRequestView.getInitEntry().getId());
 
             EntryDyzurDb targetEntry = entryDyzurDbRepo.findByID(customRequestView.getTargetEntry().getId());
-            User initUser = userRepository.findByEmail(customRequestView.getInitUser().getEmail());
-            User targetUser = userRepository.findByEmail(customRequestView.getTargetUser().getEmail());
-            System.out.println(initUser);
-            System.out.println(targetUser);
+            Users initUsers = usersRepository.findByEmail(customRequestView.getInitUser().getEmail());
+            Users targetUsers = usersRepository.findByEmail(customRequestView.getTargetUser().getEmail());
+            System.out.println(initUsers);
+            System.out.println(targetUsers);
 
             initEntry.getUsers().removeIf(user ->
-                    user.getId().equals(initUser.getId())
+                    user.getUsersId().equals(initUsers.getUsersId())
             );
-            initEntry.getUsers().add(targetUser);
+            initEntry.getUsers().add(targetUsers);
             entryDyzurDbRepo.save(initEntry);
 
             targetEntry.getUsers().removeIf(user ->
-                    user.getId().equals(targetUser.getId())
+                    user.getUsersId().equals(targetUsers.getUsersId())
             );
-            targetEntry.getUsers().add(initUser);
+            targetEntry.getUsers().add(initUsers);
             entryDyzurDbRepo.save(targetEntry);
 
 

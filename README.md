@@ -27,7 +27,7 @@ Please be aware that the  page may take up to 30 seconds to initially load. This
 The app was implemented using technologies mentioned in **Used technologies** section. 
 
 Login form was secured with Spring Security.
-Forms requiring user input were validated using [Vaadin Binder](https://vaadin.com/docs/v14/flow/binding-data/tutorial-flow-components-binder) in order to avoid invalid or incomplete data.
+Forms requiring users input were validated using [Vaadin Binder](https://vaadin.com/docs/v14/flow/binding-data/tutorial-flow-components-binder) in order to avoid invalid or incomplete data.
 All the tables were paginated using Pageable interface from Spring Data JPA. 
 
 ## Short overview of implemented functionalities
@@ -47,7 +47,7 @@ Logged in users can view all registered duties. If they sign up for a duty, then
 
 
 
-The app also enables users to switch duties between one another. In order to do it, the user has to click on a duty, go to section **Zamiana dyżuru** and send a request. If the other user agrees, then the duties will be automatically switched.
+The app also enables users to switch duties between one another. In order to do it, the users has to click on a duty, go to section **Zamiana dyżuru** and send a request. If the other users agrees, then the duties will be automatically switched.
 ![Duty swap picture](SCREENSHOTS/duty_swap.JPG)
 
 

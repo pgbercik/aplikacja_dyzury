@@ -2,7 +2,7 @@ package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.repository.UsersRepository;
 import com.vaadin.flow.component.UI;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
 
@@ -20,17 +20,17 @@ public class BackgroundCalendarUpdaterThread extends Thread {
     private CalendarDataProvider calendarDataProvider;
     private FullCalendar calendar;
     private EntryDyzurDbRepo entryDyzurDbRepo;
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
     private String email;
 
 
-    public BackgroundCalendarUpdaterThread(UI ui, ShowCalendar showCalendar, CalendarDataProvider calendarDataProvider, FullCalendar calendar, EntryDyzurDbRepo entryDyzurDbRepo, UserRepository userRepository, String email) {
+    public BackgroundCalendarUpdaterThread(UI ui, ShowCalendar showCalendar, CalendarDataProvider calendarDataProvider, FullCalendar calendar, EntryDyzurDbRepo entryDyzurDbRepo, UsersRepository usersRepository, String email) {
         this.ui = ui;
         this.showCalendar = showCalendar;
         this.calendarDataProvider = calendarDataProvider;
         this.calendar = calendar;
         this.entryDyzurDbRepo = entryDyzurDbRepo;
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         this.email = email;
     }
 

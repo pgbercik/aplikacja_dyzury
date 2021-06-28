@@ -40,7 +40,7 @@ public class EntryDyzurDb {
     private HospitalDepartment hospitalDepartment;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    Set<User> users;
+    Set<Users> users;
 
 
 
@@ -48,7 +48,7 @@ public class EntryDyzurDb {
 
 
 
-    public EntryDyzurDb(String id, String title, LocalDateTime startTime, LocalDateTime endTime, boolean allDay,/* String color, */String description, boolean editable, Hospital hospital, HospitalDepartment hospitalDepartment, Set<User> users) {
+    public EntryDyzurDb(String id, String title, LocalDateTime startTime, LocalDateTime endTime, boolean allDay,/* String color, */String description, boolean editable, Hospital hospital, HospitalDepartment hospitalDepartment, Set<Users> users) {
         this.id = id;
         this.title = title;
         this.startTime = startTime;
@@ -101,11 +101,11 @@ public class EntryDyzurDb {
 
     public void setHospitalDepartment(HospitalDepartment hospitalDepartment) { this.hospitalDepartment = hospitalDepartment; }
 
-    public Set<User> getUsers() {
+    public Set<Users> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<Users> users) {
         this.users = users;
     }
 

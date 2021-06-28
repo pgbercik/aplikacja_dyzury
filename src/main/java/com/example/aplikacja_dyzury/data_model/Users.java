@@ -6,18 +6,19 @@ import java.util.Set;
 import javax.persistence.*;
 
 
-@Entity(name = "user_table")
+@Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
         @UniqueConstraint(columnNames = "password"),
         @UniqueConstraint(columnNames = {"firstName", "lastName", "email", "password"})
 })
-public class User {
+public class Users {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "users_id")
+    private Long usersId;
     private String firstName;
     private String lastName;
 
@@ -27,19 +28,25 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_table_roles",
+            joinColumns = { @JoinColumn(name = "users_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<UsersRole> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER)
     private DoctorTitle doctorTitle;
 
 
-    public Long getId() {
-        return id;
+    public Long getUsersId() {
+        return usersId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUsersId(Long usersId) {
+        this.usersId = usersId;
     }
 
     public String getFirstName() {
@@ -74,11 +81,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<UserRole> getRoles() {
+    public Set<UsersRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRole> roles) {
+    public void setRoles(Set<UsersRole> roles) {
         this.roles = roles;
     }
 
@@ -94,11 +101,10 @@ public class User {
         return getFirstName() + " " + getLastName();
     }
 
-
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
+        return "Users{" +
+                "usersId=" + usersId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

@@ -1,9 +1,9 @@
 package com.example.aplikacja_dyzury.all_users;
 
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.data_model.DoctorTitle;
 import com.example.aplikacja_dyzury.repository.DoctorTitleRepo;
-import com.example.aplikacja_dyzury.data_model.User;
-import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.repository.UsersRepository;
 import com.example.aplikacja_dyzury.nav_and_themes.NonRegisteredMenuBar;
 import com.example.aplikacja_dyzury.service.UserService;
 import com.vaadin.flow.component.button.Button;
@@ -33,10 +33,10 @@ public class FormAddUser extends VerticalLayout {
     private final ComboBox<DoctorTitle> profTitle;
     private final EmailField email;
     private final PasswordField password;
-    private final Binder<User> binder;
+    private final Binder<Users> binder;
 
     @Autowired
-    public FormAddUser(UserService userService, DoctorTitleRepo doctorTitleRepo, UserRepository userRepository) {
+    public FormAddUser(UserService userService, DoctorTitleRepo doctorTitleRepo, UsersRepository usersRepository) {
         String width = "300px";
 
         firstName = new TextField("Imię");
@@ -69,27 +69,27 @@ public class FormAddUser extends VerticalLayout {
 
 
 
-        binder = new Binder<>(User.class);
-        User user = new User();
-        defineFormValidation(user);
+        binder = new Binder<>(Users.class);
+        Users users = new Users();
+        defineFormValidation(users);
 
 
         save.addClickListener(event -> {
             binder.validate();
             if (binder.isValid()) {
-                System.out.println(user);
+                System.out.println(users);
 
-                List<User> alreadyExistingUsers = userRepository.findByEmailAndFirstNameAndLastName(
+                List<Users> alreadyExistingUsers = usersRepository.findByEmailAndFirstNameAndLastName(
                         email.getValue(),firstName.getValue(),lastName.getValue());
 
                 if (alreadyExistingUsers.isEmpty()) {
                     try {
 
-                        userService.addWithDefaultRole(user);
+                        userService.addWithDefaultRole(users);
                         Notification.show("Użytkownik dodany!", 1000, Notification.Position.MIDDLE);
 
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                         Notification.show("Błąd rejestracji. Skontaktuj się z administratorem.", 1000, Notification.Position.MIDDLE);
                     }
                 } else {
@@ -116,7 +116,7 @@ public class FormAddUser extends VerticalLayout {
         profTitle.setWidth(width);
     }
 
-    private void defineFormValidation(User user) {
+    private void defineFormValidation(Users users) {
         //minimum 1 cyfra, minimum 1 małą litera, minimum 1 duża, minimum 1 znak specjalny,bez pustych znaków, minimum 8 znaków
 //        String patternPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
         //wersja bez znaków specjalnych
@@ -132,7 +132,7 @@ public class FormAddUser extends VerticalLayout {
                             "Pole nie może zawierać spacji ani cyfr");
                     else return ValidationResult.ok();
                 })
-                .bind(User::getFirstName, User::setFirstName);
+                .bind(Users::getFirstName, Users::setFirstName);
 
         binder.forField(lastName)
                 .asRequired("Pole wymagane.")
@@ -141,15 +141,15 @@ public class FormAddUser extends VerticalLayout {
                             "Pole nie może zawierać spacji ani cyfr");
                     else return ValidationResult.ok();
                 })
-                .bind(User::getLastName, User::setLastName);
+                .bind(Users::getLastName, Users::setLastName);
         binder.forField(profTitle)
                 .asRequired("Pole wymagane.")
-                .bind(User::getDoctorTitle, User::setDoctorTitle);
+                .bind(Users::getDoctorTitle, Users::setDoctorTitle);
 
         binder.forField(email)
                 .asRequired("Pole wymagane.")
                 .withValidator(new EmailValidator("Niepoprawna składnia adresu email"))
-                .bind(User::getEmail, User::setEmail);
+                .bind(Users::getEmail, Users::setEmail);
         binder.forField(password)
                 .asRequired("Pole wymagane.")
                 .withValidator((value, context) -> {
@@ -158,7 +158,7 @@ public class FormAddUser extends VerticalLayout {
                                     "jedną małą literę, jedną cyfrę. ");
                     else return ValidationResult.ok();
                 })
-                .bind(User::getPassword, User::setPassword);
-        binder.setBean(user);
+                .bind(Users::getPassword, Users::setPassword);
+        binder.setBean(users);
     }
 }

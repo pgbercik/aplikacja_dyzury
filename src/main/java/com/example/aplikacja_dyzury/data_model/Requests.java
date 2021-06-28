@@ -23,10 +23,10 @@ public class Requests {
     private EntryDyzurDb entryTarget;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private User userInit;
+    private Users usersInit;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private User userTarget;
+    private Users usersTarget;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -34,15 +34,15 @@ public class Requests {
 
     public Requests() {}
 
-    public Requests(String description, LocalDateTime requestTime, Integer status, boolean isActive, EntryDyzurDb entryInitial, EntryDyzurDb entryTarget, User userInit, User userTarget) {
+    public Requests(String description, LocalDateTime requestTime, Integer status, boolean isActive, EntryDyzurDb entryInitial, EntryDyzurDb entryTarget, Users usersInit, Users usersTarget) {
         this.description = description;
         this.requestTime = requestTime;
         this.status = status;
         this.isActive = isActive;
         this.entryInitial = entryInitial;
         this.entryTarget = entryTarget;
-        this.userInit = userInit;
-        this.userTarget = userTarget;
+        this.usersInit = usersInit;
+        this.usersTarget = usersTarget;
     }
 
     public Long getRequestId() {
@@ -101,20 +101,20 @@ public class Requests {
         this.entryTarget = entryTarget;
     }
 
-    public User getUserInit() {
-        return userInit;
+    public Users getUserInit() {
+        return usersInit;
     }
 
-    public void setUserInit(User userInit) {
-        this.userInit = userInit;
+    public void setUserInit(Users usersInit) {
+        this.usersInit = usersInit;
     }
 
-    public User getUserTarget() {
-        return userTarget;
+    public Users getUserTarget() {
+        return usersTarget;
     }
 
-    public void setUserTarget(User userTarget) {
-        this.userTarget = userTarget;
+    public void setUserTarget(Users usersTarget) {
+        this.usersTarget = usersTarget;
     }
 
     public List<RequestStatus> getRequestStatusList() {
@@ -135,8 +135,8 @@ public class Requests {
                 ", isActive=" + isActive +
                 ", entryInitial=" + entryInitial +
                 ", entryTarget=" + entryTarget +
-                ", userInit=" + userInit +
-                ", userTarget=" + userTarget +
+                ", usersInit=" + usersInit +
+                ", usersTarget=" + usersTarget +
                 ", requestStatusList=" + requestStatusList +
                 '}';
     }

@@ -12,11 +12,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -57,7 +55,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
     private String chosenView = "month";
 
     private final EntryDyzurDbRepo entryDyzurDbRepo;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final CalendarDataProvider calendarDataProvider;
     //    private final FindUserData findUserData;
     private final FullCalendar calendar;
@@ -74,12 +72,12 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
     @Autowired
     public ShowCalendar(EntryDyzurDbRepo entryDyzurDbRepo, HospitalRepo hospitalRepo,
-                        HospitalDepartmentRepo hospitalDepartmentRepo, UserRepository userRepository, RequestsRepo requestsRepo) {
+                        HospitalDepartmentRepo hospitalDepartmentRepo, UsersRepository usersRepository, RequestsRepo requestsRepo) {
         //odpowiednik sekcji body
         addClassName("main-container");
 
         this.entryDyzurDbRepo = entryDyzurDbRepo;
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         calendarDataProvider = new CalendarDataProvider(entryDyzurDbRepo);
 //        findUserData = new FindUserData();
 
@@ -268,7 +266,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
 
 
             new DialogAddEditEvent(calendar, entry, false, entryDyzurDbRepo, entryToEditID,
-                    hospitalRepo, hospitalDepartmentRepo, userRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
+                    hospitalRepo, hospitalDepartmentRepo, usersRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
                     chosenDateTime, calendarDataProvider, requestsRepo).open();
 
         });
@@ -288,7 +286,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
             Entry entry = event.getEntry();
 
             new DialogAddEditEvent(calendar, entry, false, entryDyzurDbRepo, entryToEditID,
-                    hospitalRepo, hospitalDepartmentRepo, userRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
+                    hospitalRepo, hospitalDepartmentRepo, usersRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
                     chosenDateTime, calendarDataProvider, requestsRepo).open();
 
         });
@@ -309,7 +307,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
                 String entryToEditID = "";
 
                 new DialogAddEditEvent(calendar, entry, true, entryDyzurDbRepo, entryToEditID,
-                        hospitalRepo, hospitalDepartmentRepo, userRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
+                        hospitalRepo, hospitalDepartmentRepo, usersRepository, chosenView, currentlyChosenTimeSpan, hospitalId, hospitalIdDept,
                         chosenDateTime, calendarDataProvider, requestsRepo).open();
             } else {
                 Notification.show("Data rozpoczęcia dyżuru jest wcześniejsza o ponad 14 dni od daty dzisiejszej", 3000, Notification.Position.MIDDLE);
@@ -337,7 +335,7 @@ public class ShowCalendar extends VerticalLayout implements SessionDestroyListen
         // uruchamiamy wątek
         //we're creating and starting a thread
         thread = new BackgroundCalendarUpdaterThread(attachEvent.getUI(), this, calendarDataProvider,
-                calendar, entryDyzurDbRepo, userRepository, email);
+                calendar, entryDyzurDbRepo, usersRepository, email);
         thread.start();
     }
 

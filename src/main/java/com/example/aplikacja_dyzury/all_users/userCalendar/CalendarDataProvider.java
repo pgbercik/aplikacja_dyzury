@@ -1,10 +1,9 @@
 package com.example.aplikacja_dyzury.all_users.userCalendar;
 
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.data_model.User;
 import com.example.aplikacja_dyzury.FindUserData;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
 import org.vaadin.stefan.fullcalendar.Entry;
 import org.vaadin.stefan.fullcalendar.FullCalendar;
@@ -76,7 +75,7 @@ public class CalendarDataProvider {
 
             boolean userIsRegistered = false;
             Entry entry;
-            Set<User> foundUsers = entryDyzurDb.getUsers();
+            Set<Users> foundUsers = entryDyzurDb.getUsers();
             if (email.isEmpty()) email = FindUserData.findCurrentlyLoggedInUser();
             String finalEmail = email;
             if (foundUsers.stream().anyMatch(user -> user.getEmail().equals(finalEmail))) userIsRegistered = true;

@@ -11,14 +11,14 @@ import java.util.List;
 public interface RequestsRepo extends JpaRepository<Requests,Long> {
 
     @Query(value = "select * from requests where is_active=:isActive \n" +
-            "AND user_target_id=:targetId ORDER BY request_time DESC",
+            "AND users_target_users_id=:targetId ORDER BY request_time DESC",
             countQuery = "select count(*) from requests where is_active=:isActive \n" +
-            "AND user_target_id=:targetId ORDER BY request_time DESC",
+            "AND users_target_users_id=:targetId ORDER BY request_time DESC",
             nativeQuery = true)
     Page<Requests> findAllReceived(Boolean isActive,Long targetId,Pageable pageable);
 
-    @Query(value = "select * from requests where  user_init_id=:initialId ORDER BY request_time DESC",
-            countQuery = "select count(*) from requests where  user_init_id=:initialId ORDER BY request_time DESC"
+    @Query(value = "select * from requests where  users_init_users_id=:initialId ORDER BY request_time DESC",
+            countQuery = "select count(*) from requests where  users_init_users_id=:initialId ORDER BY request_time DESC"
             ,nativeQuery = true)
     Page<Requests> findAllSent(Long initialId, Pageable pageable);
 

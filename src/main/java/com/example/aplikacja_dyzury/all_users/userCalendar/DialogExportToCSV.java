@@ -1,8 +1,8 @@
 package com.example.aplikacja_dyzury.all_users.userCalendar;
 
 import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.data_model.User;
 import com.example.aplikacja_dyzury.data_model.google_calendar_pojo.GoogleCalendarPoJo;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.example.aplikacja_dyzury.all_users.userCalendar.csv.CsvExportDataProvider;
@@ -132,9 +132,9 @@ public class DialogExportToCSV extends Dialog {
                 List<GoogleCalendarPoJo> googleCalendarPoJos = new ArrayList<>();
                 for (EntryDyzurDb entryDyzurDb1 : entriesMatching) {
                     boolean isAddedToEntry=false;
-                    Set<User> foundUsers = entryDyzurDb1.getUsers();
-                    for (User user1 : foundUsers) {
-                        if (user1.getEmail().equals(FindUserData.findCurrentlyLoggedInUser())) isAddedToEntry=true;
+                    Set<Users> foundUsers = entryDyzurDb1.getUsers();
+                    for (Users users1 : foundUsers) {
+                        if (users1.getEmail().equals(FindUserData.findCurrentlyLoggedInUser())) isAddedToEntry=true;
                     }
                     if (isAddedToEntry) {
                         String title = entryDyzurDb1.getTitle();

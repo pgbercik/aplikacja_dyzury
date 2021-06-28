@@ -1,8 +1,8 @@
 package com.example.aplikacja_dyzury.all_users.userCalendar;
 
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.data_model.EntryDyzurDb;
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
-import com.example.aplikacja_dyzury.data_model.User;
 import com.example.aplikacja_dyzury.data_model.custom_pojo.CustomAddedUsersForEntry;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -32,15 +32,15 @@ public class DialogShowUsersForEntry extends Dialog {
         add(layout);
 
         EntryDyzurDb entryDyzurDb = entryDyzurDbRepo.findByID(id);
-        Set<User> foundUsers = entryDyzurDb.getUsers();
-        System.out.println("found users: "+foundUsers);
+        Set<Users> foundUsers = entryDyzurDb.getUsers();
+//        System.out.println("found users: "+ foundUsers);
 
         if (!foundUsers.isEmpty()) {
 
             List<CustomAddedUsersForEntry> list = new ArrayList<>();
-            for (User user1 : foundUsers) {
-                list.add(new CustomAddedUsersForEntry(user1.getId(),user1.getDoctorTitle().getType(),
-                        user1.getFirstName(),user1.getLastName()));
+            for (Users users1 : foundUsers) {
+                list.add(new CustomAddedUsersForEntry(users1.getUsersId(), users1.getDoctorTitle().getType(),
+                        users1.getFirstName(), users1.getLastName()));
             }
 
             Grid<CustomAddedUsersForEntry> userGrid = new Grid<>();

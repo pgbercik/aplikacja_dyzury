@@ -1,8 +1,8 @@
 package com.example.aplikacja_dyzury.nav_and_themes;
 
 
-import com.example.aplikacja_dyzury.data_model.User;
-import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.data_model.Users;
+import com.example.aplikacja_dyzury.repository.UsersRepository;
 import com.example.aplikacja_dyzury.FindUserData;
 import com.example.aplikacja_dyzury.admin.adminForms.FormAddHospital;
 import com.example.aplikacja_dyzury.admin.adminTables.HospitalTable;
@@ -39,16 +39,16 @@ public class RegisteredMenuBar extends AppLayoutRouterLayout<LeftLayouts.LeftRes
     private DefaultBadgeHolder badge = new DefaultBadgeHolder(5);
 
     @Autowired
-    public RegisteredMenuBar(UserRepository userRepository) {
+    public RegisteredMenuBar(UsersRepository usersRepository) {
 //        FindUserData findUserData = new FindUserData();
         System.out.println(FindUserData.findFirstUserRoleString() +"rola w registered menu bar");
-        User loggedInUserDetails =  userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
+        Users loggedInUsersDetails =  usersRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
 
         if (FindUserData.findFirstUserRoleString().equals("ROLE_USER")) {
             init(AppLayoutBuilder.get(LeftLayouts.LeftResponsive.class)
                     .withTitle("E-terminarz"+" - zalogowano jako "
-                            + loggedInUserDetails.getDoctorTitle().getType() +" "
-                            +loggedInUserDetails.getFirstName()+" "+loggedInUserDetails.getLastName())
+                            + loggedInUsersDetails.getDoctorTitle().getType() +" "
+                            + loggedInUsersDetails.getFirstName()+" "+ loggedInUsersDetails.getLastName())
                     .withAppMenu(LeftAppMenuBuilder.get()
                             .add(
                                     new LeftNavigationItem("Zgłoszenia przychodzące", VaadinIcon.HOME.create(), MainPage.class),

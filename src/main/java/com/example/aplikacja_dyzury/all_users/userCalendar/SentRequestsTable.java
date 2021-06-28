@@ -8,11 +8,10 @@ import com.example.aplikacja_dyzury.nav_and_themes.RegisteredMenuBar;
 import com.example.aplikacja_dyzury.repository.EntryDyzurDbRepo;
 import com.example.aplikacja_dyzury.repository.RequestStatusRepo;
 import com.example.aplikacja_dyzury.repository.RequestsRepo;
-import com.example.aplikacja_dyzury.repository.UserRepository;
+import com.example.aplikacja_dyzury.repository.UsersRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
@@ -40,18 +39,18 @@ public class SentRequestsTable extends VerticalLayout {
     private final int size=5;
     private final Div buttonsDiv;
     private int totalPages=0;
-    private final User loggedInUserDetails;
+    private final Users loggedInUsersDetails;
     private final DateTimeFormatter formatter;
 
 //    FindUserData findUserData = new FindUserData();
 
 
     @Autowired
-    public SentRequestsTable(UserRepository userRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo, EntryDyzurDbRepo entryDyzurDbRepo) {
+    public SentRequestsTable(UsersRepository usersRepository, RequestsRepo requestsRepo, RequestStatusRepo requestStatusRepo, EntryDyzurDbRepo entryDyzurDbRepo) {
 
         addClassName("main-container");
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        loggedInUserDetails = userRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
+        loggedInUsersDetails = usersRepository.findByEmail(FindUserData.findCurrentlyLoggedInUser());
         Label currentPage = new Label();
 
 
@@ -94,7 +93,7 @@ public class SentRequestsTable extends VerticalLayout {
 
 
 
-        Page<Requests> requestsFound = requestsRepo.findAllSent(loggedInUserDetails.getId(),PageRequest.of(page, size));
+        Page<Requests> requestsFound = requestsRepo.findAllSent(loggedInUsersDetails.getUsersId(),PageRequest.of(page, size));
         totalPages=requestsFound.getTotalPages();
 
 

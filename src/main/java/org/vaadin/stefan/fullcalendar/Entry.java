@@ -16,9 +16,9 @@
  */
 package org.vaadin.stefan.fullcalendar;
 
+import com.example.aplikacja_dyzury.data_model.Users;
 import com.example.aplikacja_dyzury.data_model.Hospital;
 import com.example.aplikacja_dyzury.data_model.HospitalDepartment;
-import com.example.aplikacja_dyzury.data_model.User;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
@@ -48,7 +48,7 @@ public class Entry {
 
     private Hospital hospital;
     private HospitalDepartment hospitalDepartment;
-    private Set<User> users;
+    private Set<Users> users;
 
 //    private Set<DayOfWeek> recurringDaysOfWeeks;
 //    private Instant recurringStartDate;
@@ -63,7 +63,7 @@ public class Entry {
     private FullCalendar calendar;
 
 
-    public Entry(boolean editable, String title, Instant start, Instant end, boolean allDay, String color, String description, Hospital hospital, HospitalDepartment hospitalDepartment, Set<User> users) {
+    public Entry(boolean editable, String title, Instant start, Instant end, boolean allDay, String color, String description, Hospital hospital, HospitalDepartment hospitalDepartment, Set<Users> users) {
         this(null);
         this.editable = editable;
         this.title = title;
@@ -613,11 +613,11 @@ public class Entry {
         this.hospitalDepartment = hospitalDepartment;
     }
 
-    public Set<User> getUsers() {
+    public Set<Users> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<Users> users) {
         this.users = users;
     }
 
