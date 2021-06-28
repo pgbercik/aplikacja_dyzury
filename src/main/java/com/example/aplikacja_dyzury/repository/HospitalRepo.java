@@ -13,10 +13,10 @@ public interface HospitalRepo  extends PagingAndSortingRepository<Hospital,Long>
      * Ta metoda  sprawdza czy istnieje szpital o podanej nazwie, mieście i adresie - to jest używane przy dodawaniu szpitali w celu uniknięcia duplikatów.
      * This method check whether a database already contains a hospital with declared address, city and name - it is used in order to prevent adding duplicate hospitals.
      * */
-    @Query(value = "SELECT * FROM hospital \n" +
-            "where address=:address \n" +
-            "AND city=:city \n" +
-            "AND name=:name ",nativeQuery = true)
+        @Query(value = "SELECT h from Hospital h " +
+                "WHERE h.address=:address" +
+                " AND h.city=:city" +
+                " AND h.name=:name")
     List<Hospital> findExistingHospitals(String address, String city, String name);
 
 }
