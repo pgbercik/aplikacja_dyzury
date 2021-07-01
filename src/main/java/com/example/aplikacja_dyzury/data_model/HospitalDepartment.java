@@ -17,6 +17,10 @@ public class HospitalDepartment {
     @Column
     private boolean isActive;
 
+    @ManyToOne
+    @JoinColumn(name = "referenced_hospital_id")
+    private Hospital hospital;
+
     public HospitalDepartment(String department, boolean isActive) {
         this.department = department;
         this.isActive = isActive;

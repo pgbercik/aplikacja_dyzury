@@ -537,7 +537,7 @@ public class DialogAddEditEvent extends Dialog {
 
     /**Ta metoda sprawdza czy nie ma wydarzenia o tych samych godzinach, szpitalu i oddziale i czy np. czas dyżuru nie jest ujemny, a także czy nie jest krótszy od 5 minut.
      * This method looks for a case when there is another duty with the same hours, hospital, department an so on.
-     * It oasl checks whether duty ends before it starts or if the duty takes less than 5 minutes.
+     * It also checks whether duty ends before it starts or if the duty takes less than 5 minutes.
      * */
     public boolean verifyDates(LocalDateTime startTime, LocalDateTime endTime, Entry entry, String id) {
         boolean isDurationCorrect=false; // sprawdza czy podany okres jest poprawny, np. czy start nie jest później od końca - we're checking whether duty ends before it starts
