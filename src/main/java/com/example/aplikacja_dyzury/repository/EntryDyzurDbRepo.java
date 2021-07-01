@@ -36,10 +36,7 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
      * To wyciąga dyżury z wybranym zakresem dat i danym szpitalem. W ShowCalendar jest użyte przy pokazywaniu dyżurów z poszczególnych miesięcy i tygodni.
      * This query gets duties from a chosen range of dates and with specific hospital. In ShowCalendar it is used in order to show duties from a chosen week or month.
      */
-//    @Query(value = "SELECT * FROM dyzur  where \n" +
-//            "start_time >=:previousMonth \n" +
-//            "AND start_time <=:nextMonth \n" +
-//            "AND hospital_hospital_id=:hospitalId ",nativeQuery = true)
+
     @Query(value = "SELECT e FROM EntryDyzurDb e WHERE \n" +
             "e.startTime >=:previousMonth \n" +
             "AND e.startTime <=:nextMonth \n" +
@@ -52,14 +49,10 @@ public interface EntryDyzurDbRepo extends CrudRepository<EntryDyzurDb, Long>, Jp
     String findEntryToEdit(String description, LocalDateTime startTime, LocalDateTime endTime, Hospital hospital, String title);
 
 
-    //    @Query(value = "SELECT * FROM dyzur WHERE id=:id",nativeQuery = true)
     @Query(value = "SELECT e FROM EntryDyzurDb e WHERE e.id=:id")
     EntryDyzurDb findByID(String id);
 
-    //    @Query(value = "SELECT * FROM dyzur  where start_time=:startTime \n" +
-//            "AND end_name=:endTime\n" +
-//            "AND hospital_hospital_id=:hospital\n" +
-//            "AND hospital_department_hospital_dept_id=:hospitalDepartment",nativeQuery = true)
+
     @Query(value = "SELECT e FROM EntryDyzurDb e WHERE e.startTime=:startTime \n" +
             "AND e.endTime=:endTime\n" +
             "AND e.hospital=:hospital\n" +
